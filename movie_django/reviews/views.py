@@ -4,37 +4,37 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 
-from .models import Article, Comment
-from .serializers import ArticleSerializer, ArticleListSerializer, CommentSerializer
+from .models import Review, Comment
+from .serializers import ReviewSerializer, ReviewListSerializer, CommentSerializer
 
 
 @api_view(['GET'])
 def index(request):
-    articles = Article.objects.all()
-    serializer = ArticleListSerializer(articles, many=True)
+    reviews = Review.objects.all()
+    serializer = ReviewListSerializer(reviews, many=True)
     return Response(serializer.data)
 
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def create(request):
-    serializer = ArticleSerializer(data=request.data)
+    serializer = ReviewSerializer(data=request.data)
     if serializer.is_valid(raise_exception=True):
         serializer.save(user=request.user)
         return Response(serializer.data)
 
 
 @api_view(['GET'])
-def detail(request, article_pk):
-    article = get_object_or_404(Article, pk=article_pk)
-    serializer = ArticleSerializer(article)
+def detail(request, review_pk):
+    review = get_object_or_404(Review, pk=review_pk)
+    serializer = ReviewSerializer(review)
     return Response(serializer.data)
 
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def comments_create(request, article_pk):
+def comments_create(request, review_pk):
     serializer = CommentSerializer(data=request.data)
     if serializer.is_valid(raise_exception=True):
-        serializer.save(user=request.user, article_id=article_pk)
+        serializer.save(user=request.user, review_id=review_pk)
         return Response(serializer.data)

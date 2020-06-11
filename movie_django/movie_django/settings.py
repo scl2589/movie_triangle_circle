@@ -52,8 +52,9 @@ INSTALLED_APPS = [
     'rest_auth.registration',
 
     # My apps
-    'articles',
+    'reviews',
     'accounts',
+    'movies',
 ]
 
 MIDDLEWARE = [

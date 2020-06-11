@@ -14,8 +14,14 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('reviews/', include('reviews.urls')),
+    # 직접 만든 적은 없지만 rest_auth라는 앱이 생긴다.
+    # 로그인 & 로그아웃
+    path('rest-auth/', include('rest_auth.urls')),
+    # 회원가입
+    path('rest-auth/signup/', include('rest_auth.registration.urls'))
 ]
