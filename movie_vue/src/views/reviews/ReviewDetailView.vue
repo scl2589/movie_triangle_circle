@@ -4,6 +4,7 @@
       <div class="card-header">
         <p class="mb-0">{{ review.title }}</p>
         <small>posted by <strong>{{ review.user.username }}</strong> on {{ review.created_at}}</small>
+        <button @click="deleteReview" class="btn">삭제</button>
       </div>
       <div class="card-body">
         <p class="card-text">{{ review.content }}</p>
@@ -24,9 +25,7 @@
           <textarea v-model="commentData.content" type="content" placeholder="Content" class='txtbox' rows="5"></textarea>
           <button class="btn offset-10 col-2 mt-2" @click="createComment">Submit</button>
         </div>
-        <!-- 댓글 보여주는 란 -->
-        <!-- <CommentList/> -->
-        <!-- 댓글 작성란 -->
+
         
       </div>
 
@@ -83,7 +82,26 @@ export default {
         .then( res => this.comments = res.data)
         .catch( err => console.log(err) )
         
-    }
+     },
+    deleteReview() {
+      if ( this.$cookies.get('auth-token')) {
+        const config = {
+          headers : {
+          'Authorization' : `Token ${this.$cookies.get('auth-token')}`
+          },
+        }
+        axios.delete(SERVER.URL + "/reviews/" + this.$route.params.reviewId, config)
+          .then((res) => {
+            console.log(res.data)
+            console.log(this.review.movie)
+            this.$router.push({ name:'MovieDetail', params:{ movieId:this.review.movie }})
+            })
+          .catch((err) => {
+            console.log(err.response.data)
+            
+          })
+        }
+      }
     },
   created() {
     this.getReviewDetail()

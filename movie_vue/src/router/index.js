@@ -58,7 +58,7 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const publicPages = ['Login', 'Signup', 'MovieList', 'MovieDetail']
+  const publicPages = ['Login', 'Signup', 'MovieList', 'MovieDetail', 'ReviewDetail']
   const authPages = ['Login', 'Signup', 'Create']
   const authRequired = !publicPages.includes(to.name)
   const unauthRequired = authPages.includes(to.name) // 로그인 해서는 안됨
