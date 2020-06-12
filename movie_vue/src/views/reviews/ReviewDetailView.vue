@@ -37,12 +37,12 @@
 <script>
 import axios from 'axios'
 import SERVER from '@/api/index.js'
-import CommentList from '@/views/reviews/CommentListView.vue'
+// import CommentList from '@/views/reviews/CommentListView.vue'
 
 export default {
   name: 'ReviewDetail',
   components: {
-    CommentList
+    // CommentList
   },
   data() {
     return {
@@ -72,9 +72,6 @@ export default {
         axios.post(SERVER.URL + "/reviews/" + this.$route.params.reviewId + "/comment_create/",this.commentData,config)
           .catch( err => console.log(err) )
         
-        axios.get( SERVER.URL + "/reviews/" +this.$route.params.reviewId +"/get_comments/")
-          .then( res => this.comments = res.data )
-          .catch( err => console.log(err))
           
         }
       // this.commentData.content = null

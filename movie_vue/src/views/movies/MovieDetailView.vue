@@ -48,7 +48,6 @@
         </div>
 
       </div>
-    </div>
     <div class="d-flex row my-3">
       <h3 class="col-auto mr-auto vertical-align">Reviews</h3>
       <button @click="GoToReviewClick" class="col-auto btn btn-sm py-3">리뷰 쓰러가기</button>
