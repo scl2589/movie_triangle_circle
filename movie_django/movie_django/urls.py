@@ -26,4 +26,5 @@ urlpatterns = [
     # 회원가입
     path('rest-auth/signup/', include('rest_auth.registration.urls')),
     path('accounts/', include('accounts.urls')),
+    path('reviews/', include('reviews.urls')),
 ]

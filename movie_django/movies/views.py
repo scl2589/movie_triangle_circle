@@ -13,6 +13,12 @@ import random
 import time
 from decouple import config
 import requests
+
+import os, sys
+path = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
+sys.path.append(path)
+from reviews.serializers import ReviewListSerializer, ReviewSerializer
+
 @api_view(['GET'])
 def index(request):
     movies_popular = Movie.objects.values('title','backdrop_path','pk').order_by('-popularity')[:100]
@@ -77,3 +83,21 @@ def get_movies(request):
     print('get data')
 
     return Response({"message":"success"})
+
+
+@api_view(['GET'])
+def review_index(request,movie_pk):
+    movie = get_object_or_404(Movie, pk=movie_pk)
+    reviews = movie.review_set.order_by('-pk')
+    serializer = ReviewListSerializer(reviews, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def create(request, movie_pk):
+    movie = get_object_or_404(Movie, pk=movie_pk)
+    serializer = ReviewSerializer(data=request.data)
+    if serializer.is_valid(raise_exception=True):
+        serializer.save(user=request.user, movie=movie)
+        return Response(serializer.data)
