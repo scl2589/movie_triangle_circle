@@ -22,7 +22,7 @@
           </div>
         <div class="row mx-1">
           <textarea v-model="commentData.content" type="content" placeholder="Content" class='txtbox' rows="5"></textarea>
-          <button class="btn btn-info offset-10 col-2 mt-2" @click="createComment">Submit</button>
+          <button class="btn offset-10 col-2 mt-2" @click="createComment">Submit</button>
         </div>
         <!-- 댓글 보여주는 란 -->
         <!-- <CommentList/> -->
@@ -70,12 +70,20 @@ export default {
           },
         }
         axios.post(SERVER.URL + "/reviews/" + this.$route.params.reviewId + "/comment_create/",this.commentData,config)
-          .catch( err => console.log(err) )
-        
-          
+          .then( () => {
+            this.getComment()
+            this.commentData.content = null
+          })
+          .catch( err => console.log(err) )  
         }
-      // this.commentData.content = null
-      }
+      
+      },
+    getComment() {
+      axios.get(SERVER.URL + "/reviews/" + this.$route.params.reviewId + "/get_comments/")
+        .then( res => this.comments = res.data)
+        .catch( err => console.log(err) )
+        
+    }
     },
   created() {
     this.getReviewDetail()
@@ -87,5 +95,15 @@ export default {
 </script>
 
 <style>
+.btn {
+  background-color:#6f8dbf;
+  outline: transparent;
+  color: white;
+  border: transparent;
+}
+
+.btn:hover{
+  background-color: #345389;
+}
 
 </style>

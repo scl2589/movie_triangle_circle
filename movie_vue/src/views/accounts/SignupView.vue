@@ -20,7 +20,7 @@
         <input v-model="signupData.password2" type="password" id="password2" class="inputs" placeholder="Password Confirmation">
       </div>
       <div class="row mr-1">
-        <button class="btn btn-info offset-10 col-2" @click="signup">Signup</button>
+        <button class="btn offset-10 col-2" @click="signup">Signup</button>
       </div>
       
   </div>
@@ -56,4 +56,16 @@ export default {
 .inputs:focus {
   outline: none;
 }
+
+.btn {
+  background-color:#6f8dbf;
+  outline: transparent;
+  color: white;
+  border: transparent;
+}
+
+.btn:hover{
+  background-color: #345389;
+}
+
 </style>

@@ -16,7 +16,7 @@
         
       </div>
       <div class="row mr-1">
-        <button class="btn btn-info offset-10 col-2" @click="login">Login</button>
+        <button class="btn  offset-10 col-2" @click="login">Login</button>
       </div>
     
   </div>
@@ -51,5 +51,18 @@ export default {
 .inputs:focus {
   outline: none;
 }
+
+
+.btn {
+  background-color:#6f8dbf;
+  outline: transparent;
+  color: white;
+  border: transparent;
+}
+
+.btn:hover{
+  background-color: #345389;
+}
+
 
 </style>

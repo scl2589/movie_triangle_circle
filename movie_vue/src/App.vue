@@ -101,7 +101,7 @@ export default {
 
   },
   updated(){
-    if(this.$route.name == 'List'){
+    if(this.$route.name == 'MovieList'){
       this.isList = true
     } else {
       this.isList = false
@@ -127,7 +127,7 @@ export default {
 </script>
 
 
-<style scoped>
+<style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

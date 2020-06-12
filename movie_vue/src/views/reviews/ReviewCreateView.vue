@@ -9,7 +9,7 @@
         </textarea>
     </div>
     <div class="row mr-1">
-        <button class="btn btn-info offset-10 col-2" @click="createReview">제출하기</button>
+      <button class="btn offset-10 col-2" @click="createReview">제출하기</button>
     </div>
   </div>
 </template>
@@ -35,12 +35,13 @@ export default {
         }
       }
       axios.post(SERVER.URL + "/movies/"+ this.$route.params.movieId + SERVER.ROUTES.createReview, this.reviewData, config)
-        .then((res)=> {
-          console.log(res.data)
-          this.$router.push({ name: 'MovieDetail', params: { "movieId":this.$route.params.movieId }})// 생각중
+        .then(()=> {
+          this.$router.push({ name: 'MovieDetail', params: { "movieId":this.$route.params.movieId }})
         })
         .catch(err => console.log(err.response.data))
-    }
+    },
+    
+
   }
 }
 </script>
@@ -60,5 +61,16 @@ export default {
   border-radius: 1;
   width: 100%;
   padding: 0.5rem;
+}
+
+.btn {
+  background-color:#6f8dbf;
+  outline: transparent;
+  color: white;
+  border: transparent;
+}
+
+.btn:hover{
+  background-color: #345389;
 }
 </style>

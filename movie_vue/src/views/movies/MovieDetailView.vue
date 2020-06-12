@@ -1,6 +1,6 @@
 <template>
 <div>
-    <div class="header entire setbackground" v-bind:style="{'background-image': 'linear-gradient(to right, rgba(26.27%, 9.41%, 18.43%, 1.00) 150px, rgba(34.12%, 15.69%, 25.49%, 0.84) 100%), url(' + posterURL + movie.backdrop_path + ')' }">
+    <div class="header entire setbackground" v-bind:style="{'background-image': 'linear-gradient(to right, rgba(23, 37, 61, 1.00) 150px,rgba(52, 83, 137, 0.84) 100%), url(' + posterURL + movie.backdrop_path + ')' }">
       <div class="inner-header p-3 d-flex float-this">
         <div class="row">
           <div class="col-4">
@@ -49,9 +49,9 @@
      </div>
 
       </div>
-    <div class="d-flex row my-3">
-      <h3 class="col-auto mr-auto vertical-align">Reviews</h3>
-      <button @click="GoToReviewClick" class="col-auto btn btn-sm py-3">리뷰 쓰러가기</button>
+    <div class="d-flex my-3 justify-content-between">
+      <h3 class="vertical-align m-0">Reviews</h3>
+      <button @click="GoToReviewClick" class="btn btn-sm ">리뷰 쓰러가기</button>
     </div>
     <div v-if="reviews.length" class="container mt-3">
       <ReviewList :reviews="reviews"/>
@@ -210,11 +210,23 @@ export default {
 
 .btn {
   background-color:#345389; 
-  color: #f5b893;
+  color: white;
 }
 
 .vertical-align {
   line-height: 1.5;
+}
+
+
+.btn {
+  background-color:#6f8dbf;
+  outline: transparent;
+  color: white;
+  border: transparent;
+}
+
+.btn:hover{
+  background-color: #345389;
 }
 
 
@@ -326,7 +338,7 @@ export default {
 .c100.p99 .fill,
 .c100.p100 .fill {
   position: absolute;
-  border: 0.08em solid #307bbb;
+  border: 0.08em solid #6f8dbf;
   width: 0.84em;
   height: 0.84em;
   clip: rect(0em, 0.5em, 1em, 0em);
@@ -452,7 +464,7 @@ export default {
   border-radius: 50%;
   float: left;
   margin: 0 0.1em 0.1em 0;
-  background-color: #cccccc;
+  background-color: white;
 }
 .c100 *,
 .c100 *:before,
@@ -1233,57 +1245,13 @@ export default {
   width: 3.33em;
   line-height: 3.33em;
   font-size: 0.3em;
-  color: #307bbb;
+  color: #bf6f7e;
 }
 .c100:hover:after {
   top: 0.04em;
   left: 0.04em;
   width: 0.92em;
   height: 0.92em;
-}
-.c100.dark {
-  background-color: #777777;
-}
-.c100.dark .bar,
-.c100.dark .fill {
-  border-color: #c6ff00 !important;
-}
-.c100.dark > span {
-  color: #777777;
-}
-.c100.dark:after {
-  background-color: #666666;
-}
-.c100.dark:hover > span {
-  color: #c6ff00;
-}
-.c100.green .bar,
-.c100.green .fill {
-  border-color: #4db53c !important;
-}
-.c100.green:hover > span {
-  color: #4db53c;
-}
-.c100.green.dark .bar,
-.c100.green.dark .fill {
-  border-color: #5fd400 !important;
-}
-.c100.green.dark:hover > span {
-  color: #5fd400;
-}
-.c100.orange .bar,
-.c100.orange .fill {
-  border-color: #dd9d22 !important;
-}
-.c100.orange:hover > span {
-  color: #dd9d22;
-}
-.c100.orange.dark .bar,
-.c100.orange.dark .fill {
-  border-color: #e08833 !important;
-}
-.c100.orange.dark:hover > span {
-  color: #e08833;
 }
 
 
