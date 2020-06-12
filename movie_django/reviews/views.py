@@ -6,21 +6,26 @@ from rest_framework.permissions import IsAuthenticated
 
 from .models import Review, Comment
 from .serializers import ReviewSerializer, ReviewListSerializer, CommentSerializer
-
+import os, sys
+path = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
+sys.path.append(path)
+from movies.models import Movie
 
 @api_view(['GET'])
-def index(request):
-    reviews = Review.objects.all()
+def index(request,movie_pk):
+    movie = get_object_or_404(Movie, pk=movie_pk)
+    reviews = movie.review_set.order_by('-pk')
     serializer = ReviewListSerializer(reviews, many=True)
     return Response(serializer.data)
 
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def create(request):
+def create(request, movie_pk):
+    movie = get_object_or_404(Movie, pk=movie_pk)
     serializer = ReviewSerializer(data=request.data)
     if serializer.is_valid(raise_exception=True):
-        serializer.save(user=request.user)
+        serializer.save(user=request.user, movie=movie)
         return Response(serializer.data)
 
 
