@@ -81,7 +81,7 @@ export default {
     this.getReviewDetail()
   },
   computed: {
-  
+    
   }
 }
 </script>

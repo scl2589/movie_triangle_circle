@@ -36,7 +36,7 @@
 
 
             <!--줄거리 -->
-            </div>
+
             <div class="clear-float mt-3">
               <h4 class="text-left">줄거리</h4>
             </div>
@@ -46,6 +46,7 @@
             <!--감독 및 출연 배우 -->
           </div>
         </div>
+     </div>
 
       </div>
     <div class="d-flex row my-3">
