@@ -35,7 +35,7 @@ def movie_detail(request, movie_pk):
     return Response(serializer.data)
 
 @api_view(['GET'])
-# login 필요
+@permission_classes(['IsAuthenticated'])
 def like(request, movie_pk):
     user = request.user 
     movie = get_object_or_404(Movie, pk=movie_pk)
