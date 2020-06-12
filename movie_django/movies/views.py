@@ -13,7 +13,6 @@ import random
 import time
 from decouple import config
 import requests
-
 @api_view(['GET'])
 def index(request):
     movies_popular = Movie.objects.values('title','backdrop_path','pk').order_by('-popularity')[:100]
@@ -35,7 +34,7 @@ def movie_detail(request, movie_pk):
     return Response(serializer.data)
 
 @api_view(['GET'])
-@permission_classes(['IsAuthenticated'])
+@permission_classes([IsAuthenticated])
 def like(request, movie_pk):
     user = request.user 
     movie = get_object_or_404(Movie, pk=movie_pk)
@@ -50,7 +49,6 @@ def like(request, movie_pk):
     context = {
         'liked': liked,
         'count': movie.like_users.count(),
-        'user': user.id,
     }
     return JsonResponse(context)
 
