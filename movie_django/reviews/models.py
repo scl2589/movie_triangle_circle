@@ -4,7 +4,7 @@ import os, sys
 path = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
 sys.path.append(path)
 from movies.models import Movie
-# path = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
+
 # from  path import Movie
 
 class Review(models.Model):

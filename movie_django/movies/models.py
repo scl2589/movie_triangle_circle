@@ -22,3 +22,4 @@ class Movie(models.Model):
     backdrop_path = models.CharField(max_length=200)
     genres = models.ManyToManyField(Genre,related_name='genre_movies')
     like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_movies')
+    # 추가해야할 필드?

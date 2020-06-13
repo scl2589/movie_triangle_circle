@@ -1,10 +1,13 @@
 <template>
-  
+  <div>
+    
+  </div>
 </template>
 
 <script>
 export default {
-  name: UserProfile,
+  name: 'UserProfile',
+  userInfo: [], 
 }
 </script>
 

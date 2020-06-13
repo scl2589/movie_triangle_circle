@@ -8,7 +8,7 @@
           </div>
           <div class="col-8 p-5 justify-content-between" >
             <h2><strong>{{ movie.title }}</strong><span class="dimcolor">({{movie.release_date.slice(0, 4)}})</span></h2>
-            <p><span v-for="genre in movie.genres" :key="`genre_${genre.id}`">{{ genre.name }}여기장르자리</span></p>
+            <!-- <p><span v-for="genre in movie.genres" :key="`genre_${genre.id}`">{{ genre.name }}여기장르자리</span></p> -->
             <div></div>
             <div >
               <div class="c100 small" :class="computedClass" title="평점" data-toggle="tooltip" data-placement="top" >
@@ -149,7 +149,7 @@ export default {
       .then(res => {
         this.video = res.data.items[0]
       })
-      .catch(err => console.error(err))
+      .catch(err => console.log(err))
     },
     GoToReviewClick() {
       this.$router.push({ name: 'ReviewCreate'})

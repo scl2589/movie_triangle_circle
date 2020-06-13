@@ -56,7 +56,10 @@ export default {
           this.$router.push({ name: 'MovieList' })
           // userId를 쿠키에 저장
           axios.get(SERVER.URL +'/accounts/' + signupData.username+ '/')
-            .then( res => this.$cookies.set('userId',res.data))
+            .then( res => 
+            this.$cookies.set('userId',res.data),
+            this.$router.push()
+            )
         })
         .catch( err => console.log(err.response.data) )
     },

@@ -5,14 +5,14 @@ from .models import Review, Comment
 
 class CommentSerializer(serializers.ModelSerializer):
     user = UserSerializer(required=False)
-    # created_at = serializers.DateTimeField(format="%Y년 %m월 %d일 %H:%M:%S",required=False)
+    created_at = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False)
     class Meta:
         model = Comment
         fields = ('content','user','id','created_at')
         
 class ReviewListSerializer(serializers.ModelSerializer):
     user = UserSerializer()
-    # created_at = serializers.DateTimeField(format="%Y년 %m월 %d일 %H:%M:%S")
+    created_at = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S")
     comment_set = CommentSerializer(required=False, many=True)
     class Meta:
         model = Review
@@ -21,7 +21,7 @@ class ReviewListSerializer(serializers.ModelSerializer):
 
 class ReviewSerializer(serializers.ModelSerializer):
     user = UserSerializer(required=False)
-    # created_at = serializers.DateTimeField(format="%Y년 %m월 %d일 %H:%M:%S", required=False)
+    created_at = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False)
     comment_set = CommentSerializer(required=False, many=True)
     class Meta:
         model = Review

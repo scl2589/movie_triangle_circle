@@ -29,20 +29,35 @@ export default {
   },
   methods: {
     createReview() {
+      
       const config = {
         headers: {
           Authorization: `Token ${this.$cookies.get('auth-token')}`
         }
       }
-      axios.post(SERVER.URL + "/movies/"+ this.$route.params.movieId + SERVER.ROUTES.createReview, this.reviewData, config)
+      if (this.$route.params.reviewId) {
+        axios.put(SERVER.URL + "/reviews/"+ this.$route.params.reviewId + "/update_review/", this.reviewData, config)
+        .then(()=> {
+          this.$router.push({ name: 'ReviewDetail', params: { "reviewId":this.$route.params.reviewId }})
+        })
+        .catch(err => console.log(err.response.data))
+      }
+      else {
+        axios.post(SERVER.URL + "/movies/"+ this.$route.params.movieId + SERVER.ROUTES.createReview, this.reviewData, config)
         .then(()=> {
           this.$router.push({ name: 'MovieDetail', params: { "movieId":this.$route.params.movieId }})
         })
         .catch(err => console.log(err.response.data))
+      }
     },
-    
 
+  },
+  created() {
+    if (this.$route.params.reviewData){
+      this.reviewData = this.$route.params.reviewData
+    }
   }
+
 }
 </script>
 
