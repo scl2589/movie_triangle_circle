@@ -15,8 +15,8 @@ def profile(request, user_pk):
 
 
 
-@api_view(['GET'])
-# @permission_classes(['IsAuthenticated'])
+@api_view(['GET']) # 삭제될 예정
+# @permission_classes([IsAuthenticated])
 def get_user_id(request, username):
     return Response(User.objects.filter(username=username)[0].id)
 

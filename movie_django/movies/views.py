@@ -59,7 +59,7 @@ def like(request, movie_pk):
     return JsonResponse(context)
 
 @api_view(['GET'])
-# @permission_classes(['IsAuthenticated'])
+# @permission_classes([IsAuthenticated]) # token을 보내서 request.user하면 된당
 def like_state(request, movie_pk, user_pk):
     User = get_user_model()
     user = get_object_or_404(User, pk=user_pk)
@@ -70,7 +70,7 @@ def like_state(request, movie_pk, user_pk):
 @permission_classes(['IsAdminUser'])
 def get_movies(request):
     api_key=config('API_KEY')
-    for number in range(1,10):
+    for number in range(1,1000):
         total = []
         if number%50==0:
             print(number)
@@ -79,6 +79,7 @@ def get_movies(request):
         url = f'https://api.themoviedb.org/3/movie/{number}?api_key={api_key}&query=whiplash&language=ko-KR&region=KR&append_to_response=include_image_language=ko,null'
         res = requests.get(url)
         if res.status_code == 200:
+            
             total.append(res.json())
     print('get data')
 

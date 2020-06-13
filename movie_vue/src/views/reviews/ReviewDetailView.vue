@@ -3,7 +3,7 @@
     <div class="card">
       <div class="card-header">
         <p class="mb-0">{{ review.title }}</p>
-        <small>posted by <strong>{{ review.user.username }}</strong> on {{ review.created_at}}</small>
+        <small>posted by <strong>{{ user.username }}</strong> on {{ review.created_at}}</small>
         <button @click="deleteReview" class="btn">삭제</button>
       </div>
       <div class="card-body">
@@ -50,6 +50,7 @@ export default {
         content: null,
       },
       comments: [],
+      user: [],
     }
   },
   methods: {
@@ -58,6 +59,7 @@ export default {
         .then( res => {
           this.review = res.data
           this.comments = this.review.comment_set
+          this.user = res.data.user
         })
         .catch( err => console.log(err))
     },
