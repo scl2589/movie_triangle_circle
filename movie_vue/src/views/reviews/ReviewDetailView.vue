@@ -18,14 +18,13 @@
           <div>
             <div v-for="comment in comments" :key="`comment_${comment.id}`">
               <p><strong>{{ comment.user.username}}</strong><button @click="deleteComment(comment.id)" class="btn btn-sm">삭제</button>
-              <button  @click="changeUpdateState" class="btn btn-sm">수정</button></p>
-              <div :class="{ update:!updateWindowState}">
+              <button  @click="changeUpdateState(comment.id,comment.content)" class="btn btn-sm">수정</button></p>
+              <div v-show="comment.id == currentComment.select">
                 <textarea v-model="currentComment.content" type="content" placeholder="Content" class='txtbox' rows="5"></textarea>
-                <button @click="updateComment(comment.id)">제출</button>
+                <button @click="updateComment(comment.id,comment.content)">제출</button>
               </div>
-              
-              <p :class="{ update: updateWindowState}">{{ comment.content }}</p>
-              <small>{{ comment.created_at }}</small>
+              <p v-show="comment.id != currentComment.select">{{ comment.content }}</p>
+              <small>{{ comment.created_at }}</small> 
               <hr>
             </div>
           </div>
@@ -60,8 +59,8 @@ export default {
         content: null,
       },
       currentComment: {
+        select: null,
         content: null,
-        updateWindowState: false,
       },
       comments: [],
       user: [],
@@ -147,7 +146,7 @@ export default {
         
         axios.put(SERVER.URL + "/reviews/update_comment/" + comment_id + "/" , this.currentComment,config)
           .then((res) => {
-           
+            this.currentComment.select = null
             this.getComment()
             console.log(res.data.success)
             })
@@ -176,8 +175,15 @@ export default {
           })
         }
     },
-    changeUpdateState() {
-      this.updateWindowState = !this.updateWindowState
+    changeUpdateState(comment_id, comment_content) {
+      if (this.currentComment.select && this.currentComment.select === comment_id){
+        this.currentComment.select = null
+      }
+      else {
+        this.currentComment.content = comment_content
+        this.currentComment.select = comment_id
+      }
+      
     }
   },
   created() {

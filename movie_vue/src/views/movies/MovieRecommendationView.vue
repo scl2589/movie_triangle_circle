@@ -3,9 +3,12 @@
     <h3>영화를 골라주세요.</h3>
     <div class="row">
       <div v-for="movie in movies" :key="`movie_${movie.pk}`" class="col-3">
-
-          <img :src="posterURL + movie.poster_path" class="max-width">
-
+          <!-- <img :src="posterURL + movie.poster_path" class="max-width"> -->
+          <!-- 아래 부분 추가 -->
+          <Card :data-image="posterURL + movie.poster_path">
+            <h1 slot="header">Canyons</h1>
+            <p slot="content">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+          </Card>
       </div>
     </div>
     <div class="row">
@@ -14,7 +17,6 @@
       </div>
       <div class="offset-6 col-3 d-flex justify-content-end mb-5">
         <button @click="done" class="btn btn-danger">다 선택했어요</button>
-        
       </div>
     </div>
   </div>
@@ -23,6 +25,7 @@
 <script>
 import axios from 'axios'
 import SERVER from '@/api/index.js'
+import Card from '@/views/movies/Card.vue'
 export default {
   name: 'MovieRecommendation',
   data() {
@@ -30,6 +33,10 @@ export default {
       movies: [],
       posterURL: 'https://image.tmdb.org/t/p/w780/',
     }
+  },
+  props: ['dataImage'],
+  components: {
+    Card
   },
   methods: {
     fetchMovies() {
@@ -44,11 +51,12 @@ export default {
     },
     no_movie() {
       this.fetchMovies()
-    }
+    },
+
   },
   created(){
     this.fetchMovies()
-  }
+  },
 }
 </script>
 
@@ -56,5 +64,4 @@ export default {
 .max-width {
   max-width: 100%
 }
-
 </style>
