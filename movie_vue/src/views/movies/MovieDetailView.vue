@@ -8,7 +8,8 @@
           </div>
           <div class="col-8 p-5 justify-content-between" >
             <h2><strong>{{ movie.title }}</strong><span class="dimcolor">({{movie.release_date.slice(0, 4)}})</span></h2>
-            <!-- <p><span v-for="genre in movie.genres" :key="`genre_${genre.id}`">{{ genre.name }}여기장르자리</span></p> -->
+            <!-- 장르 -->
+            <p><span v-for="genre in movie.genres" :key="`genre_${genre.id}`"><a href="#" class="badge mr-2 p-1">{{ get_genre(genre)}}</a></span></p>
             <div></div>
             <div >
               <div class="c100 small" :class="computedClass" title="평점" data-toggle="tooltip" data-placement="top" >
@@ -90,6 +91,7 @@ export default {
       video: "",
       videoUrl: "",
       like: false,
+      genres: [],
     }
   },
   computed: {
@@ -153,8 +155,29 @@ export default {
     },
     GoToReviewClick() {
       this.$router.push({ name: 'ReviewCreate'})
+    },
+    get_genre(genre_id) {
+      const genre_dict = {12: '모험',
+        14: '판타지',
+        16: '애니메이션',
+        18: '드라마',
+        27: '공포',
+        28: '액션',
+        35: '코미디',
+        36: '역사',
+        37: '서부',
+        53: '스릴러',
+        80: '범죄',
+        99: '다큐멘터리',
+        878: 'SF',
+        9648: '미스터리',
+        10402: '음악',
+        10749: '로맨스',
+        10751: '가족',
+        10752: '전쟁',
+        10770: 'TV 영화'}
+      return genre_dict[genre_id]
     }
-
   },
   created() {
     // 
@@ -227,6 +250,11 @@ export default {
 
 .btn:hover{
   background-color: #345389;
+}
+
+.badge {
+  background-color: #b3c6d5;
+  color:#345389;
 }
 
 

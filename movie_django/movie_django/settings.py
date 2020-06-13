@@ -143,11 +143,15 @@ AUTH_USER_MODEL = 'accounts.User'
 
 # rest-auth
 SITE_ID = 1
-
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
+
     ]
 }
 
 CORS_ORIGIN_ALLOW_ALL = True
+
+REST_AUTH_SERIALIZERS = {
+    'TOKEN_SERIALIZER': 'accounts.serializers.TokenSerializer',
+}

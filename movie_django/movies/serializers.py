@@ -8,6 +8,8 @@ class MovieSerializer(serializers.ModelSerializer):
         fields = ['title','backdrop_path','pk']
 
 class MovieDetailSerializer(serializers.ModelSerializer):
+    # d = { x.id:x.name for x in Genre.objects.all()}
+    # genres = [ ]
     class Meta:
         model = Movie
         fields = '__all__'

@@ -58,7 +58,7 @@ export default {
           axios.get(SERVER.URL +'/accounts/' + signupData.username+ '/')
             .then( res => 
             this.$cookies.set('userId',res.data),
-            this.$router.push()
+            this.$router.push({name: 'MovieRecommendation'})
             )
         })
         .catch( err => console.log(err.response.data) )

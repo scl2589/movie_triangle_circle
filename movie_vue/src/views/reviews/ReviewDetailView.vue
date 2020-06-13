@@ -5,10 +5,10 @@
         <p class="mb-0">{{ review.title }}</p>
         <small>posted by <strong>{{ user.username }}</strong> on {{ review.created_at}}</small>
         <button @click="deleteReview" class="btn">삭제</button>
-        <button @click="updateReview" class="btn">수정</button>
+        <button @click="updateReview()" class="btn">수정</button>
       </div>
       <div class="card-body">
-        <p class="card-text">{{ review.content }}</p>
+        <p class="card-text">{{ review.content}}</p>
       </div>
 
       <div class="card-footer text-muted">
@@ -17,8 +17,13 @@
           <hr>
           <div>
             <div v-for="comment in comments" :key="`comment_${comment.id}`">
-              <p><strong>{{ comment.user.username}}</strong><button @click="deleteComment(comment.id)" class="btn btn-sm">삭제</button></p>
-              <p><strong>{{ comment.user.username}}</strong><button @click="updateComment(comment.id)" class="btn btn-sm">수정</button></p>    
+              <p><strong>{{ comment.user.username}}</strong><button @click="deleteComment(comment.id)" class="btn btn-sm">삭제</button>
+              <button  class="btn btn-sm">수정</button></p>
+              <!-- <div v-show="false">
+                <textarea v-model="currentComment.content" type="content" placeholder="Content" class='txtbox' rows="5"></textarea>
+                <button @click="updateComment(comment.id)">제출</button>
+              </div> -->
+              
               <p>{{ comment.content }}</p>
               <small>{{ comment.created_at }}</small>
               <hr>
@@ -54,8 +59,12 @@ export default {
       commentData: {
         content: null,
       },
+      currentComment: {
+        content: null,
+      },
       comments: [],
       user: [],
+      updateWindowState: false,
     }
   },
   methods: {
@@ -78,7 +87,9 @@ export default {
         axios.post(SERVER.URL + "/reviews/" + this.$route.params.reviewId + "/comment_create/",this.commentData,config)
           .then( () => {
             this.getComment()
+            this.currentComment.content = this.commentData.content
             this.commentData.content = null
+            
           })
           .catch( err => console.log(err) )  
         }
@@ -113,11 +124,17 @@ export default {
         }
       },
     updateReview() {
-      this.reviewData = {
-        title: this.review.title,
-        content: this.review.content
+      console.log(this.user.id,this.$cookies.get('userId'))
+      if ( this.$cookies.get('auth-token')) {
+        if( this.user.id === this.$cookies.get('userId')){ // 숫자와 문자열 같게
+          this.reviewData = {
+          title: this.review.title,
+          content: this.review.content
+        }
+        this.$router.push({ name: 'ReviewCreate', params: {movieId:this.review.movie, reviewData:this.reviewData,reviewId: this.$route.params.reviewId}})
+        }
+      
       }
-      this.$router.push({ name: 'ReviewCreate', params: {movieId:this.review.movie, reviewData:this.reviewData,reviewId: this.$route.params.reviewId}})
     },
     updateComment(comment_id) {
       if ( this.$cookies.get('auth-token')) {
@@ -126,10 +143,11 @@ export default {
           'Authorization' : `Token ${this.$cookies.get('auth-token')}`
           },
         }
-        axios.put(SERVER.URL + "/reviews/" + this.$route.params.reviewId + "/comment_update/" + comment_id, this.commentData.content,config)
+        
+        axios.put(SERVER.URL + "/reviews/update_comment/" + comment_id + "/" , this.currentComment,config)
           .then((res) => {
+           
             this.getComment()
-            this.commentData.content = null
             console.log(res.data.success)
             })
           .catch((err) => {
@@ -179,4 +197,7 @@ export default {
   background-color: #345389;
 }
 
+.card-text{
+  white-space: pre-wrap;
+}
 </style>

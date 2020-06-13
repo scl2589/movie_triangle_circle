@@ -50,7 +50,7 @@ def comments_delete(request, review_pk, comment_pk):
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
 def update_review(request, review_pk):
-    print(dir(request))
+   
     review = get_object_or_404(Review, pk=review_pk)
     if review.user == request.user:
         serializer = ReviewSerializer(data=request.data, instance=review)
@@ -62,11 +62,11 @@ def update_review(request, review_pk):
 
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
-def update_comment(request, review_pk,comment_pk):
-    print(dir(request))
-    review = get_object_or_404(Review, pk=review_pk)
-    if review.user == request.user:
-        serializer = ReviewSerializer(data=request.data, instance=review)
+def update_comment(request,comment_pk):
+    
+    comment = get_object_or_404(Comment, pk=comment_pk)
+    if comment.user == request.user:
+        serializer = CommentSerializer(data=request.data, instance=comment)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             return Response(serializer.data)
