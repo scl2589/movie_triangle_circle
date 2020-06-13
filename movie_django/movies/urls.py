@@ -15,5 +15,5 @@ urlpatterns = [
     # 영화 요청
     path('getmovie/', views.get_movies),
     # 영화 추천
-    path('recommendation/', views.recommendation),
+    path('user/recommendation/', views.recommendation),
 ]

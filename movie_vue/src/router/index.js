@@ -57,7 +57,7 @@ Vue.use(VueRouter)
 
   },
   {
-    path: '/movies/recommendation',
+    path: '/movies/user/recommendation',
     name: 'MovieRecommendation',
     component: MovieRecommendationView,
   },
@@ -72,15 +72,13 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   const publicPages = ['Login', 'Signup', 'MovieList', 'MovieDetail', 'ReviewDetail']
-  const authPages = ['Login', 'Signup', 'ReviewCreate', 'MovieRecommendation']
-  // const signupPage = ['Signup']
+  const authPages = ['Login', 'Signup', 'ReviewCreate']
   const authRequired = !publicPages.includes(to.name)
   const unauthRequired = authPages.includes(to.name) // 로그인 해서는 안됨
-  // const signupFinished = signupPage.includes(to.name)
   const isLoggedIn = Vue.$cookies.isKey('auth-token')
 
   if(unauthRequired && isLoggedIn) {
-    next(false)
+    next()
   }
 
   authRequired && !isLoggedIn ? next({ name: 'Login'}) : next()

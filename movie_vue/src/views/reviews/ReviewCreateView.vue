@@ -44,8 +44,8 @@ export default {
       }
       else {
         axios.post(SERVER.URL + "/movies/"+ this.$route.params.movieId + SERVER.ROUTES.createReview, this.reviewData, config)
-        .then(()=> {
-          this.$router.push({ name: 'MovieDetail', params: { "movieId":this.$route.params.movieId }})
+        .then((res)=> {
+          this.$router.push({ name: 'ReviewDetail', params: { "reviewId":res.data.id}})
         })
         .catch(err => console.log(err.response.data))
       }

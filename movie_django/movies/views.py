@@ -100,12 +100,13 @@ def create(request, movie_pk):
         serializer.save(user=request.user, movie=movie)
         return Response(serializer.data)
 
-
+@api_view(['GET'])
 def recommendation(request):
     user = request.user
     movies = Movie.objects.order_by('-popularity')[:100]
     movies = random.sample(list(movies), 20)
-    
-    serializer = MovieSerializer(movies, many=True)
-    return Response(movies)
+   
+    serializer = MovieDetailSerializer(movies, many=True)
+   
+    return Response(serializer.data)
 

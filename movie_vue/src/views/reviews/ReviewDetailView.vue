@@ -18,13 +18,13 @@
           <div>
             <div v-for="comment in comments" :key="`comment_${comment.id}`">
               <p><strong>{{ comment.user.username}}</strong><button @click="deleteComment(comment.id)" class="btn btn-sm">삭제</button>
-              <button  class="btn btn-sm">수정</button></p>
-              <!-- <div v-show="false">
+              <button  @click="changeUpdateState" class="btn btn-sm">수정</button></p>
+              <div :class="{ update:!updateWindowState}">
                 <textarea v-model="currentComment.content" type="content" placeholder="Content" class='txtbox' rows="5"></textarea>
                 <button @click="updateComment(comment.id)">제출</button>
-              </div> -->
+              </div>
               
-              <p>{{ comment.content }}</p>
+              <p :class="{ update: updateWindowState}">{{ comment.content }}</p>
               <small>{{ comment.created_at }}</small>
               <hr>
             </div>
@@ -61,10 +61,11 @@ export default {
       },
       currentComment: {
         content: null,
+        updateWindowState: false,
       },
       comments: [],
       user: [],
-      updateWindowState: false,
+      
     }
   },
   methods: {
@@ -174,8 +175,11 @@ export default {
             
           })
         }
-    }
     },
+    changeUpdateState() {
+      this.updateWindowState = !this.updateWindowState
+    }
+  },
   created() {
     this.getReviewDetail()
   },
@@ -199,5 +203,9 @@ export default {
 
 .card-text{
   white-space: pre-wrap;
+}
+
+.update{
+  display: none;
 }
 </style>

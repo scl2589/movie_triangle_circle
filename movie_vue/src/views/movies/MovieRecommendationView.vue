@@ -1,17 +1,20 @@
 <template>
   <div>
     <h3>영화를 골라주세요.</h3>
-    <div class="row" v-for="movie in movies" :key="`movie_${movie.id}`">
-      <div class="col-3">
-        {{movie.title}}
+    <div class="row">
+      <div v-for="movie in movies" :key="`movie_${movie.pk}`" class="col-3">
+
+          <img :src="posterURL + movie.poster_path" class="max-width">
+
       </div>
     </div>
     <div class="row">
       <div class="col-3 d-flex justify-content-start mb-5">
-        <button class="btn btn-danger" :to="{ name:'MovieRecommendation' }">좋아하는 영화가 없어요</button>
+        <button @click="no_movie" class="btn btn-danger" :to="{ name:'MovieRecommendation' }">좋아하는 영화가 없어요</button>
       </div>
       <div class="offset-6 col-3 d-flex justify-content-end mb-5">
-        <a :to="{ name:'MovieList' }"><button class="btn btn-danger">다 선택했어요</button></a>
+        <button @click="done" class="btn btn-danger">다 선택했어요</button>
+        
       </div>
     </div>
   </div>
@@ -24,7 +27,8 @@ export default {
   name: 'MovieRecommendation',
   data() {
     return {
-      movies: []
+      movies: [],
+      posterURL: 'https://image.tmdb.org/t/p/w780/',
     }
   },
   methods: {
@@ -34,11 +38,23 @@ export default {
           this.movies = res.data
         })
         .catch(err => console.error(err))
+    },
+    done() {
+      this.$router.push({name: 'MovieList'})
+    },
+    no_movie() {
+      this.fetchMovies()
     }
   },
+  created(){
+    this.fetchMovies()
+  }
 }
 </script>
 
 <style>
+.max-width {
+  max-width: 100%
+}
 
 </style>
