@@ -1,14 +1,16 @@
 <template>
   <div>
-    <h3>영화를 골라주세요.</h3>
+    <h3 clsas="mb-3">좋아하는 영화를 골라주세요.</h3>
     <div class="row justify-content-between">
       <div v-for="movie in movies" :key="`movie_${movie.id}`">
           <!-- <img :src="posterURL + movie.poster_path" class="max-width"> -->
           <!-- 아래 부분 추가 -->
+          <div @click="movieSelected(movie.id)" :id="`movie_${movie.id}`">
           <Card :data-image="posterURL + movie.poster_path">
             <h1 slot="header">{{ movie.title }}</h1>
-            <p slot="content">클릭해주세요.</p>
+            <p slot="content">{{ movie.overview | truncate(41, '...')}}</p>
           </Card>
+          </div>
       </div>
     </div>
     <div class="row">
@@ -52,16 +54,45 @@ export default {
     no_movie() {
       this.fetchMovies()
     },
-
+    movieSelected(movieId) {
+      if (this.$cookies.get('auth-token')){
+        const config = {
+          headers: {
+            'Authorization': `Token ${this.$cookies.get('auth-token')}`
+          }
+        }
+      axios.get(SERVER.URL + "/movies/" + movieId +"/like/", config)
+        .then( res => {
+          if (res.data.liked === false) {
+            let element = document.getElementById(`movie_${movieId}`);
+            element.classList.add("liked");
+          } else{
+            let element = document.getElementById(`movie_${movieId}`);
+            element.classList.remove("liked");
+          }
+          console.log(res.data)
+        })
+        .catch( err => console.log("NONO", err))
+      }
+    },
   },
   created(){
     this.fetchMovies()
   },
+  filters: {
+    truncate: function (text, length, suffix) {
+            return text.substring(0, length) + suffix;
+        },
+  }
 }
 </script>
 
-<style>
+<style scoped>
 .max-width {
   max-width: 100%
+}
+
+.liked {
+  opacity: 0.35;
 }
 </style>

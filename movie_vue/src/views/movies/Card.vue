@@ -69,7 +69,7 @@ export default {
       this.mouseLeaveDelay = setTimeout(()=>{
         this.mouseX = 0;
         this.mouseY = 0;
-      }, 300);
+      }, 200);
     }
   },
   mounted() {
@@ -177,7 +177,7 @@ h1+p, p+p {
   opacity: 0.5;
   position: absolute;
   top: -20px; left: -20px;
-  width: 110%;
+  width: 115%;
   height: 110%;
   padding: 20px;
   background-repeat: no-repeat;
@@ -196,12 +196,13 @@ h1+p, p+p {
   color: #fff;
   transform: translateY(40%);
   transition: 0.6s 1.6s cubic-bezier(0.215, 0.61, 0.355, 1);
-  word-wrap: break-word;
+  
   
   p {
     opacity: 0;
     text-shadow: rgba(black, 1) 0 2px 3px;
     transition: 0.6s 1.6s cubic-bezier(0.215, 0.61, 0.355, 1);
+
   }
   
   * {
@@ -227,10 +228,12 @@ h1+p, p+p {
 
 .card-info h1 {
   font-family: "Playfair Display";
-  font-size: 28px;
+  font-size: 26px;
   font-weight: 700;
   text-shadow: rgba(black, 0.5) 0 10px 10px;
+  word-break: keep-all;
   
 }
+
 
 </style>
