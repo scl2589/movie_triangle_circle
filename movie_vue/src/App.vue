@@ -53,13 +53,13 @@ export default {
       axios.post(SERVER.URL + SERVER.ROUTES.signup, signupData)
         .then( res => {
           this.setCookie(res.data.key)
-          this.$router.push({ name: 'MovieList' })
+          // this.$router.push({ name: 'MovieList' })
           // userId를 쿠키에 저장
           axios.get(SERVER.URL +'/accounts/' + signupData.username+ '/')
             .then( res => 
             this.$cookies.set('userId',res.data),
-            this.$router.push({name: 'MovieRecommendation'})
             )
+          this.$router.push({name: 'MovieRecommendation'})
         })
         .catch( err => console.log(err.response.data) )
     },
@@ -67,8 +67,10 @@ export default {
       axios.post(SERVER.URL + SERVER.ROUTES.login, loginData)
         .then( res => {
           this.setCookie(res.data.key)
-          axios.get(SERVER.URL +'/accounts/' + loginData.username+ '/')
-            .then( res => this.$cookies.set('userId',res.data))
+          this.$cookies.set('userId',res.data.user)
+          // this.setCookie('userId', res.data.user)
+          // axios.get(SERVER.URL +'/accounts/' + loginData.username+ '/')
+          //   .then( res => this.$cookies.set('userId',res.data))
           this.$router.push({ name: 'MovieList'})
 
         })

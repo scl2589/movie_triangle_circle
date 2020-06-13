@@ -1,15 +1,15 @@
 <template>
 <div>
-    <div class="header entire setbackground" v-bind:style="{'background-image': 'linear-gradient(to right, rgba(23, 37, 61, 1.00) 150px,rgba(52, 83, 137, 0.84) 100%), url(' + posterURL + movie.backdrop_path + ')' }">
+    <div class="header entire setbackground" v-bind:style="{'background-image': 'linear-gradient(to right, rgba(23, 37, 61, 1.00) 150px,rgba(52, 83, 137, 0.84) 100%), url(' + backDropURL + ')' }">
       <div class="inner-header p-3 d-flex float-this">
         <div class="row">
           <div class="col-4">
-            <img :src="posterURL + movie.poster_path" class="setwidth" >
+            <img :src="posterURL" class="setwidth" alt="영화포스터" >
           </div>
           <div class="col-8 p-5 justify-content-between" >
-            <h2><strong>{{ movie.title }}</strong><span class="dimcolor">({{movie.release_date.slice(0, 4)}})</span></h2>
+            <h2><strong>{{ movie.title }}</strong><span class="dimcolor" :title="`${movie.release_date}`">({{date}})</span></h2>
             <!-- 장르 -->
-            <p><span v-for="genre in movie.genres" :key="`genre_${genre.id}`"><a href="#" class="badge mr-2 p-1">{{ get_genre(genre)}}</a></span></p>
+            <p><span v-for="genre in movie.genres" :key="`genre_${genre}`"><a href="#" class="badge mr-2 p-1">{{ get_genre(genre)}}</a></span></p>
             <div></div>
             <div >
               <div class="c100 small" :class="computedClass" title="평점" data-toggle="tooltip" data-placement="top" >
@@ -86,12 +86,15 @@ export default {
     return {
       movie: "",
       movieId: this.$route.params.movieId,
-      posterURL: 'https://image.tmdb.org/t/p/w780/',
+      posterURL: "",
+      backDropURL: "",
       reviews: [],
       video: "",
       videoUrl: "",
       like: false,
       genres: [],
+      date: "",
+      
     }
   },
   computed: {
@@ -104,7 +107,11 @@ export default {
     fetchMovie(){
       axios.get(SERVER.URL + "/movies/" + this.$route.params.movieId)
         .then(res => {
+          const imgURL = 'https://image.tmdb.org/t/p/w780'
           this.movie = res.data
+          this.date = this.movie.release_date.slice(0,4)
+          this.posterURL = imgURL + this.movie.poster_path
+          this.backDropURL = imgURL + this.movie.backdrop_path
         })
         .catch(err => console.error(err))
     },
@@ -132,7 +139,7 @@ export default {
           }
         }
         this.like = !this.like
-        axios.get(SERVER.URL + "/movies/" + this.$route.params.movieId +"/like/",config) // get은 body가 없
+        axios.get(SERVER.URL + "/movies/" + this.$route.params.movieId +"/like/",config) // get은 body가 없다.
           // .then( res => console.log(res))
           .catch( err => console.log(err))
       }
@@ -185,6 +192,7 @@ export default {
     this.fetchReview()
     if (this.$cookies.get('auth-token')){
       this.checkLike()
+    
     }
   },
   mounted() {

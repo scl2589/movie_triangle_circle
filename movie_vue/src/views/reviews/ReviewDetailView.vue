@@ -124,9 +124,9 @@ export default {
         }
       },
     updateReview() {
-      console.log(this.user.id,this.$cookies.get('userId'))
+      console.log(String(this.user.id),this.$cookies.get('userId'))
       if ( this.$cookies.get('auth-token')) {
-        if( this.user.id === this.$cookies.get('userId')){ // 숫자와 문자열 같게
+        if( String(this.user.id) === this.$cookies.get('userId')){ // 숫자와 문자열 같게
           this.reviewData = {
           title: this.review.title,
           content: this.review.content

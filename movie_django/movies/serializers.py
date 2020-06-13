@@ -10,7 +10,8 @@ class MovieSerializer(serializers.ModelSerializer):
 class MovieDetailSerializer(serializers.ModelSerializer):
     # d = { x.id:x.name for x in Genre.objects.all()}
     # genres = [ ]
+    # date = serializers.DateTimeField(format="%Y")
     class Meta:
         model = Movie
-        fields = '__all__'
+        fields = '__all__' 
         

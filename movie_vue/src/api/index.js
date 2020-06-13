@@ -6,9 +6,11 @@ export default {
         logout: '/rest-auth/logout/',
         movieList: '/movies/',
         movieDetail: '/movies/:movieId/',
+        movieRecommendation: '/movies/recommendation',
         createReview: '/reviews/create/',
         // articlesList: '/reviews/',
         // createComment: '/reviews/:articleId/comment_create/',
         revieweDetail: '/reviews/:reviewId/',
+        getUserInfo: '/rest-auth/user/',
     }
 }

@@ -30,9 +30,6 @@ def index(request):
     serializer = MovieSerializer(movies, many=True)
     return Response(serializer.data)
 
-def selection():
-    pass
-
 @api_view(['GET'])
 def movie_detail(request, movie_pk):
     movie = get_object_or_404(Movie, pk=movie_pk)
@@ -102,4 +99,13 @@ def create(request, movie_pk):
     if serializer.is_valid(raise_exception=True):
         serializer.save(user=request.user, movie=movie)
         return Response(serializer.data)
+
+
+def recommendation(request):
+    user = request.user
+    movies = Movie.objects.order_by('-popularity')[:100]
+    movies = random.sample(list(movies), 20)
+    
+    serializer = MovieSerializer(movies, many=True)
+    return Response(movies)
 

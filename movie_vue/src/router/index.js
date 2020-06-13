@@ -10,6 +10,7 @@ import ReviewCreateView from '@/views/reviews/ReviewCreateView.vue'
 // import ListView from '@/views/areviews/ReviewListView.vue' 
 import ReviewDetailView from '../views/reviews/ReviewDetailView.vue'
 import UserProfileView from '@/views/accounts/UserProfileView.vue'
+
 Vue.use(VueRouter)
 
   const routes = [
@@ -24,7 +25,7 @@ Vue.use(VueRouter)
     component: LoginView
   },
   {
-    path: '/accounts/:userId',
+    path: '/accounts/:username',
     name: 'Profile',
     component: UserProfileView
   },
@@ -59,7 +60,7 @@ Vue.use(VueRouter)
     path: '/movies/recommendation',
     name: 'MovieRecommendation',
     component: MovieRecommendationView,
-  }
+  },
 
 ]
 
@@ -70,7 +71,7 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const publicPages = ['Login', 'Signup', 'MovieList', 'MovieDetail', 'ReviewDetail', 'MovieRecommendation']
+  const publicPages = ['Login', 'Signup', 'MovieList', 'MovieDetail', 'ReviewDetail']
   const authPages = ['Login', 'Signup', 'ReviewCreate', 'MovieRecommendation']
   // const signupPage = ['Signup']
   const authRequired = !publicPages.includes(to.name)
