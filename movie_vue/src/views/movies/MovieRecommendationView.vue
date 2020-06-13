@@ -1,13 +1,13 @@
 <template>
   <div>
     <h3>영화를 골라주세요.</h3>
-    <div class="row">
-      <div v-for="movie in movies" :key="`movie_${movie.pk}`" class="col-3">
+    <div class="row justify-content-between">
+      <div v-for="movie in movies" :key="`movie_${movie.id}`">
           <!-- <img :src="posterURL + movie.poster_path" class="max-width"> -->
           <!-- 아래 부분 추가 -->
           <Card :data-image="posterURL + movie.poster_path">
-            <h1 slot="header">Canyons</h1>
-            <p slot="content">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+            <h1 slot="header">{{ movie.title }}</h1>
+            <p slot="content">클릭해주세요.</p>
           </Card>
       </div>
     </div>

@@ -69,7 +69,7 @@ export default {
       this.mouseLeaveDelay = setTimeout(()=>{
         this.mouseX = 0;
         this.mouseY = 0;
-      }, 1000);
+      }, 300);
     }
   },
   mounted() {
@@ -84,19 +84,19 @@ export default {
 $hoverEasing: cubic-bezier(0.23, 1, 0.32, 1);
 $returnEasing: cubic-bezier(0.445, 0.05, 0.55, 0.95);
 
-body {
-  margin: 40px 0;
-  font-family: "Raleway";
-  font-size: 14px;
-  font-weight: 500;
-  background-color: #BCAAA4;
-  -webkit-font-smoothing: antialiased;
-}
+// body {
+//   margin: 40px 0;
+//   font-family: "Raleway";
+//   font-size: 14px;
+//   font-weight: 500;
+//   background-color: #BCAAA4;
+//   -webkit-font-smoothing: antialiased;
+// }
 
 .title {
   font-family: "Raleway";
   font-size: 24px;
-  font-weight: 700;
+  font-weight: 300;
   color: #5D4037;
   text-align: center;
 }
@@ -177,8 +177,8 @@ h1+p, p+p {
   opacity: 0.5;
   position: absolute;
   top: -20px; left: -20px;
-  width: 100%;
-  height: 100%;
+  width: 110%;
+  height: 110%;
   padding: 20px;
   background-repeat: no-repeat;
   background-position: center;
@@ -196,6 +196,7 @@ h1+p, p+p {
   color: #fff;
   transform: translateY(40%);
   transition: 0.6s 1.6s cubic-bezier(0.215, 0.61, 0.355, 1);
+  word-wrap: break-word;
   
   p {
     opacity: 0;
@@ -216,6 +217,7 @@ h1+p, p+p {
     width: 100%;
     height: 100%;
     background-image: linear-gradient(to bottom, transparent 0%, rgba(#000, 0.6) 100%);
+    background-repeat: cover;
     background-blend-mode: overlay;
     opacity: 0;
     transform: translateY(100%);
@@ -225,9 +227,10 @@ h1+p, p+p {
 
 .card-info h1 {
   font-family: "Playfair Display";
-  font-size: 36px;
+  font-size: 28px;
   font-weight: 700;
   text-shadow: rgba(black, 0.5) 0 10px 10px;
+  
 }
 
 </style>
