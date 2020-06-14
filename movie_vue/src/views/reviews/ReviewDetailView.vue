@@ -204,9 +204,8 @@ export default {
       this.$router.push({ name:'Profile', params:{ userId: this.review.user.id}})
     },
     commentCreator(user_id) {
-      console.log(user_id, Auth:user() -> id)
-      // if (user_id === this.$cookies.get('userId')){
-      if (user_id === Auth:user() -> id){
+      console.log(user_id)
+      if (user_id === this.$cookies.get('userId')){
         return true
       } else {
         return false
