@@ -70,7 +70,8 @@ export default {
       axios.post(SERVER.URL + SERVER.ROUTES.login, loginData)
         .then( res => {
           this.setCookie(res.data.key)
-          this.$cookies.set('userId',res.data.user)
+          console.log(res.data.user)
+          this.$cookies.set('userId',res.data.user.id)
           // this.setCookie('userId', res.data.user)
           // axios.get(SERVER.URL +'/accounts/' + loginData.username+ '/')
           //   .then( res => this.$cookies.set('userId',res.data))
@@ -88,9 +89,10 @@ export default {
       axios.post(SERVER.URL + SERVER.ROUTES.logout,null, requestHeaders)
         .then( () => {
           this.$cookies.remove('auth-token')
+          this.$cookies.remove('userId')
           this.isLoggedIn = false
           this.$router.push({ name: 'MovieList'})
-          this.$cookies.remove('userId')
+          
         })
         .catch( err => console.log(err.response.data))
     },

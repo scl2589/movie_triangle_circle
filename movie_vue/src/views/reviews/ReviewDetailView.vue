@@ -5,10 +5,10 @@
         <p class="moviename">{{ review.movie }}</p>
         <h4 class="mb-0">{{ review.title }}</h4>
         <small @click="goToUserPage" class="username-hover">posted by <strong>{{ user.username }}</strong> on {{ review.created_at}}</small>
-        <div v-if="reviewCreator">
+        <span v-if="reviewCreator">
           <button @click="deleteReview" class="btn">삭제</button>
-        <button @click="updateReview" class="btn">수정</button>
-        </div>
+          <button @click="updateReview" class="btn">수정</button>
+        </span>
         
       </div>
       <div class="card-body">
@@ -126,8 +126,6 @@ export default {
         }
         axios.delete(SERVER.URL + "/reviews/" + this.$route.params.reviewId, config)
           .then((res) => {
-            console.log(res.data)
-             console.log(res.data.success)
             if ( res.data.success){
               this.$router.push({ name:'MovieDetail', params:{ movieId:this.review.movie }})
             }
@@ -180,10 +178,8 @@ export default {
         }
         axios.delete(SERVER.URL + "/reviews/" + this.$route.params.reviewId + "/comment_delete/" + comment_id, config)
           
-          .then((res) => {
+          .then(() => {
             this.getComment()
-            console.log(res.data)
-            console.log(res.data.success)
             })
           .catch((err) => {
             console.log(err.response.data)
@@ -204,8 +200,8 @@ export default {
       this.$router.push({ name:'Profile', params:{ userId: this.review.user.id}})
     },
     commentCreator(user_id) {
-      console.log(user_id)
-      if (user_id === this.$cookies.get('userId')){
+      console.log("커멘트 아이디", user_id, this.$cookies.get('userId'))
+      if (String(user_id) === this.$cookies.get('userId')){
         return true
       } else {
         return false
