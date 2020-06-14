@@ -3,7 +3,10 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated,IsAdminUser
 from django.contrib.auth import get_user_model
-from .serializers import UserSerializer
+from .serializers import UserSerializer, UserProfileSerializer
+from movies.models import Movie
+from reviews.models import Review
+from movies.serializers import MovieSerializer
 from django.contrib.auth.decorators import login_required
 User = get_user_model()
 # Create your views here.
@@ -34,7 +37,10 @@ def follow(request, pk):
 @api_view(['GET']) 
 def user_info(request, user_pk):
     user = get_object_or_404(User, pk=user_pk)
-    # movies = Movie.objects.filter(pk__in=list(user.like_movies.all()))
-    serializer = UserSerializer(user,data=movies)
-    return Response(serializer.data)
+    
+    list_pk = [liked.pk for liked in user.like_movies.all()]
+    movies = Movie.objects.filter(pk__in=list_pk)
+    user_serializer = UserSerializer(user)
+    movie_serializer = MovieSerializer(movies, many=True)
+    return Response({'user':user_serializer.data, 'movie':movie_serializer.data})
 

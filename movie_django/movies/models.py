@@ -29,4 +29,5 @@ class Movie(models.Model):
 class UserRank(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE) # 유저가 삭제될 경우는 어떻게 해야하는가
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
+    
     rank = models.FloatField(default=5)

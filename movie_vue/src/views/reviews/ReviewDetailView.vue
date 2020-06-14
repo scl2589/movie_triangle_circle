@@ -2,10 +2,11 @@
   <div>
     <div class="card">
       <div class="card-header">
-        <p class="mb-0">{{ review.title }}</p>
+        <p class="moviename">{{ review.movie }}</p>
+        <h4 class="mb-0">{{ review.title }}</h4>
         <small @click="goToUserPage" class="username-hover">posted by <strong>{{ user.username }}</strong> on {{ review.created_at}}</small>
-        <button @click="deleteReview" class="btn">삭제</button>
-        <button @click="updateReview()" class="btn">수정</button>
+        <button v-if="isReviewCreator" @click="deleteReview" class="btn">삭제</button>
+        <button v-if="isReviewCreator" @click="updateReview" class="btn">수정</button>
       </div>
       <div class="card-body">
         <p class="card-text">{{ review.content}}</p>
@@ -64,7 +65,7 @@ export default {
       },
       comments: [],
       user: [],
-      
+      reviewCreator: false
     }
   },
   methods: {
@@ -124,7 +125,7 @@ export default {
         }
       },
     updateReview() {
-      console.log(String(this.user.id),this.$cookies.get('userId'))
+      // console.log(String(this.user.id),this.$cookies.get('userId'))
       if ( this.$cookies.get('auth-token')) {
         if( String(this.user.id) === this.$cookies.get('userId')){ // 숫자와 문자열 같게
           this.reviewData = {
@@ -148,7 +149,7 @@ export default {
           .then((res) => {
             this.currentComment.select = null
             this.getComment()
-            console.log(res.data.success)
+            // console.log(res.data.success)
             })
           .catch((err) => {
             console.log(err.response.data)
@@ -186,6 +187,16 @@ export default {
     },
     goToUserPage() {
       this.$router.push({ name:'Profile', params:{ userId: this.review.user.id}})
+    },
+    isReviewCreator() {
+      console.log(this.review.user.id, this.$cookies.get('userId'))
+      if (this.review.user.id === this.$cookies.get('userId')){
+        this.reviewCreator = true;
+      }
+      else {
+        this.reviewCreator = false;
+      }
+      
     }
 
   },
@@ -220,5 +231,17 @@ export default {
 
 .username-hover:hover{
   cursor: pointer;
+}
+.card {
+  border: none;
+}
+.card-header {
+  border: none;
+  border-bottom: 1px solid rgba(0,0,0,.125);
+  background-color: white;
+}
+.moviename {
+  text-decoration: underline;
+  color: rgba(0,0,0,.35);
 }
 </style>

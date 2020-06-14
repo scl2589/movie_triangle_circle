@@ -3,8 +3,10 @@ from rest_framework import serializers
 from rest_auth.models import TokenModel
 
 
-# from reviews.serializers import ReviewListSerializer
 from movies.models import Movie
+# from reviews.serializers import ReviewListSerializer
+
+
 
 User = get_user_model()
 
@@ -20,9 +22,13 @@ class TokenSerializer(serializers.ModelSerializer):
         model = TokenModel
         fields = ('key', 'user')
 
-# class UserProfileSerializer(serializers.ModelSerializer):
-#     # user = UserSerializer(many=True)
-#     review = ReviewListSerializer(many=True)
-#     class Meta:
-#         model = Movie
-#         fields= ('title','user','review') 
+
+
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Movie
+        fields= ('user',) 
+
+
