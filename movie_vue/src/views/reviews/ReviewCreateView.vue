@@ -1,12 +1,15 @@
 <template>
   <div>
     <div class="form-group" >
-        <input v-model="reviewData.title" type="text" id="title" placeholder="Title" class="inputs" autofocus>
+      <input v-model="reviewData.title" type="text" id="title" placeholder="Title" class="inputs" autofocus>
+    </div>
+    <div>
+      <input type="test">
     </div>
     <div class="form-group">
-        <textarea v-model="reviewData.content" type="content" id="content" 
-        placeholder="Content" class='txtbox' rows="10">
-        </textarea>
+      <textarea v-model="reviewData.content" type="content" id="content" 
+      placeholder="Content" class='txtbox' rows="10">
+      </textarea>
     </div>
     <div class="row mr-1">
       <button class="btn offset-10 col-2" @click="createReview">제출하기</button>
