@@ -3,10 +3,10 @@
     <div class="header entire setbackground" v-bind:style="{'background-image': 'linear-gradient(to right, rgba(23, 37, 61, 1.00) 150px,rgba(52, 83, 137, 0.84) 100%), url(' + backDropURL + ')' }">
       <div class="inner-header p-3 d-flex float-this">
         <div class="row">
-          <div class="col-4">
+          <div class="col-lg-4 col-md-3">
             <img :src="posterURL" class="setwidth" alt="영화포스터" >
           </div>
-          <div class="col-8 p-5 justify-content-between" >
+          <div class="col-lg-8 col-md-9 p-5 justify-content-between" >
             <h2><strong>{{ movie.title }}</strong><span class="dimcolor" :title="`${movie.release_date}`">({{date}})</span></h2>
             <!-- 장르 -->
             <p><span v-for="genre in movie.genres" :key="`genre_${genre}`"><a href="#" class="badge mr-2 p-1">{{ get_genre(genre)}}</a></span></p>
@@ -41,8 +41,8 @@
             <div class="clear-float mt-3">
               <h4 class="text-left">줄거리</h4>
             </div>
-            <div>
-              <p style>{{ movie.overview }}</p>
+            <div class="overview">
+              <p >{{ movie.overview }}</p>
             </div>
             <!--감독 및 출연 배우 -->
           </div>
@@ -211,13 +211,13 @@ export default {
 .setwidth{
   max-width: 100%;
   margin: 20px;
-  margin-right: 0px;
 }
 
 .setbackground{
   background-repeat: no-repeat;
   background-size: cover;
   z-index: 3;
+  padding: 10px;
   /* opacity: 0.3; */
   color: white;
   /* margin: 10px;
@@ -238,11 +238,6 @@ export default {
   box-shadow: none;
 }
 
-
-.btn {
-  background-color:#345389; 
-  color: white;
-}
 
 .vertical-align {
   line-height: 1.5;
@@ -265,6 +260,10 @@ export default {
   color:#345389;
 }
 
+.overview {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 
 
