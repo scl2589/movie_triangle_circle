@@ -38,9 +38,9 @@ def follow(request, pk):
 def user_info(request, user_pk):
     user = get_object_or_404(User, pk=user_pk)
     
-    list_pk = [liked.pk for liked in user.like_movies.all()]
-    movies = Movie.objects.filter(pk__in=list_pk)
-    user_serializer = UserSerializer(user)
-    movie_serializer = MovieSerializer(movies, many=True)
-    return Response({'user':user_serializer.data, 'movie':movie_serializer.data})
+    # list_pk = [liked.pk for liked in user.like_movies.all()]
+    # movies = Movie.objects.filter(pk__in=list_pk)
+    serializer = UserProfileSerializer(user)
+   
+    return Response(serializer.data)
 

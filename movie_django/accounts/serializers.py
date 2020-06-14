@@ -26,9 +26,24 @@ class TokenSerializer(serializers.ModelSerializer):
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
-    
+    like = serializers.SerializerMethodField()
+    reviews = serializers.SerializerMethodField()
     class Meta:
-        model = Movie
-        fields= ('user',) 
-
+        model = User
+        fields= ('id','like','reviews','username') 
+    def get_like(self, obj):  # "get_" + field name
+        
+        return obj.like_movies.values_list('title', flat=True)
+    def get_reviews(self,obj):
+        
+        # print([x.movie for x in obj.review_set.all()])
+        # for x in obj.review_set.all():
+            
+        #     try: 
+        #         print(x.movie.title)
+            
+        #     except:
+        #         print(x.id)
+        # return obj.review_set.values_list('title',flat=True)
+        return [x.movie.title for x in obj.review_set.all()]
 
