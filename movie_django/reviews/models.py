@@ -1,7 +1,7 @@
 from django.db import models
 from django.conf import settings
+from movies.models import Movie, UserRank
 
-from movies.models import Movie
 
 # from  path import Movie
 
@@ -12,6 +12,7 @@ class Review(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE, null=True)
+    rank = models.OneToOneField(UserRank, on_delete=models.CASCADE)
 
 class Comment(models.Model):
     content = models.TextField()

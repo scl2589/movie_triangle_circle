@@ -7,6 +7,7 @@ from rest_framework.permissions import IsAuthenticated
 from .models import Review, Comment
 from .serializers import ReviewSerializer, ReviewListSerializer, CommentSerializer
 from django.http import JsonResponse
+# from movies.models import UserRank
 
 
 @api_view(['GET', 'DELETE'])
@@ -15,6 +16,7 @@ def review_detail_delete(request, review_pk):
     if request.method == 'DELETE':
         if request.user == review.user:
             review.delete()
+            # request.user.user_rank.remove(request.user)
             return JsonResponse({'message':'게시글이 삭제되었습니다.', 'success': True })
         else:
             return JsonResponse({'message':'게시글을 작성한 유저만 삭제할 수 있습니다.', 'success': False })

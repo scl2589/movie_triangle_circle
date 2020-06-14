@@ -23,9 +23,6 @@ from decouple import config
 import requests
 
 # module path
-# import os, sys
-# path = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
-# sys.path.append(path)
 from reviews.serializers import ReviewListSerializer, ReviewSerializer
 
 @api_view(['GET'])

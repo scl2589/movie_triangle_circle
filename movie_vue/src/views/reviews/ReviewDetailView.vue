@@ -5,8 +5,11 @@
         <p class="moviename">{{ review.movie }}</p>
         <h4 class="mb-0">{{ review.title }}</h4>
         <small @click="goToUserPage" class="username-hover">posted by <strong>{{ user.username }}</strong> on {{ review.created_at}}</small>
-        <button v-if="isReviewCreator" @click="deleteReview" class="btn">삭제</button>
-        <button v-if="isReviewCreator" @click="updateReview" class="btn">수정</button>
+        <div v-if="reviewCreator">
+          <button @click="deleteReview" class="btn">삭제</button>
+        <button @click="updateReview" class="btn">수정</button>
+        </div>
+        
       </div>
       <div class="card-body">
         <p class="card-text">{{ review.content}}</p>
@@ -18,8 +21,13 @@
           <hr>
           <div>
             <div v-for="comment in comments" :key="`comment_${comment.id}`">
-              <p><strong @click="goToUserPage">{{ comment.user.username}}</strong><button @click="deleteComment(comment.id)" class="btn btn-sm">삭제</button>
-              <button  @click="changeUpdateState(comment.id,comment.content)" class="btn btn-sm">수정</button></p>
+              <div>
+                <strong @click="goToUserPage">{{ comment.user.username}}</strong>
+                <div v-if="commentCreator(comment.user.id)">
+                  <button @click="deleteComment(comment.id)" class="btn btn-sm">삭제</button>
+                  <button @click="changeUpdateState(comment.id,comment.content)" class="btn btn-sm">수정</button>
+                </div>
+              </div>
               <div v-show="comment.id == currentComment.select">
                 <textarea v-model="currentComment.content" type="content" placeholder="Content" class='txtbox' rows="5"></textarea>
                 <button @click="updateComment(comment.id,comment.content)">제출</button>
@@ -75,6 +83,13 @@ export default {
           this.review = res.data
           this.comments = this.review.comment_set
           this.user = res.data.user
+          console.log(String(this.user.id), this.$cookies.get('userId'))
+          if (String(this.user.id)=== this.$cookies.get('userId')){
+            this.reviewCreator = true;
+          }
+          else {
+            this.reviewCreator = false;
+          }
         })
         .catch( err => console.log(err))
     },
@@ -149,7 +164,7 @@ export default {
           .then((res) => {
             this.currentComment.select = null
             this.getComment()
-            // console.log(res.data.success)
+            console.log(res.data.success)
             })
           .catch((err) => {
             console.log(err.response.data)
@@ -188,13 +203,13 @@ export default {
     goToUserPage() {
       this.$router.push({ name:'Profile', params:{ userId: this.review.user.id}})
     },
-    isReviewCreator() {
-      console.log(this.review.user.id, this.$cookies.get('userId'))
-      if (this.review.user.id === this.$cookies.get('userId')){
-        this.reviewCreator = true;
-      }
-      else {
-        this.reviewCreator = false;
+    commentCreator(user_id) {
+      console.log(user_id, Auth:user() -> id)
+      // if (user_id === this.$cookies.get('userId')){
+      if (user_id === Auth:user() -> id){
+        return true
+      } else {
+        return false
       }
       
     }
@@ -203,9 +218,6 @@ export default {
   created() {
     this.getReviewDetail()
   },
-  computed: {
-    
-  }
 }
 </script>
 
