@@ -112,6 +112,22 @@ export default {
           this.date = this.movie.release_date.slice(0,4)
           this.posterURL = imgURL + this.movie.poster_path
           this.backDropURL = imgURL + this.movie.backdrop_path
+          
+          axios.get(API_URL, {
+        params: {
+          key: API_KEY,
+          part: "snippet",
+          type: "video",
+          q: this.movie.original_title +"trailer",
+          maxResults: 1,
+          
+        }
+      })
+      .then(res => {
+        this.video = res.data.items[0]
+      })
+      .catch(err => console.log(err))
+
         })
         .catch(err => console.error(err))
     },
@@ -143,22 +159,6 @@ export default {
           // .then( res => console.log(res))
           .catch( err => console.log(err))
       }
-    },
-    click() {
-      axios.get(API_URL, {
-        params: {
-          key: API_KEY,
-          part: "snippet",
-          type: "video",
-          q: this.movie.original_title +"trailer",
-          maxResults: 1,
-          
-        }
-      })
-      .then(res => {
-        this.video = res.data.items[0]
-      })
-      .catch(err => console.log(err))
     },
     GoToReviewClick() {
       this.$router.push({ name: 'ReviewCreate'})
@@ -194,9 +194,6 @@ export default {
       this.checkLike()
     
     }
-  },
-  mounted() {
-    this.click()
   },
   
 }
