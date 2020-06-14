@@ -4,11 +4,14 @@
       <div class="card-header">
         <p class="moviename">{{ review.movie }}</p>
         <h4 class="mb-0">{{ review.title }}</h4>
-        <small @click="goToUserPage" class="username-hover">posted by <strong>{{ user.username }}</strong> on {{ review.created_at}}</small>
-        <span v-if="reviewCreator">
-          <button @click="deleteReview" class="btn">삭제</button>
-          <button @click="updateReview" class="btn">수정</button>
-        </span>
+        <div class="row justify-content-between oneline pb-0">
+          <small class="line-height">posted by <span class="username-hover" @click="goToUserPage"><strong>{{ user.username }}</strong></span> on {{ review.created_at}}</small>
+          <span v-if="reviewCreator" >
+            <button class="review-option mr-2 btn btn-xs" @click="deleteReview" >삭제</button>
+            <button class="review-option btn btn-xs" @click="updateReview" >수정</button>
+          </span>
+        </div>
+        
         
       </div>
       <div class="card-body">
@@ -42,8 +45,6 @@
           <textarea v-model="commentData.content" type="content" placeholder="Content" class='txtbox' rows="5"></textarea>
           <button class="btn offset-10 col-2 mt-2" @click="createComment">Submit</button>
         </div>
-
-        
       </div>
 
     </div>
@@ -228,8 +229,25 @@ export default {
   background-color: #345389;
 }
 
+.btn-xs{
+  padding: 5px 10px; 
+  font-size: 12px;
+  border-radius: 5px;
+}
+
 .card-text{
   white-space: pre-wrap;
+}
+
+.card-text::first-letter{
+  color: #903;
+  float: left;
+  font-family: Georgia;
+  font-size: 40px;
+  line-height: 30px;
+  padding-top: 4px;
+  padding-right: 8px;
+  padding-left: 3px;
 }
 
 .update{
@@ -244,11 +262,24 @@ export default {
 }
 .card-header {
   border: none;
-  border-bottom: 1px solid rgba(0,0,0,.125);
+  padding-bottom: 0px;
   background-color: white;
 }
 .moviename {
   text-decoration: underline;
   color: rgba(0,0,0,.35);
 }
+
+.oneline{
+  padding: 12px;
+}
+
+.line-height{
+  line-height: 28px;
+}
+/* 
+.review-option:hover {
+  cursor: pointer;
+} */
+
 </style>

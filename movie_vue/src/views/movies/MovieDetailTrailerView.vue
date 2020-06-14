@@ -15,8 +15,8 @@
           </div>
           <hr>
           <div>
-            <p v-text="video.snippet.publishedAt"></p>
-            <p v-text="video.snippet.description"></p>
+            <p >{{ video.snippet.publishedAt | truncate(10, '')}}</p>
+            <p class="video-description" v-text="video.snippet.description"></p>
           </div>
         </div>
         <div class="modal-footer">
@@ -37,6 +37,15 @@ export default {
     videoUrl() {
       return `https://www.youtube.com/embed/${this.video.id.videoId}`;
     }
+  },
+  filters: {
+    truncate: function (text, length, suffix) {
+      if (text.length > length) {
+          return text.substring(0, length) + suffix;
+      } else {
+          return text;
+      }
+    }
   }
 }
 </script>
@@ -44,6 +53,9 @@ export default {
 <style scoped>
 p{
   color: black;
+}
+.video-description {
+  white-space: pre-wrap;
 }
 
 </style>

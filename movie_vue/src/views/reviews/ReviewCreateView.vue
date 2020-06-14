@@ -128,6 +128,7 @@ export default {
       reviewData: {
         title: null,
         content: null,
+        rank: 0,
       },
       rankData: {
         rank: 0,
@@ -151,6 +152,7 @@ export default {
       }
       else {
         const movieId = this.$route.params.movieId
+        this.reviewData.rank = this.rankData.rank
         axios.post(SERVER.URL + "/movies/"+ this.$route.params.movieId + SERVER.ROUTES.createReview, this.reviewData, config)
           .then((res)=> {
           this.$router.push({ name: 'ReviewDetail', params: { "reviewId":res.data.id}})
