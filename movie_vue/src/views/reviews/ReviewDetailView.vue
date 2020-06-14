@@ -2,18 +2,31 @@
   <div>
     <div class="card mb-3">
       <div class="card-header">
-        <p class="moviename">{{ review.movie }}</p>
-        <h4 class="mb-0">{{ review.title }} 평점: {{ review.rank }}</h4>
-        <div class="row justify-content-between oneline pb-0">
-          <small class="line-height">posted by <span class="username-hover" @click="goToUserPage"><strong>{{ user.username }}</strong></span> on {{ review.created_at}}</small>
-          <span v-if="reviewCreator" >
-            <button class="review-option mr-2 btn btn-xs" @click="deleteReview" >삭제</button>
-            <button class="review-option btn btn-xs" @click="updateReview" >수정</button>
+        <!-- 영화 제목 -->
+        <p class="moviename link-hover" @click="goToMovieDetail">{{ review.movie_title }}</p>
+        <!-- 제목 -->
+        <h4 class="mb-0">{{ review.title }}
+          <!-- 평점 -->
+          <span class="rating" id="rating">
           </span>
+        </h4>
+        <!-- 게시글 정보 (작성자, 작성시간) -->
+        <div class="row justify-content-between oneline pb-0">
+          <small class="line-height">posted by <span class="link-hover" @click="goToUserPage"><strong>{{ user.username }}</strong></span> on {{ review.created_at}}</small>
+          <!-- 드롭다운 (삭제, 수정) -->
+          <div v-if="reviewCreator" class="btn-group dropleft">
+            <button type="button" class="btn btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+            <div class="dropdown-menu">
+              <p class="review-option give-highlight text-center" @click="deleteReview" >삭제</p>
+              <p class="review-option give-highlight text-center" @click="updateReview" >수정</p>
+            </div>
+
+          </div>
         </div>
         
         
       </div>
+      <!-- 리뷰 내용 -->
       <div class="card-body">
         <p class="card-text">{{ review.content}}</p>
       </div>
@@ -24,16 +37,22 @@
           <hr>
           <div>
             <div v-for="comment in comments" :key="`comment_${comment.id}`">
-              <div class="row comments">
+              <div class="comments row justify-content-between">
+                <!-- 댓글 작성자 -->
                 <strong @click="goToUserPage">{{ comment.user.username}}</strong>
-                <div v-if="commentCreator(comment.user.id)">
-                  <button @click="deleteComment(comment.id)" class="btn btn-sm">삭제</button>
-                  <button @click="changeUpdateState(comment.id,comment.content)" class="btn btn-sm">수정</button>
+                <!-- 댓글 수정/삭제 드롭다운 -->
+                <div v-if="commentCreator(comment.user.id)" class="btn-group dropleft comment-padding">
+                  <button type="button" class="btn btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                  <div class="dropdown-menu">
+                    <p class="border-bottom give-highlight text-center" @click="deleteComment(comment.id)" >삭제</p>
+                    <p class="give-highlight text-center" @click="changeUpdateState(comment.id,comment.content)" >수정</p>
+                  </div>
                 </div>
               </div>
-              <div v-show="comment.id == currentComment.select">
-                <textarea v-model="currentComment.content" type="content" placeholder="Content" class="txtbox" rows="5"></textarea>
-                <button @click="updateComment(comment.id,comment.content)">제출</button>
+              <!-- 댓글 수정란 -->
+              <div v-show="comment.id == currentComment.select" class="input-group mx-1 row">
+                <textarea v-model="currentComment.content" type="content" class="col-xs-8 col-md-11" rows="5"></textarea>
+                <button @click="updateComment(comment.id,comment.content)" class="input-group-append btn justify-content-center align-items-center col-xs-4 col-md-1 text-center">제출</button>
               </div>
               <p v-show="comment.id != currentComment.select">{{ comment.content }}</p>
               <small>{{ comment.created_at }}</small> 
@@ -42,8 +61,8 @@
           </div>
         <!-- 댓글 생성 --> 
         <div class="input-group mx-1 row">
-          <textarea v-model="commentData.content" class="col-9" type="content" placeholder="Content" rows="5" ></textarea>
-          <button class="input-group-append btn justify-content-right col-3" @click="createComment">작성</button>
+          <textarea v-model="commentData.content" class="col-xs-8 col-md-11" type="content" placeholder="댓글을 작성해주세요." rows="5" ></textarea>
+          <button class="input-group-append btn justify-content-center align-items-center col-xs-4 col-md-1 text-center" @click="createComment">작성</button>
         </div>
       </div>
 
@@ -54,7 +73,7 @@
 <script>
 import axios from 'axios'
 import SERVER from '@/api/index.js'
-// import CommentList from '@/views/reviews/CommentListView.vue'
+
 
 export default {
   name: 'ReviewDetail',
@@ -74,7 +93,8 @@ export default {
       },
       comments: [],
       user: [],
-      reviewCreator: false
+      reviewCreator: false,
+      movieId: null,
     }
   },
   methods: {
@@ -84,6 +104,8 @@ export default {
           this.review = res.data
           this.comments = this.review.comment_set
           this.user = res.data.user
+          this.movieId = res.data.movie
+          this.create_stars()
           console.log(String(this.user.id), this.$cookies.get('userId'))
           if (String(this.user.id)=== this.$cookies.get('userId')){
             this.reviewCreator = true;
@@ -93,6 +115,22 @@ export default {
           }
         })
         .catch( err => console.log(err))
+    },
+    create_stars() {
+      let rating = document.getElementById("rating");
+      let star = document.createElement("i")
+      star.classList.add("fas", "fa-star")
+      star.setAttribute("style", "color:#345389")
+      for (let i = 0; i < this.review.rank; i++){
+        let cln = star.cloneNode(true);
+        rating.appendChild(cln);
+      }
+      let empty_star = document.createElement("i")
+      empty_star.classList.add("far", "fa-star")
+      for (let i = 0; i < 5 - this.review.rank ; i ++ ){
+        let empty_cln = empty_star.cloneNode(true);
+        rating.appendChild(empty_cln);
+      }
     },
     createComment() {
       if ( this.$cookies.get('auth-token')) {
@@ -200,6 +238,9 @@ export default {
     goToUserPage() {
       this.$router.push({ name:'Profile', params:{ userId: this.review.user.id}})
     },
+    goToMovieDetail() {
+      this.$router.push({ name:'MovieDetail', params:{ movieId: this.movieId}})
+    },
     commentCreator(user_id) {
       console.log("커멘트 아이디", user_id, this.$cookies.get('userId'))
       if (String(user_id) === this.$cookies.get('userId')){
@@ -213,11 +254,14 @@ export default {
   },
   created() {
     this.getReviewDetail()
-  },
+
+    },
 }
+
+
 </script>
 
-<style>
+<style scoped>
 .btn {
   background-color:#6f8dbf;
   outline: transparent;
@@ -236,6 +280,16 @@ export default {
   border-radius: 5px;
 }
 
+.card {
+  border: none;
+}
+.card-header {
+  border: none;
+  padding-bottom: 0px;
+  background-color: white;
+}
+
+
 .card-text{
   white-space: pre-wrap;
   color: #1f3459;
@@ -252,25 +306,27 @@ export default {
   padding-left: 3px;
 }
 
+.comment-padding {
+  padding-right: 12px;
+}
+
 .comments {
   padding-left: 20px;
 }
 
-.update{
-  display: none;
+
+.give-highlight:hover {
+  background-color: #a0bef0;
 }
 
-.username-hover:hover{
+.line-height{
+  line-height: 28px;
+}
+
+.link-hover:hover{
   cursor: pointer;
 }
-.card {
-  border: none;
-}
-.card-header {
-  border: none;
-  padding-bottom: 0px;
-  background-color: white;
-}
+
 .moviename {
   text-decoration: underline;
   color: rgba(0,0,0,.35);
@@ -280,20 +336,30 @@ export default {
   padding: 12px;
 }
 
-.line-height{
-  line-height: 28px;
+.rating{
+  /* background-color: #345389; */
+  border-radius: 10px;
+}
+
+.show p{
+  padding: 5px;
+  margin-bottom: 0;
 }
 
 .txtbox{
   width: 100%;
 }
 
+.update{
+  display: none;
+}
+
+
 ::-webkit-resizer {
   display: none;
 }
-/* 
-.review-option:hover {
-  cursor: pointer;
-} */
+
+
+
 
 </style>

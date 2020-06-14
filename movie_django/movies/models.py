@@ -25,7 +25,9 @@ class Movie(models.Model):
     genres = models.ManyToManyField(Genre,related_name='genre_movies')
     like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_movies')
     rank_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='user_rank', through='UserRank')
-    
+    # new column    
+    # bookmark = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
     # 추가해야할 필드?
 
 class UserRank(models.Model):

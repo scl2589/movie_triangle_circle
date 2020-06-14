@@ -15,5 +15,9 @@ export default {
         // UserInfo: '/rest-auth/user/',
         userInfo: '/accounts/:userId/info'
         
-    }
+    },
+    IMAGEPATH: {
+        imagepath780: 'https://image.tmdb.org/t/p/w780',
+        
+    }   
 }

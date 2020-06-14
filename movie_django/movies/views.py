@@ -33,6 +33,7 @@ def index(request):
     movies_recent = random.sample(list(movies_recent),20)
     movies = movies_popular + movies_recent
     #queryset = chain(movies_popular,movies_recent)
+    print( request.user) # 만약 유저명이 annoymous일 경우를 생각, 어떻게 인증을 검증할 지?
     serializer = MovieSerializer(movies, many=True)
     return Response(serializer.data)
 

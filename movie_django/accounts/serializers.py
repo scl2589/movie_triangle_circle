@@ -28,14 +28,15 @@ class TokenSerializer(serializers.ModelSerializer):
 class UserProfileSerializer(serializers.ModelSerializer):
     like = serializers.SerializerMethodField()
     reviews = serializers.SerializerMethodField()
+    poster = serializers.SerializerMethodField()
+    reviewposter = serializers.SerializerMethodField()
     class Meta:
         model = User
-        fields= ('id','like','reviews','username') 
+        fields= ('id','like','reviews','username','poster') 
     def get_like(self, obj):  # "get_" + field name
         
         return obj.like_movies.values_list('title', flat=True)
     def get_reviews(self,obj):
-        
         # print([x.movie for x in obj.review_set.all()])
         # for x in obj.review_set.all():
             
@@ -46,4 +47,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
         #         print(x.id)
         # return obj.review_set.values_list('title',flat=True)
         return [x.movie.title for x in obj.review_set.all()]
-
+    def get_poster(self,obj):
+        return obj.like_movies.values_list('poster_path', flat=True)
+    def reviewposter(self, obj):
+        return [x.movie.poster_path for x in obj.review_set.all()] 

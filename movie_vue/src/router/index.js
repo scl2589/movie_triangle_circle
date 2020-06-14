@@ -5,6 +5,7 @@ import VueRouter from 'vue-router'
 import LoginView from '@/views/accounts/LoginView.vue'
 import SignupView from '@/views/accounts/SignupView.vue'
 import UserProfileView from '@/views/accounts/UserProfileView.vue'
+import UserProfileLikedView from '@/views/accounts/UserProfileLikedView.vue'
 
 //Movie
 import MovieListView from '@/views/movies/MovieListView.vue'
@@ -49,11 +50,6 @@ Vue.use(VueRouter)
     component: ReviewCreateView,
     props: true
   },
-  // {
-  //   path: '/reviews',
-  //   name: 'List',
-  //   component: ListView
-  // },
   {
     path: '/reviews/:reviewId',
     name: 'ReviewDetail',
@@ -65,6 +61,11 @@ Vue.use(VueRouter)
     name: 'MovieRecommendation',
     component: MovieRecommendationView,
   },
+  {
+    path: '/accounts/:userId/likedMovies',
+    name: 'UserProfileLiked',
+    component: UserProfileLikedView,
+  }
 
 ]
 

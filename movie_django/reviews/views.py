@@ -11,6 +11,7 @@ from django.http import JsonResponse
 # from movies.models import UserRank
 
 
+# Review CRUD
 @api_view(['GET', 'DELETE'])
 def review_detail_delete(request, review_pk):
     review = get_object_or_404(Review, pk=review_pk)
@@ -23,11 +24,22 @@ def review_detail_delete(request, review_pk):
         else:
             return JsonResponse({'message':'게시글을 작성한 유저만 삭제할 수 있습니다.', 'success': False })
     else:
-        
         serializer = ReviewSerializer(review)
         return Response(serializer.data)
 
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def update_review(request, review_pk):
+   
+    review = get_object_or_404(Review, pk=review_pk)
+    if review.user == request.user:
+        serializer = ReviewSerializer(data=request.data, instance=review)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(serializer.data)
+    return Response(False)
 
+# Comment CRUD
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def comments_create(request, review_pk):
@@ -50,21 +62,7 @@ def comments_delete(request, review_pk, comment_pk):
         return JsonResponse({'message':'댓글이 삭제되었습니다.', 'success': True })
     else:
         return JsonResponse({'message':'댓글을 작성한 유저만 삭제할 수 있습니다.', 'success': False })
-
-
-@api_view(['PUT'])
-@permission_classes([IsAuthenticated])
-def update_review(request, review_pk):
-   
-    review = get_object_or_404(Review, pk=review_pk)
-    if review.user == request.user:
-        serializer = ReviewSerializer(data=request.data, instance=review)
-        if serializer.is_valid(raise_exception=True):
-            serializer.save()
-            return Response(serializer.data)
-    return Response(False)
     
-
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
 def update_comment(request,comment_pk):

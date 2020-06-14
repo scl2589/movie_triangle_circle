@@ -52,6 +52,11 @@ export default {
       })
     },
     fetchMovies() {
+      // const config = {
+      //     headers: {
+      //       'Authorization': `Token ${this.$cookies.get('auth-token')}`
+      //     }
+      // }
       axios.get(SERVER.URL + SERVER.ROUTES.movieList)
         .then(res => {
           this.movies_recent= res.data.slice(0, 20)
