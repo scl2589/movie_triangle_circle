@@ -1,19 +1,27 @@
+# django
 from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
+from django.contrib.auth import get_user_model
+from django.db.models import Q
+
+# rest_framework
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated,IsAdminUser
 
-from .models import Movie,Genre
+# created Model, Serializers
+from .models import Movie, Genre
 from .serializers import MovieSerializer, MovieDetailSerializer
-from django.contrib.auth import get_user_model
 
-from itertools import chain
+
+# python tool
+# from itertools import chain
 import random
 import time
 from decouple import config
 import requests
 
+# module path
 import os, sys
 path = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
 sys.path.append(path)
@@ -103,10 +111,12 @@ def create(request, movie_pk):
 @api_view(['GET'])
 def recommendation(request):
     user = request.user
-    movies = Movie.objects.order_by('-popularity')[:100]
-    movies = random.sample(list(movies), 20)
+    user_liked = user.like_movies.values('pk')
+    list_pk = [liked['pk'] for liked in user_liked]
+    movies = Movie.objects.order_by('-popularity').filter(~Q(pk__in=list_pk))
+    print(movies)
+    movies = random.sample(list(movies)[:100], 20)
    
     serializer = MovieDetailSerializer(movies, many=True)
-   
     return Response(serializer.data)
 

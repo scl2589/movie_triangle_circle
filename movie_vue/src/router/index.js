@@ -72,7 +72,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   const publicPages = ['Login', 'Signup', 'MovieList', 'MovieDetail', 'ReviewDetail']
-  const authPages = ['Login', 'Signup', 'ReviewCreate']
+  const authPages = ['Login', 'Signup', 'ReviewCreate', 'MovieRecommendation']
   const authRequired = !publicPages.includes(to.name)
   const unauthRequired = authPages.includes(to.name) // 로그인 해서는 안됨
   const isLoggedIn = Vue.$cookies.isKey('auth-token')

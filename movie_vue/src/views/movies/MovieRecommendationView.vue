@@ -15,7 +15,7 @@
     </div>
     <div class="row">
       <div class="col-3 d-flex justify-content-start mb-5">
-        <button @click="no_movie" class="btn btn-danger" :to="{ name:'MovieRecommendation' }">좋아하는 영화가 없어요</button>
+        <button @click="no_movie" class="btn btn-danger" :to="{ name:'MovieRecommendation' }">다른 영화도 보고싶어요</button>
       </div>
       <div class="offset-6 col-3 d-flex justify-content-end mb-5">
         <button @click="done" class="btn btn-danger">다 선택했어요</button>
@@ -42,7 +42,13 @@ export default {
   },
   methods: {
     fetchMovies() {
-      axios.get(SERVER.URL + SERVER.ROUTES.movieRecommendation)
+      // 여기에 권한을 주면 될듯
+      const config = {
+          headers: {
+            'Authorization': `Token ${this.$cookies.get('auth-token')}`
+          }
+      }
+      axios.get(SERVER.URL + SERVER.ROUTES.movieRecommendation,config)
         .then(res => {
           this.movies = res.data
         })
