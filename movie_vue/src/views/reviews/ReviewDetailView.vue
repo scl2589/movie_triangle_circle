@@ -3,7 +3,7 @@
     <div class="card">
       <div class="card-header">
         <p class="mb-0">{{ review.title }}</p>
-        <small>posted by <strong>{{ user.username }}</strong> on {{ review.created_at}}</small>
+        <small @click="goToUserPage" class="username-hover">posted by <strong>{{ user.username }}</strong> on {{ review.created_at}}</small>
         <button @click="deleteReview" class="btn">삭제</button>
         <button @click="updateReview()" class="btn">수정</button>
       </div>
@@ -17,7 +17,7 @@
           <hr>
           <div>
             <div v-for="comment in comments" :key="`comment_${comment.id}`">
-              <p><strong>{{ comment.user.username}}</strong><button @click="deleteComment(comment.id)" class="btn btn-sm">삭제</button>
+              <p><strong @click="goToUserPage">{{ comment.user.username}}</strong><button @click="deleteComment(comment.id)" class="btn btn-sm">삭제</button>
               <button  @click="changeUpdateState(comment.id,comment.content)" class="btn btn-sm">수정</button></p>
               <div v-show="comment.id == currentComment.select">
                 <textarea v-model="currentComment.content" type="content" placeholder="Content" class='txtbox' rows="5"></textarea>
@@ -183,8 +183,11 @@ export default {
         this.currentComment.content = comment_content
         this.currentComment.select = comment_id
       }
-      
+    },
+    goToUserPage() {
+      this.$router.push({ name:'Profile', params:{ userId: this.review.user.id}})
     }
+
   },
   created() {
     this.getReviewDetail()
@@ -213,5 +216,9 @@ export default {
 
 .update{
   display: none;
+}
+
+.username-hover:hover{
+  cursor: pointer;
 }
 </style>

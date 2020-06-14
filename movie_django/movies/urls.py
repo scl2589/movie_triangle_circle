@@ -16,4 +16,6 @@ urlpatterns = [
     path('getmovie/', views.get_movies),
     # 영화 추천
     path('user/recommendation/', views.recommendation),
+    # 영화 랭크
+    path('<int:movie_pk>/rank/', views.create_rank),
 ]

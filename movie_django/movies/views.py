@@ -11,7 +11,7 @@ from rest_framework.permissions import IsAuthenticated,IsAdminUser
 
 # created Model, Serializers
 from .models import Movie, Genre
-from .serializers import MovieSerializer, MovieDetailSerializer
+from .serializers import MovieSerializer, MovieDetailSerializer, UserRankSerializer
 
 
 # python tool
@@ -120,3 +120,12 @@ def recommendation(request):
     serializer = MovieDetailSerializer(movies, many=True)
     return Response(serializer.data)
 
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def create_rank(request, movie_pk):
+    movie = get_object_or_404(Movie, pk=movie_pk)
+    serializer = UserRankSerializer(data=request.data)
+    if serializer.is_valid(raise_exception=True):
+        serializer.save(user=request.user, movie=movie)
+        return Response(serializer.data)

@@ -1,15 +1,19 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-// import Home from '@/views/Home.vue'
+
+// User
 import LoginView from '@/views/accounts/LoginView.vue'
 import SignupView from '@/views/accounts/SignupView.vue'
+import UserProfileView from '@/views/accounts/UserProfileView.vue'
+
+//Movie
 import MovieListView from '@/views/movies/MovieListView.vue'
 import MovieDetailView from '@/views/movies/MovieDetailView.vue'
 import MovieRecommendationView from '@/views/movies/MovieRecommendationView.vue'
+
+// Review
 import ReviewCreateView from '@/views/reviews/ReviewCreateView.vue'
-// import ListView from '@/views/areviews/ReviewListView.vue' 
 import ReviewDetailView from '../views/reviews/ReviewDetailView.vue'
-import UserProfileView from '@/views/accounts/UserProfileView.vue'
 
 Vue.use(VueRouter)
 
@@ -25,7 +29,7 @@ Vue.use(VueRouter)
     component: LoginView
   },
   {
-    path: '/accounts/:username',
+    path: '/accounts/:userId',
     name: 'Profile',
     component: UserProfileView
   },
@@ -72,7 +76,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   const publicPages = ['Login', 'Signup', 'MovieList', 'MovieDetail', 'ReviewDetail']
-  const authPages = ['Login', 'Signup', 'ReviewCreate', 'MovieRecommendation']
+  const authPages = ['Login', 'Signup', 'ReviewCreate', 'MovieRecommendation', 'UserProfile']
   const authRequired = !publicPages.includes(to.name)
   const unauthRequired = authPages.includes(to.name) // 로그인 해서는 안됨
   const isLoggedIn = Vue.$cookies.isKey('auth-token')

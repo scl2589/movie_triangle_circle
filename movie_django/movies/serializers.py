@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from accounts.serializers import UserSerializer
-from .models import Movie,Genre
+from .models import Movie,Genre, UserRank
 
 class MovieSerializer(serializers.ModelSerializer):
     class Meta:
@@ -15,3 +15,7 @@ class MovieDetailSerializer(serializers.ModelSerializer):
         model = Movie
         fields = '__all__' 
         
+class UserRankSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserRank
+        fields = ['rank']

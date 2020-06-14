@@ -1,10 +1,10 @@
 <template>
-  <div >
-    <div class="form-group" >
+  <div>
+    <div class="form-group row justify-content-center" >
       <input v-model="reviewData.title" type="text" id="title" placeholder="Title" class="inputs" autofocus>
     </div>
     
-    <div class="form-group">
+    <div class="form-group row justify-content-center">
       <textarea v-model="reviewData.content" type="content" id="content" 
       placeholder="Content" class='txtbox' rows="10">
       </textarea>
@@ -12,15 +12,15 @@
    <div class="row justify-content-center">
     <div class="feedback">
       <div class="rating">
-        <input type="radio" name="rating" id="rating-5" value=5 v-model="rank">
+        <input type="radio" name="rating" id="rating-5" value=5 v-model="rankData.rank">
         <label for="rating-5"></label>
-        <input type="radio" name="rating" id="rating-4" value=4 v-model="rank">
+        <input type="radio" name="rating" id="rating-4" value=4 v-model="rankData.rank">
         <label for="rating-4"></label>
-        <input type="radio" name="rating" id="rating-3" value=3 v-model="rank">
+        <input type="radio" name="rating" id="rating-3" value=3 v-model="rankData.rank">
         <label for="rating-3"></label>
-        <input type="radio" name="rating" id="rating-2" value=2 v-model="rank">
+        <input type="radio" name="rating" id="rating-2" value=2 v-model="rankData.rank">
         <label for="rating-2"></label>
-        <input type="radio" name="rating" id="rating-1" value=1 v-model="rank">
+        <input type="radio" name="rating" id="rating-1" value=1 v-model="rankData.rank">
         <label for="rating-1"></label>
         <div class="emoji-wrapper">
           <div class="emoji">
@@ -112,8 +112,8 @@
       </div>
     </div>
 </div>
-  <div class="row mr-1">
-      <button class="btn offset-10 col-2" @click="createReview">제출하기</button>
+  <div class="row justify-content-center">
+      <button class="btn" @click="createReview">제출하기</button>
     </div>
   </div>
 </template>
@@ -129,7 +129,9 @@ export default {
         title: null,
         content: null,
       },
-      rank: 0,
+      rankData: {
+        rank: 0,
+      }
     }
   },
   methods: {
@@ -148,11 +150,15 @@ export default {
         .catch(err => console.log(err.response.data))
       }
       else {
+        const movieId = this.$route.params.movieId
         axios.post(SERVER.URL + "/movies/"+ this.$route.params.movieId + SERVER.ROUTES.createReview, this.reviewData, config)
         .then((res)=> {
           this.$router.push({ name: 'ReviewDetail', params: { "reviewId":res.data.id}})
+          axios.post(SERVER.URL + "/movies/" + movieId +"/rank/",this.rankData,config)
+            .catch( err => console.log(err.response.data ))
         })
         .catch(err => console.log(err.response.data))
+        
       }
     },
 
@@ -171,15 +177,16 @@ export default {
   border: none;
   border-radius: 0;
   border-bottom: 1px solid #757575;
-  width: 50%;
+  width: 70%;
   padding: 0.5rem;
+
 }
 .inputs:focus {
   outline: none;
 }
 .txtbox{
   border-radius: 1;
-  width: 50%;
+  width: 70%;
   padding: 0.5rem;
 }
 
@@ -194,6 +201,13 @@ export default {
   background-color: #345389;
 }
 
+::-webkit-input-placeholder {
+   text-align: center;
+}
+
+::-webkit-resizer {
+  display: none;
+}
 
 /* 별점 CSS */
 /* @import url(//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css);

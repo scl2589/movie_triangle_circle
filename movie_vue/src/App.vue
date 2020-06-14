@@ -17,6 +17,9 @@
         <router-link class="nav-link" :class="{active: isLogin}"  v-if="!isLoggedIn" :to="{ name:'Login' }">Login</router-link>
       </li>
       <li class="nav-item" role="presentation">
+        <router-link class="nav-link" :class="{active: isLogin}"  v-if="isLoggedIn" :to="{ name:'Profile', params: { userId:this.$cookies.get('userId') } }">Profile</router-link>
+      </li>
+      <li class="nav-item" role="presentation">
         <router-link class="nav-link" v-if="isLoggedIn" @click.native="logout" to="/accounts/logout/">Logout</router-link>
       </li>
     </ul>
