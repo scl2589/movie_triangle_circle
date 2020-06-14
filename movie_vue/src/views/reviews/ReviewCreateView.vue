@@ -144,6 +144,7 @@ export default {
         }
       }
       if (this.$route.params.reviewId) {
+        this.reviewData.rank = this.rankData.rank
         axios.put(SERVER.URL + "/reviews/"+ this.$route.params.reviewId + "/update_review/", this.reviewData, config)
         .then(()=> {
           this.$router.push({ name: 'ReviewDetail', params: { "reviewId":this.$route.params.reviewId }})

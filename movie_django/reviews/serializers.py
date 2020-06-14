@@ -3,6 +3,7 @@ from .models import Review, Comment
 from accounts.serializers import UserSerializer
 
 
+
 class CommentSerializer(serializers.ModelSerializer):
     user = UserSerializer(required=False)
     created_at = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False)
@@ -23,8 +24,12 @@ class ReviewSerializer(serializers.ModelSerializer):
     user = UserSerializer(required=False)
     created_at = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False)
     comment_set = CommentSerializer(required=False, many=True)
+    movie = serializers.SerializerMethodField()
     class Meta:
         model = Review
         fields = '__all__'
-        read_only_fields = ('id', 'user', 'created_at', 'updated_at','comment_set')
+        read_only_fields = ('id', 'user', 'created_at', 'updated_at','comment_set', 'movie')
+    def get_movie(self, obj):  # "get_" + field name
+        return obj.movie.title
 
+    

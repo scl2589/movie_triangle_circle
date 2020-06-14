@@ -23,6 +23,7 @@ def review_detail_delete(request, review_pk):
         else:
             return JsonResponse({'message':'게시글을 작성한 유저만 삭제할 수 있습니다.', 'success': False })
     else:
+
         serializer = ReviewSerializer(review)
         return Response(serializer.data)
 

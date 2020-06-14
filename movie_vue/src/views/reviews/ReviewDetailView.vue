@@ -1,9 +1,9 @@
 <template>
   <div>
-    <div class="card">
+    <div class="card mb-3">
       <div class="card-header">
         <p class="moviename">{{ review.movie }}</p>
-        <h4 class="mb-0">{{ review.title }}</h4>
+        <h4 class="mb-0">{{ review.title }} 평점: {{ review.rank }}</h4>
         <div class="row justify-content-between oneline pb-0">
           <small class="line-height">posted by <span class="username-hover" @click="goToUserPage"><strong>{{ user.username }}</strong></span> on {{ review.created_at}}</small>
           <span v-if="reviewCreator" >
@@ -24,7 +24,7 @@
           <hr>
           <div>
             <div v-for="comment in comments" :key="`comment_${comment.id}`">
-              <div>
+              <div class="row comments">
                 <strong @click="goToUserPage">{{ comment.user.username}}</strong>
                 <div v-if="commentCreator(comment.user.id)">
                   <button @click="deleteComment(comment.id)" class="btn btn-sm">삭제</button>
@@ -32,7 +32,7 @@
                 </div>
               </div>
               <div v-show="comment.id == currentComment.select">
-                <textarea v-model="currentComment.content" type="content" placeholder="Content" class='txtbox' rows="5"></textarea>
+                <textarea v-model="currentComment.content" type="content" placeholder="Content" class="txtbox" rows="5"></textarea>
                 <button @click="updateComment(comment.id,comment.content)">제출</button>
               </div>
               <p v-show="comment.id != currentComment.select">{{ comment.content }}</p>
@@ -41,9 +41,9 @@
             </div>
           </div>
         <!-- 댓글 생성 --> 
-        <div class="row mx-1">
-          <textarea v-model="commentData.content" type="content" placeholder="Content" class='txtbox' rows="5"></textarea>
-          <button class="btn offset-10 col-2 mt-2" @click="createComment">Submit</button>
+        <div class="input-group mx-1 row">
+          <textarea v-model="commentData.content" class="col-9" type="content" placeholder="Content" rows="5" ></textarea>
+          <button class="input-group-append btn justify-content-right col-3" @click="createComment">작성</button>
         </div>
       </div>
 
@@ -227,6 +227,7 @@ export default {
 
 .btn:hover{
   background-color: #345389;
+  color: white;
 }
 
 .btn-xs{
@@ -237,6 +238,7 @@ export default {
 
 .card-text{
   white-space: pre-wrap;
+  color: #1f3459;
 }
 
 .card-text::first-letter{
@@ -248,6 +250,10 @@ export default {
   padding-top: 4px;
   padding-right: 8px;
   padding-left: 3px;
+}
+
+.comments {
+  padding-left: 20px;
 }
 
 .update{
@@ -276,6 +282,14 @@ export default {
 
 .line-height{
   line-height: 28px;
+}
+
+.txtbox{
+  width: 100%;
+}
+
+::-webkit-resizer {
+  display: none;
 }
 /* 
 .review-option:hover {
