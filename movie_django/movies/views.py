@@ -8,6 +8,7 @@ from django.db.models import Q
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated,IsAdminUser
+from rest_framework import status
 
 # created Model, Serializers
 from .models import Movie, Genre
@@ -101,7 +102,10 @@ def review_index(request,movie_pk):
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def create(request, movie_pk):
+def review_create(request, movie_pk):
+    if request.user.user_rank.filter(id=movie_pk).exists():
+        content = '리뷰는 하나만 작성가능합니다.'
+        return Response(content, status=status.HTTP_400_BAD_REQUEST)
     movie = get_object_or_404(Movie, pk=movie_pk)
     serializer = ReviewSerializer(data=request.data)
     if serializer.is_valid(raise_exception=True):

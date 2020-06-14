@@ -12,6 +12,8 @@ export default {
         // articlesList: '/reviews/',
         // createComment: '/reviews/:articleId/comment_create/',
         revieweDetail: '/reviews/:reviewId/',
-        getUserInfo: '/rest-auth/user/',
+        // UserInfo: '/rest-auth/user/',
+        userInfo: '/accounts/:userId/info'
+        
     }
 }

@@ -1,8 +1,8 @@
 from django.db import models
 from django.conf import settings
-import os, sys
-path = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
-sys.path.append(path)
+# import os, sys
+# path = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
+# sys.path.append(path)
 from movies.models import Movie
 
 # from  path import Movie

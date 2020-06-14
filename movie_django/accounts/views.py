@@ -14,11 +14,10 @@ def profile(request, user_pk):
     return Response(serializer.data)
 
 
-
-@api_view(['GET']) # 삭제될 예정
-# @permission_classes([IsAuthenticated])
-def get_user_id(request, username):
-    return Response(User.objects.filter(username=username)[0].id)
+# @api_view(['GET']) # 삭제될 예정
+# # @permission_classes([IsAuthenticated])
+# def get_user_id(request, username):
+#     return Response(User.objects.filter(username=username)[0].id)
 
 @login_required
 def follow(request, pk):
@@ -30,3 +29,12 @@ def follow(request, pk):
         else:
             user.followers.add(request.user)
     return redirect('accounts:detail', user.pk)
+
+
+@api_view(['GET']) 
+def user_info(request, user_pk):
+    user = get_object_or_404(User, pk=user_pk)
+    # movies = Movie.objects.filter(pk__in=list(user.like_movies.all()))
+    serializer = UserSerializer(user,data=movies)
+    return Response(serializer.data)
+

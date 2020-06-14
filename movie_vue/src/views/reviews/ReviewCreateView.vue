@@ -152,11 +152,11 @@ export default {
       else {
         const movieId = this.$route.params.movieId
         axios.post(SERVER.URL + "/movies/"+ this.$route.params.movieId + SERVER.ROUTES.createReview, this.reviewData, config)
-        .then((res)=> {
+          .then((res)=> {
           this.$router.push({ name: 'ReviewDetail', params: { "reviewId":res.data.id}})
           axios.post(SERVER.URL + "/movies/" + movieId +"/rank/",this.rankData,config)
             .catch( err => console.log(err.response.data ))
-        })
+          })
         .catch(err => console.log(err.response.data))
         
       }

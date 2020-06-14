@@ -5,7 +5,7 @@ app_name = 'movies'
 urlpatterns = [
     # 리뷰 관련
     path('<int:movie_pk>/reviews/', views.review_index),
-    path('<int:movie_pk>/reviews/create/', views.create),
+    path('<int:movie_pk>/reviews/create/', views.review_create),
 
     #영화 관련 
     path('', views.index, name='movie_list'),
