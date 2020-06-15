@@ -182,7 +182,7 @@ def colloborative_filter(request):
     return Response({"message":"success"})
     
 
-    # return data
+    # return data 피어슨 계수
  
 
 

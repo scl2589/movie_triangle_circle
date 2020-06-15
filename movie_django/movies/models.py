@@ -39,8 +39,8 @@ class UserRank(models.Model):
     # review = models.OneToOneField(Review, on_delete=models.CASCADE)
     rank = models.FloatField(default=0)
 
-class Recommand(models.Model):
-    movie1 = models.ForeignKey(Movie, on_delete=models.CASCADE)
-    movie2 = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    result = models.CharField(max_length=100)
+# class Recommand(models.Model):
+#     movie1 = models.ForeignKey(Movie, on_delete=models.CASCADE)
+#     movie2 = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+#     result = models.CharField(max_length=100)
      
