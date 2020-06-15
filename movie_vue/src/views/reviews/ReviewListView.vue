@@ -3,16 +3,18 @@
     <table class="table">
       <thead>
         <tr>
-          <th scope="col">#</th>
+          <!-- <th scope="col">#</th> -->
           <th scope="col">Title</th>
           <th scope="col">Username</th>
+          <th scope="col">Rating</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="review in reviews" :key="`review_${review.id}`" @click="reviewDetail(review.id)" >
-          <th data-label="ID" scope="row">{{ review.id }}</th>
+          <!-- <th data-label="ID" scope="row">{{ review.id }}</th> -->
           <td data-label="Title"> {{ review.title }}</td>
           <td data-label="Username">{{ review.user.username }}</td>
+          <td data-label="Rating"><i class="fas fa-star" style="color: #345389"></i> {{ review.rank }}</td>
         </tr>
       </tbody>
     </table>

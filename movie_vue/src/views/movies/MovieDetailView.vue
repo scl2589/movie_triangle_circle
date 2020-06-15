@@ -22,6 +22,7 @@
               <!-- <span class="user_score mr-3">User<br>Score</span> -->
               
               <!-- 채워진 하트 -->
+              <!-- <span class="fa-stack fa-4x"></span> -->
               <span v-show="like" @click="changeLike" style="color: tomato;" class="mx-3"><i class="fas fa-heart fa-3x"></i></span> 
                <!-- 빈 하트 -->
               <span v-show="!like" @click="changeLike" style="color: white;" class="mx-3"><i class="far fa-heart fa-3x"></i></span> 
@@ -54,7 +55,7 @@
       <h3 class="vertical-align m-0">Reviews</h3>
       <button @click="GoToReviewClick" class="btn btn-sm ">리뷰 쓰러가기</button>
     </div>
-    <div v-if="reviews.length" class="container mt-3">
+    <div v-if="reviews.length" class="mt-3">
       <ReviewList :reviews="reviews"/>
     </div>
     <div v-else>

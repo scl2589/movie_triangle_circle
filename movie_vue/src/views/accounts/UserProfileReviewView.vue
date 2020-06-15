@@ -13,7 +13,7 @@
           <th data-label="Movie Title" scope="row" @click="getReviewDetail(review.review_id)">{{ review.movie_title }}</th>
           <td data-label="Review Title" @click="getReviewDetail(review.review_id)"> {{ review.review_title }}</td>
           <td data-label="User Rank" @click="getReviewDetail(review.review_id)" id="star-rating">
-            <i class="fas fa-star" style="color: #345389"></i> {{ review.movie_rank[0].rank}}</td>
+            <i class="fas fa-star" style="color: #345389"></i> {{ review.movie_rank}}</td>
           <!-- 별점. -->
           <!-- {{ create_stars(review.movie_rank[0].rank)}} -->
           

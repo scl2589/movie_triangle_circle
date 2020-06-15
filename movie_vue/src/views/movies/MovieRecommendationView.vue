@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3 clsas="mb-3">좋아하는 영화를 골라주세요.</h3>
+    <h2 class="mb-3 d-flex justify-content-center">좋아하는 영화를 골라주세요.</h2>
     <div class="row justify-content-between">
       <div v-for="movie in movies" :key="`movie_${movie.id}`">
           <!-- <img :src="posterURL + movie.poster_path" class="max-width"> -->
@@ -13,7 +13,7 @@
           </div>
       </div>
     </div>
-    <div class="row">
+    <div class="row mt-3">
       <div class="col-3 d-flex justify-content-start mb-5">
         <button @click="no_movie" class="btn btn-danger" :to="{ name:'MovieRecommendation' }">다른 영화도 보고싶어요</button>
       </div>

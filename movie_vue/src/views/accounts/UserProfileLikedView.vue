@@ -145,7 +145,7 @@ export default {
 
 .content-details p{
   color: #fff;
-  font-size: 0.8em;
+  font-size: 1.5em;
 }
 
 .fadeIn-bottom{

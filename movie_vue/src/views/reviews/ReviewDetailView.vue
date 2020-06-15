@@ -20,7 +20,6 @@
               <p class="review-option give-highlight text-center" @click="deleteReview" >삭제</p>
               <p class="review-option give-highlight text-center" @click="updateReview" >수정</p>
             </div>
-
           </div>
         </div>
         
