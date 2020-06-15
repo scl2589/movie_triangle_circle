@@ -10,8 +10,7 @@
             <h2><strong>{{ movie.title }}</strong><span class="dimcolor" :title="`${movie.release_date}`">({{date}})</span></h2>
             <!-- 장르 -->
             <p><span v-for="genre in movie.genres" :key="`genre_${genre}`"><a href="#" class="badge mr-2 p-1">{{ get_genre(genre)}}</a></span></p>
-            <div></div>
-            <div >
+            <div>
               <div class="c100 small" :class="computedClass" title="평점" data-toggle="tooltip" data-placement="top" >
                 <span><strong>{{movie.vote_average*10}}</strong></span>
                 <div class="slice" title="평점" >
@@ -22,11 +21,18 @@
               <!-- <span class="user_score mr-3">User<br>Score</span> -->
               
               <!-- 채워진 하트 -->
-              <!-- <span class="fa-stack fa-4x"></span> -->
-              <span v-show="like" @click="changeLike" style="color: tomato;" class="mx-3"><i class="fas fa-heart fa-3x"></i></span> 
+              <div class="d-inline-block heart-container ml-3">
+                <i class="heart fas fa-heart fa-3x" v-show="like" @click="changeLike" style="color: tomato;" data-toggle="tooltip" data-placement="top">
+                <span>{{ this.liked_users }}</span>
+              </i> 
+              </div>
+              
                <!-- 빈 하트 -->
-              <span v-show="!like" @click="changeLike" style="color: white;" class="mx-3"><i class="far fa-heart fa-3x"></i></span> 
-
+              <div class="d-inline-block heart-container">
+                <i class="heart far fa-heart fa-3x" v-show="!like" @click="changeLike" style="color: white;" data-toggle="tooltip" data-placement="top">
+                  <span>{{ this.liked_users }}</span>
+                </i>
+              </div>
 
 
               <button @click="showAlert()" class="btn button-transparent bg-transparent text-white pb-4 to-trailer" data-toggle="modal" :data-target="'#movie'+movie.movieId" role="dialog">► 예고편 보기 </button>
@@ -97,7 +103,8 @@ export default {
       genres: [],
       date: "",
       must_show: false,
-      toast: ""
+      toast: "",
+      liked_users :""
     }
   },
   computed: {
@@ -164,6 +171,7 @@ export default {
         axios.get(SERVER.URL + "/movies/" + this.$route.params.movieId +"/" + this.$cookies.get('userId') + "/like/" )
           .then( res => {
             this.like = res.data
+            console.log(res.data)
           })
       }
     },
@@ -177,7 +185,10 @@ export default {
         }
         this.like = !this.like
         axios.get(SERVER.URL + "/movies/" + this.$route.params.movieId +"/like/",config) // get은 body가 없다.
-          // .then( res => console.log(res))
+          .then( res => {
+            console.log(res)
+            this.liked_users = res.data.count
+            })
           .catch( err => console.log(err))
       }
     },
@@ -278,6 +289,53 @@ export default {
   text-overflow: ellipsis;
 }
 
+.heart{
+  position: relative; 
+}
+
+.heart > span {
+  position: absolute;
+  width: 100%;
+  z-index: 1;
+  left: 0px;
+  top: 0px;
+  width: 5em;
+  line-height: 5em;
+  font-size: 0.2em;
+  color: white; /* */
+  display: block;
+  text-align: center;
+  white-space: nowrap;
+}
+/* .heart:after {
+  position: absolute;
+  top: 0.08em;
+  left: 0.08em;
+  display: block;
+  content: " ";
+  border-radius: 50%;
+  background-color: black;
+  width: 0.84em;
+  height: 0.84em;
+  -webkit-transition-property: all;
+  -moz-transition-property: all;
+  -o-transition-property: all;
+  transition-property: all;
+  -webkit-transition-duration: 0.2s;
+  -moz-transition-duration: 0.2s;
+  -o-transition-duration: 0.2s;
+  transition-duration: 0.2s;
+  -webkit-transition-timing-function: ease-in;
+  -moz-transition-timing-function: ease-in;
+  -o-transition-timing-function: ease-in;
+  transition-timing-function: ease-in;
+} */
+
+/* .span {
+  vertical-align: top;
+  display: inline-block;
+  line-height: 1.6em;
+} */
 
 
 .rect-auto,

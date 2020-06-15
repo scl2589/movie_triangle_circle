@@ -69,6 +69,7 @@ def like_state(request, movie_pk, user_pk):
     User = get_user_model()
     user = get_object_or_404(User, pk=user_pk)
     state = user.like_movies.filter(pk=movie_pk).exists()
+ 
     return Response(state)
 
 @api_view(['GET'])
@@ -114,6 +115,39 @@ def review_create(request, movie_pk):
 ## 추천 알고리즘 , 그냥 행렬곱하자
 @api_view(['GET']) # accecpted render response error
 def colloborative_filter(request):
+    # User = get_user_model()
+    # movie_data = Movie.objects.all()
+    # user_data = User.objects.all()
+    # ur = UserRank.objects.all()
+    # arr = [[0]*(len(movie_data)) for _ in range(len(movie_data))]
+
+    # for u in user_data:
+    #     ms = u.user_rank.all()
+    #     for i in range(len(ms)):
+    #         for j in range(i+1,len(ms)):
+    #             cus = ms[i].rank_users.all() & ms[j].rank_users.all()
+    #             temp = []
+    #             for cu in cus:
+    #                 a = ur.filter(movie_id=ms[i], user_id=cu.id ).values_list('rank', flat=True)[0]
+    #                 b = ur.filter(movie_id=ms[j], user_id=cu.id ).values_list('rank', flat=True)[0]
+    #                 temp.append((a,b))
+    #             up=0
+    #             d1=0
+    #             d2=0
+    #             for a,b in temp:
+    #                 up+=a*b
+    #                 d1+=a**2
+    #                 d2+=b**2
+    #             if d1+d2 == 0:
+    #                 result =0 
+    #             else:
+    #                 result = up/(d1**(1/2) + d2**(1/2))
+    #             arr[i][j] = result
+    # total = 0
+    # for i in range(len(arr)):
+    #     total+=sum(arr[i])
+    # print(total)
+    # return Response({'success': True})
     User = get_user_model()
     movie_data = Movie.objects.all()
     user_data = User.objects.all()
@@ -127,8 +161,8 @@ def colloborative_filter(request):
                 cus = ms[i].rank_users.all() & ms[j].rank_users.all()
                 temp = []
                 for cu in cus:
-                    a = ur.filter(movie_id=ms[i], user_id=cu.id ).values_list('rank', flat=True)[0]
-                    b = ur.filter(movie_id=ms[j], user_id=cu.id ).values_list('rank', flat=True)[0]
+                    a = ms[i].userrank_set.filter(user_id=cu.id)[0].rank
+                    b = ms[j].userrank_set.filter(user_id=cu.id)[0].rank
                     temp.append((a,b))
                 up=0
                 d1=0
@@ -141,13 +175,11 @@ def colloborative_filter(request):
                     result =0 
                 else:
                     result = up/(d1**(1/2) + d2**(1/2))
-                arr[i][j] = result
-    total = 0
-    for i in range(len(arr)):
-        total+=sum(arr[i])
-    print(total)
-    return Response({'success': True})
-
+                # Recommand.objects.create(movie1_id=m[i].id,movie2_id=m[j].id,result=result)
+    #             serializer = RecommandSerializer(Recommand,data=result)
+    #             if serializer.is_valid():
+    #                 serializer.save(movie1_id=m[i].id,movie2_id=m[j].id)
+    return Response({"message":"success"})
     
 
     # return data

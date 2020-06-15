@@ -61,7 +61,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
         # print(User.objects.prefetch_related('comment_set'))
         # print(User.objects.first().comment_set.all())
         # return [{'review_title':x.title,'movie_title': x.movie.title,'movie_like':x.movie.like_users.count(),'movie_rank':UserRank.objects.filter(movie_id=x.movie.id,user_id=obj.id).values('rank'), 'review_id':x.id}  for x in review] # 나중에 고침
-        return  [{'review_title':x.title,'movie_title': x.movie.title,'movie_like':x.movie.like_users.count(),'movie_rank':x.movie.userrank_set.all().rank, 'review_id':x.id}  for x in review]
+        return  [{'review_title':x.title,'movie_title': x.movie.title,'movie_like':x.movie.like_users.count(),'movie_rank':x.movie.userrank_set.filter(user_id=obj.id)[0].rank, 'review_id':x.id}  for x in review]
     # def reviewposter(self, obj):
         
     #     return [x.movie.poster_path for x in obj.review_set.all()] 
