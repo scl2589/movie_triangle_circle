@@ -12,9 +12,9 @@
     "@fortawesome/free-solid-svg-icons": "^5.13.0",
     "@fortawesome/vue-fontawesome": "^0.1.9",
     "axios": "^0.19.2",
-    "bootstrap-vue": "^2.15.0",
     "core-js": "^3.6.5",
     "jquery": "^3.5.1",
+    "sweetalert2": "^9.15.1",
     "vue": "^2.6.11",
     "vue-cookies": "^1.7.0",
     "vue-router": "^3.2.0"

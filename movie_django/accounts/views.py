@@ -8,6 +8,8 @@ from movies.models import Movie
 from reviews.models import Review
 from movies.serializers import MovieSerializer
 from django.contrib.auth.decorators import login_required
+
+
 User = get_user_model()
 # Create your views here.
 @api_view(['GET'])
@@ -43,4 +45,5 @@ def user_info(request, user_pk):
     serializer = UserProfileSerializer(user)
    
     return Response(serializer.data)
+
 

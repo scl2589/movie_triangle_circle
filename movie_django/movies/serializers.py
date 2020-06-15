@@ -21,7 +21,10 @@ class UserRankSerializer(serializers.ModelSerializer):
         fields = ['rank']
 
 
-# class SearchSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Movie
-#         fields = ['title']
+class SearchSerializer(serializers.ModelSerializer):
+    like_user = serializers.SerializerMethodField()
+    class Meta:
+        model = Movie
+        fields = ['title', 'backdrop_path', 'id', 'poster_path','like_user']
+    def get_like_user(self, obj):
+        return obj.like_users.count()

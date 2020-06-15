@@ -1,6 +1,5 @@
 <template>
-  <div v-if="userInfo.reviews">
-    <!-- {{userInfo.reviews}} -->
+  <div v-if="userInfo.reviews" class="mt-3">
     <table class="table">
       <thead>
         <tr>
@@ -10,10 +9,14 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="review in userInfo.reviews" :key="`review_${review}`" @click="reviewDetail(review.id)" >
-          <th data-label="Movie Title" scope="row">{{ review.review_title }}</th>
-          <td data-label="Review Title"> {{ review.movie_title }}</td>
-          <td data-label="User Rank">{{ review.movie_rank[0]}}</td>
+        <tr v-for="review in userInfo.reviews" :key="`review_${review}`" >
+          <th data-label="Movie Title" scope="row" @click="getReviewDetail(review.review_id)">{{ review.movie_title }}</th>
+          <td data-label="Review Title" @click="getReviewDetail(review.review_id)"> {{ review.review_title }}</td>
+          <td data-label="User Rank" @click="getReviewDetail(review.review_id)" id="star-rating">
+            <i class="fas fa-star" style="color: #345389"></i> {{ review.movie_rank[0].rank}}</td>
+          <!-- 별점. -->
+          <!-- {{ create_stars(review.movie_rank[0].rank)}} -->
+          
         </tr>
       </tbody>
     </table>
@@ -24,11 +27,35 @@
 </template>
 
 <script>
+
 export default {
   name: 'UserProfileReviewView',
   props: {
-    'userInfo': Object,
-  }
+    'userInfo': Array,
+  },
+  methods: {
+    getReviewDetail(reviewId) {
+        this.$router.push({name:'ReviewDetail', 'params': {reviewId: reviewId}})
+    },
+    create_stars(rank) {
+      let outer = document.getElementById("star_rating");
+      let star = document.createElement("i")
+      star.classList.add("fas", "fa-star")
+      console.log("rating 1", outer)
+      star.setAttribute("style", "color:#345389")
+      for (let i = 0; i < rank; i++){
+        let cln = star.cloneNode(true);
+        console.log("rating 2", outer)
+        outer.appendChild("cln 1",cln);
+      }
+      let empty_star = document.createElement("i")
+      empty_star.classList.add("far", "fa-star")
+      for (let i = 0; i < 5 - rank ; i ++ ){
+        let empty_cln = empty_star.cloneNode(true);
+        outer.appendChild(empty_cln);
+      }
+    },
+  },
 }
 </script>
 
@@ -112,6 +139,7 @@ table th {
   table td:last-child {
     border-bottom: 0;
   }
+
 }
 
 </style>

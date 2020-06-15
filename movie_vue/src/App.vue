@@ -2,44 +2,42 @@
   <div id="app" class="container">
     <ul class="nav nav-tabs d-flex row justify-content-between" id="nav-tab" role="tablist">
       <div class="align-items-end row"> 
-      <li class="nav-item" >
-        <img src="./assets/logo.png" alt="세상의 모든 영화 로고" width="150px" title="세상의 모든 영화">
-      </li>
-      <li class="nav-item" role="presentation">
-        <router-link class="nav-link"  :class="{active: isList }" :to="{ name:'MovieList' }">Movies</router-link>
-      </li>
-      <!-- <li class="nav-item" role="presentation">
-        <router-link class="nav-link" :class="{active: isCreate}" v-if="isLoggedIn" :to="{ name:'Create' }">Create Review</router-link>
-      </li> -->
-      <li class="nav-item" role="presentation">
-        <router-link class="nav-link" :class="{active: isSignup}" v-if="!isLoggedIn" :to="{ name:'Signup' }">Signup</router-link>
-      </li>
-      <li class="nav-item" role="presentation">
-        <router-link class="nav-link" :class="{active: isLogin}"  v-if="!isLoggedIn" :to="{ name:'Login' }">Login</router-link>
-      </li>
-      <li class="nav-item" role="presentation">
-        <router-link class="nav-link" :class="{active: isProfile}" v-if="isLoggedIn" :to="{ name:'Profile', params: { userId:this.$cookies.get('userId') } }">Profile</router-link>
-      </li>
-      <li class="nav-item" role="presentation">
-        <router-link class="nav-link" v-if="isLoggedIn" @click.native="logout" to="/accounts/logout/">Logout</router-link>
-      </li>
-      </div>
-      <div class="form-inline mx-2">
-        <input v-model="query" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-        <button @click="search" class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        <li class="nav-item" >
+          <img src="./assets/logo.png" alt="세상의 모든 영화 로고" width="150px" title="세상의 모든 영화">
+        </li>
+        <li class="nav-item" role="presentation">
+          <router-link class="nav-link"  :class="{active: isList }" :to="{ name:'MovieList' }">Movies</router-link>
+        </li>
+        <!-- <li class="nav-item" role="presentation">
+          <router-link class="nav-link" :class="{active: isCreate}" v-if="isLoggedIn" :to="{ name:'Create' }">Create Review</router-link>
+        </li> -->
+        <li class="nav-item" role="presentation">
+          <router-link class="nav-link" :class="{active: isSignup}" v-if="!isLoggedIn" :to="{ name:'Signup' }">Signup</router-link>
+        </li>
+        <li class="nav-item" role="presentation">
+          <router-link class="nav-link" :class="{active: isLogin}"  v-if="!isLoggedIn" :to="{ name:'Login' }">Login</router-link>
+        </li>
+        <li class="nav-item" role="presentation">
+          <router-link class="nav-link" :class="{active: isProfile}" v-if="isLoggedIn" :to="{ name:'Profile', params: { userId:this.$cookies.get('userId') } }">Profile</router-link>
+        </li>
+        <li class="nav-item" role="presentation">
+          <router-link class="nav-link" v-if="isLoggedIn" @click.native="logout" to="/accounts/logout/">Logout</router-link>
+        </li>
+        <div class="form-inline">
+          <input v-model="query" class="form-control mr-sm-2"  placeholder="Search" aria-label="Search">
+          <router-link :to="{name:'Search', params:{ query: query}}" @click.native="search" class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</router-link>
+        </div>
       </div>
     </ul>
-    <div id="errorMessageHere">
-      <b-alert v-if="errorMessages" show fade dismissible>{{ errorMessages }}</b-alert>
-    </div>
-    <router-view class="mt-3" @submit-login-data="login" @submit-signup-data="signup" />
+    
+    <router-view class="mt-3" @submit-login-data="login" @submit-signup-data="signup" :searchData="searchData" />
   </div>
 </template>
 
 <script>
 import axios from 'axios'
 import SERVER from '@/api/index.js'
-
+import Swal from 'sweetalert2'
 
 export default {
   name: 'App',
@@ -51,7 +49,8 @@ export default {
       isSignup: false, 
       isLogin: false,
       isProfile: false,
-      query: null
+      query: null,
+      searchData: [],
     }
   },
   methods: {
@@ -76,7 +75,28 @@ export default {
         })
         .catch( err => {
           console.log(err)
-          this.errorMessages = "회원가입 정보를 다시 확인해주세요."})
+          if (signupData.password1.length < 8 || signupData.password2.length < 8 ){
+            this.errorMessages = "비밀번호는 8자 이상이어야 합니다"
+          }else if (signupData.password1 !== signupData.password2){
+            this.errorMessages = "비밀번호가 일치하지 않습니다."
+          }else {
+            this.errorMessages = "해당 아이디가 이미 존재합니다."
+          }            
+          // 회원가입 에러 모달 띄우기
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: false,
+           })
+           Toast.fire({
+            icon: 'error',
+            title: this.errorMessages
+          })
+        })
+
+          
     },
     login(loginData) {
       axios.post(SERVER.URL + SERVER.ROUTES.login, loginData)
@@ -87,12 +107,47 @@ export default {
           // axios.get(SERVER.URL +'/accounts/' + loginData.username+ '/')
           //   .then( res => this.$cookies.set('userId',res.data))
           this.$router.push({ name: 'MovieList'})
-          
+          // 로그인 성공 모달 띄우기 
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            onOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer)
+              toast.addEventListener('mouseleave', Swal.resumeTimer)
+              }
+           })
+           Toast.fire({
+            icon: 'success',
+            title: "로그인에 성공하였습니다."
+          })
 
         })
         .catch( err => {
           console.log(err.response.data)
-          this.errorMessages = "로그인 정보를 다시 확인해주세요."
+          // 로그인 실패 모달 띄우기
+          if (loginData.password.length < 8 ){
+            this.errorMessages = "비밀번호는 8자 이상이어야 합니다"
+          }else {
+            this.errorMessages = "로그인 정보를 다시 확인해주세요."
+          }        
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: false,
+            onOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer)
+              toast.addEventListener('mouseleave', Swal.resumeTimer)
+              }
+           })
+           Toast.fire({
+            icon: 'error',
+            title: this.errorMessages
+          })
           })
     },
     logout() {
@@ -107,25 +162,39 @@ export default {
           this.$cookies.remove('userId')
           this.isLoggedIn = false
           this.$router.push({ name: 'MovieList'})
-          
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            onOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer)
+              toast.addEventListener('mouseleave', Swal.resumeTimer)
+              }
+           })
+           Toast.fire({
+            icon: 'success',
+            title: '로그아웃되었습니다.'
+          })
         })
         .catch( err => {
           console.log(err.response.data)
           this.errorMessages = "로그아웃을 실패하였습니다."
         })
     },
-    showAlert() {
-      setTimeout(() =>
-        this.errorMessages = "", 2000);
-    },
     search() {
-      axios.get(SERVER.URL + SERVER.search,this.query)
-        .then( () => {
-          // console.log(res.data)
+      const config = {
+          params : {
+            'query': this.query
+          },
+        }
+      axios.get(SERVER.URL + SERVER.ROUTES.search, config)
+        .then( (res) => {
+          this.searchData = res.data
         })
         .catch( err => console.log(err.response.data))
-    }
-    
+    },
   },
   mounted() {
     this.isLoggedIn = this.$cookies.isKey('auth-token') ? true : false
@@ -164,6 +233,14 @@ export default {
   },
   
 }
+
+// Swal.fire({
+//     title: 'Error!',
+//     text: 'Do you want to continue',
+//     icon: 'error',
+//     confirmButtonText: 'Cool'
+//   })
+
 </script>
 
 

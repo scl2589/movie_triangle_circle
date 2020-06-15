@@ -165,14 +165,13 @@ export default {
         }
         axios.delete(SERVER.URL + "/reviews/" + this.$route.params.reviewId, config)
           .then((res) => {
-            if ( res.data.success){
+            if (res.data.success){
               this.$router.push({ name:'MovieDetail', params:{ movieId:this.review.movie }})
             }
-            
             })
           .catch((err) => {
             console.log(err.response.data)
-            
+    
           })
         }
       },

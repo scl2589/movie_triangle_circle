@@ -110,4 +110,8 @@ a.nav-link{
   color: black;
 }
 
+#nav-tab {
+  cursor: pointer;
+}
+
 </style>

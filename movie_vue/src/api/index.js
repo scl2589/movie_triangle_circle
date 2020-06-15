@@ -11,7 +11,7 @@ export default {
         createReview: '/reviews/create/',
         // articlesList: '/reviews/',
         // createComment: '/reviews/:articleId/comment_create/',
-        revieweDetail: '/reviews/:reviewId/',
+        reviewDetail: '/reviews/:reviewId/',
         // UserInfo: '/rest-auth/user/',
         userInfo: '/accounts/:userId/info',
         search: '/search/',

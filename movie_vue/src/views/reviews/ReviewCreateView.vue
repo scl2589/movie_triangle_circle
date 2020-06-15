@@ -121,14 +121,16 @@
 <script>
 import axios from 'axios'
 import SERVER from '@/api/index.js'
+import Swal from 'sweetalert2'
 export default {
   name: 'ReviewCreate',
   data() {
     return {
       reviewData: {
-        title: null,
-        content: null,
+        title: "",
+        content: "",
         rank: 0,
+        errorMessages: "",
       },
       rankData: {
         rank: 0,
@@ -143,14 +145,36 @@ export default {
           Authorization: `Token ${this.$cookies.get('auth-token')}`
         }
       }
+      // 리뷰 수정
       if (this.$route.params.reviewId) {
         this.reviewData.rank = this.rankData.rank
         axios.put(SERVER.URL + "/reviews/"+ this.$route.params.reviewId + "/update_review/", this.reviewData, config)
         .then(()=> {
           this.$router.push({ name: 'ReviewDetail', params: { "reviewId":this.$route.params.reviewId }})
         })
-        .catch(err => console.log(err.response.data))
+        .catch(err => {
+          console.log(err.response.data)
+          if (this.reviewData.title === "" ){
+            this.errorMessages = "제목을 입력해야 합니다."
+          }else if (this.reviewData.content === ""){
+            this.errorMessages = "내용을 입력해야 합니다."
+          }
+          console.log(this.errorMessages)
+          // 모달 띄우기 
+          const swal = Swal.mixin({
+            position: 'center',
+            showConfirmButton: true,
+            // title: this.errorMessages,
+            
+          })
+          swal.fire({
+            icon: 'error',
+            title: this.errorMessages,
+            confirmButtonText: '확인'
+          })
+        })
       }
+      // 리뷰 생성 
       else {
         const movieId = this.$route.params.movieId
         this.reviewData.rank = this.rankData.rank
@@ -160,7 +184,28 @@ export default {
           axios.post(SERVER.URL + "/movies/" + movieId +"/rank/",this.rankData,config)
             .catch( err => console.log(err.response.data ))
           })
-        .catch(err => console.log(err.response.data))
+        .catch(err => {
+          console.log(err.response.data)
+
+          if (this.reviewData.title === "" ){
+            this.errorMessages = "제목을 입력해야 합니다."
+          }else if (this.reviewData.content === ""){
+            this.errorMessages = "내용을 입력해야 합니다."
+          }
+          console.log(this.errorMessages)
+          // 모달 띄우기 
+          const swal = Swal.mixin({
+            position: 'center',
+            showConfirmButton: true,
+            // title: this.errorMessages,
+            
+          })
+          swal.fire({
+            icon: 'error',
+            title: this.errorMessages,
+            confirmButtonText: '확인'
+          })
+         })
         
       }
     },

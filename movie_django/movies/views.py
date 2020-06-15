@@ -12,7 +12,7 @@ from rest_framework import status
 
 # created Model, Serializers
 from .models import Movie, Genre
-from .serializers import MovieSerializer, MovieDetailSerializer, UserRankSerializer
+from .serializers import MovieSerializer, MovieDetailSerializer, UserRankSerializer, SearchSerializer
 
 
 # python tool
@@ -21,6 +21,7 @@ import random
 import time
 from decouple import config
 import requests
+import re
 
 # module path
 from reviews.serializers import ReviewListSerializer, ReviewSerializer
@@ -110,6 +111,16 @@ def review_create(request, movie_pk):
         serializer.save(user=request.user, movie=movie)
         return Response(serializer.data)
 
+## 추천 알고리즘 
+def colloborative_filter(request):
+    movie_data = Movie.objects.all()
+    user_data = get_user_model()
+    
+    
+
+    return data
+
+
 @api_view(['GET'])
 def recommendation(request):
     user = request.user
@@ -144,7 +155,10 @@ def search(request):
     q = request.GET.get('query')
     movie = Movie.objects.filter(title__icontains=q) # 해리 포터
     if movie:
-        serializer = MovieSerializer(movie, many=True)
+        serializer = SearchSerializer(movie, many=True)
         return Response(serializer.data)
     else:
         return Response({'message': '검색결과가 없습니다.'})
+
+
+# tag 만들어야지, original title

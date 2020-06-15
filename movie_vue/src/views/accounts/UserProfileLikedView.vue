@@ -1,14 +1,13 @@
 <template>
 
 <div v-if="userInfo.like">
-  {{userInfo}}
     <div v-for="likedMovie in userInfo.like" :key="`like_${likedMovie.id}`" class="container" >
         <div class="content" @click="goToMovie(likedMovie.id)">
             <div class="content-overlay"></div>
             <img class="content-image" :src="likedMovie.poster_path">
             <div class="content-details fadeIn-top">
                 <h3>{{ likedMovie.title}}</h3>
-                <p>This is a short description</p>
+                <p><i class="fas fa-heart mr-2"></i>{{ likedMovie.like }}</p>
             </div>
         </div>
   </div>
@@ -163,6 +162,10 @@ export default {
 
 .fadeIn-right{
   left: 80%;
+}
+
+.fa-heart{
+  color: red;
 }
 
 </style>
