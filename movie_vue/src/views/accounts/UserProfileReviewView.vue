@@ -7,8 +7,10 @@
 
 <script>
 export default {
-  name: 'UserProfileReview',
-  props: ['userInfo', 'posterPaths']
+  name: 'UserProfileReviewView',
+  props: {
+    'userInfo': Object,
+  }
 }
 </script>
 

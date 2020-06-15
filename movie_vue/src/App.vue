@@ -17,7 +17,7 @@
         <router-link class="nav-link" :class="{active: isLogin}"  v-if="!isLoggedIn" :to="{ name:'Login' }">Login</router-link>
       </li>
       <li class="nav-item" role="presentation">
-        <router-link class="nav-link" :class="{active: isLogin}"  v-if="isLoggedIn" :to="{ name:'Profile', params: { userId:this.$cookies.get('userId') } }">Profile</router-link>
+        <router-link class="nav-link" :class="{active: isProfile}"  v-if="isLoggedIn" :to="{ name:'Profile', params: { userId:this.$cookies.get('userId') } }">Profile</router-link>
       </li>
       <li class="nav-item" role="presentation">
         <router-link class="nav-link" v-if="isLoggedIn" @click.native="logout" to="/accounts/logout/">Logout</router-link>
@@ -44,7 +44,7 @@ export default {
       isList: false,
       isSignup: false, 
       isLogin: false,
-      // isCreate: false,
+      isProfile: false,
     }
   },
   methods: {
@@ -105,8 +105,8 @@ export default {
       this.isSignup = true
     } else if (this.$route.name == 'Login'){
       this.isLogin = true
-    } else if (this.$route.name == 'Create'){
-      this.isCreate = true
+    } else if (this.$route.name == 'Profile'){
+      this.isProfile = true
     }
 
   },
@@ -126,10 +126,10 @@ export default {
     } else {
       this.isLogin = false
     }
-    if(this.$route.name == 'Create'){
-      this.isCreate = true
+    if(this.$route.name == 'Profile'){
+      this.isProfile = true
     } else{
-      this.isCreate = false
+      this.isProfile = false
     }
 
   }
@@ -163,7 +163,7 @@ h3 {
   text-align: center;
 }
 
-a.nav-link{
+.nav-link{
   color: #345389;
   text-align:end;
 }
