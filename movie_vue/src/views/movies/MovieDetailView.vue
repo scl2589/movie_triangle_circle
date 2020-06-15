@@ -28,7 +28,7 @@
 
 
 
-              <button class="btn button-transparent bg-transparent text-white pb-4 to-trailer" data-toggle="modal" :data-target="'#movie'+movie.movieId">► 예고편 보기 </button>
+              <button @click="showAlert()" class="btn button-transparent bg-transparent text-white pb-4 to-trailer" data-toggle="modal" :data-target="'#movie'+movie.movieId" role="dialog">► 예고편 보기 </button>
               
               <div v-if="video" class="modal fade" :id="'movie'+movie.movieId" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <MovieDetailTrailer :video="video"/>
@@ -69,6 +69,7 @@ import axios from 'axios'
 import SERVER from '@/api/index.js'
 import ReviewList from '@/views/reviews/ReviewListView.vue'
 import MovieDetailTrailer from '@/views/movies/MovieDetailTrailerView.vue'
+import Swal from 'sweetalert2'
 
 // const API_KEY = process.env.VUE_APP_YOUTUBE_API_KEY;
 // VUE_APP_YOUTUBE_API_KEY="AIzaSyCnCmWpk7t_J-utpA3f7TGDaq3PoON9jFM"
@@ -94,7 +95,8 @@ export default {
       like: false,
       genres: [],
       date: "",
-      
+      must_show: false,
+      toast: ""
     }
   },
   computed: {
@@ -121,14 +123,33 @@ export default {
               q: this.movie.original_title +" official trailer",
               maxResults: 1,
             }
+          })
+          .then(res => {
+            this.video = res.data.items[0]
+          })
+          .catch(err => {
+            console.log(err)
+            this.must_show = true
+            // 유튜브 에러 모달 띄우기
+            const Toast = Swal.mixin({
+              position: 'center',
+              showConfirmButton: true,
+              timer: 3000,
+              timerProgressBar: false,
+              })
+              this.toast = Toast
+            })
       })
-      .then(res => {
-        this.video = res.data.items[0]
+      .catch(err => console.error(err))
+    },
+    showAlert() {
+      if (this.must_show === true){
+        this.toast.fire({
+        icon: 'warning',
+        title: "현재 예고편이 검색되지 않습니다."
       })
-      .catch(err => console.log(err))
-
-        })
-        .catch(err => console.error(err))
+      }
+      
     },
     fetchReview() {
       axios.get(SERVER.URL+"/movies/"+this.$route.params.movieId+'/reviews/')

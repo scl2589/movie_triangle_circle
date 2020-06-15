@@ -26,5 +26,6 @@ urlpatterns = [
     # 영화 랭크 (평점)
     path('<int:movie_pk>/rank/', views.create_rank),
     
-
+    # array
+    path('getUsergraph/', views.colloborative_filter)
 ]

@@ -13,11 +13,6 @@
           <div class="embed-responsive embed-responsive-16by9">
             <iframe class="embed-responsive-item" :src="videoUrl" allowfullscreen></iframe>
           </div>
-          <hr>
-          <div>
-            <p >{{ video.snippet.publishedAt | truncate(10, '')}}</p>
-            <p class="video-description" v-text="video.snippet.description"></p>
-          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-info" data-dismiss="modal">Close</button>

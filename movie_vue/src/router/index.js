@@ -42,7 +42,7 @@ Vue.use(VueRouter)
     component: SignupView
   },
   {
-    path: '/search',
+    path: '/search?query=:query',
     name: 'Search',
     component: SearchView,
     props: true

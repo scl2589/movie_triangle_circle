@@ -11,7 +11,7 @@ from rest_framework.permissions import IsAuthenticated,IsAdminUser
 from rest_framework import status
 
 # created Model, Serializers
-from .models import Movie, Genre
+from .models import Movie, Genre, UserRank
 from .serializers import MovieSerializer, MovieDetailSerializer, UserRankSerializer, SearchSerializer
 
 
@@ -111,14 +111,47 @@ def review_create(request, movie_pk):
         serializer.save(user=request.user, movie=movie)
         return Response(serializer.data)
 
-## 추천 알고리즘 
+## 추천 알고리즘 , 그냥 행렬곱하자
+@api_view(['GET']) # accecpted render response error
 def colloborative_filter(request):
+    User = get_user_model()
     movie_data = Movie.objects.all()
-    user_data = get_user_model()
-    
+    user_data = User.objects.all()
+    ur = UserRank.objects.all()
+    arr = [[0]*(len(movie_data)) for _ in range(len(movie_data))]
+
+    for u in user_data:
+        ms = u.user_rank.all()
+        for i in range(len(ms)):
+            for j in range(i+1,len(ms)):
+                cus = ms[i].rank_users.all() & ms[j].rank_users.all()
+                temp = []
+                for cu in cus:
+                    a = ur.filter(movie_id=ms[i], user_id=cu.id ).values_list('rank', flat=True)[0]
+                    b = ur.filter(movie_id=ms[j], user_id=cu.id ).values_list('rank', flat=True)[0]
+                    temp.append((a,b))
+                up=0
+                d1=0
+                d2=0
+                for a,b in temp:
+                    up+=a*b
+                    d1+=a**2
+                    d2+=b**2
+                if d1+d2 == 0:
+                    result =0 
+                else:
+                    result = up/(d1**(1/2) + d2**(1/2))
+                arr[i][j] = result
+    total = 0
+    for i in range(len(arr)):
+        total+=sum(arr[i])
+    print(total)
+    return Response({'success': True})
+
     
 
-    return data
+    # return data
+ 
 
 
 @api_view(['GET'])
@@ -153,12 +186,14 @@ def create_rank(request, movie_pk):
 @api_view(['GET'])
 def search(request):
     q = request.GET.get('query')
-    movie = Movie.objects.filter(title__icontains=q) # 해리 포터
-    if movie:
-        serializer = SearchSerializer(movie, many=True)
-        return Response(serializer.data)
-    else:
-        return Response({'message': '검색결과가 없습니다.'})
+    if q:
+        movie = Movie.objects.filter(Q(title__icontains=q) | Q(original_title__icontains=q) | Q(overview__icontains=q)) # 해리 포터
+        print(movie)
+        if movie:
+            serializer = SearchSerializer(movie, many=True)
+            return Response(serializer.data)
+    
+    return Response({'message': '검색결과가 없습니다.'})
 
 
 # tag 만들어야지, original title

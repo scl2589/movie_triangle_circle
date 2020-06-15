@@ -14,6 +14,8 @@ class Review(models.Model):
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE, null=True)
     # rank = models.OneToOneField(UserRank, on_delete=models.CASCADE, null=True)
     rank = models.FloatField(null=True)
+    # 수정 boolean?
+
 class Comment(models.Model):
     content = models.TextField()
     review = models.ForeignKey(Review, on_delete=models.CASCADE)

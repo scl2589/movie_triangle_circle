@@ -24,7 +24,7 @@
           <router-link class="nav-link" v-if="isLoggedIn" @click.native="logout" to="/accounts/logout/">Logout</router-link>
         </li>
         <div class="form-inline">
-          <input v-model="query" class="form-control mr-sm-2"  placeholder="Search" aria-label="Search">
+          <input @keyup.enter="search" v-model="query" class="form-control mr-sm-2"  placeholder="Search" aria-label="Search">
           <router-link :to="{name:'Search', params:{ query: query}}" @click.native="search" class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</router-link>
         </div>
       </div>
@@ -58,6 +58,9 @@ export default {
       this.$cookies.set('auth-token', token)
       this.isLoggedIn = true
     },
+    // clickedLogo() {
+    //   this.$router.go()
+    // },
     signup(signupData){
       axios.post(SERVER.URL + SERVER.ROUTES.signup, signupData)
         .then( res => {

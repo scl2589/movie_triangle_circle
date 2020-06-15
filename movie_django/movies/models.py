@@ -37,5 +37,10 @@ class UserRank(models.Model):
 
     # Review = apps.get_model('reviews', 'Review')
     # review = models.OneToOneField(Review, on_delete=models.CASCADE)
-    rank = models.FloatField(default=5)
+    rank = models.FloatField(default=0)
 
+# class Recommand(models.Model):
+#     movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
+#     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+#     genre = models.CharField(max_length=100)
+     

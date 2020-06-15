@@ -1,14 +1,18 @@
 <template>
   <div>
+    <div>
+      <i class="fas fa-backspace fa-2x" @click="returnToMovie"></i>
+    </div>
     <div class="form-group row justify-content-center" >
-      <input v-model="reviewData.title" type="text" id="title" placeholder="Title" class="inputs" autofocus>
+      <input v-model="reviewData.title" type="text" id="title" placeholder="제목을 입력해주세요." class="inputs" autofocus>
     </div>
     
     <div class="form-group row justify-content-center">
       <textarea v-model="reviewData.content" type="content" id="content" 
-      placeholder="Content" class='txtbox' rows="10">
+      placeholder="내용을 입력해주세요." class='txtbox' rows="10">
       </textarea>
     </div>
+    <!--  이모티콘 별점  (평점) 보내기 -->
    <div class="row justify-content-center">
     <div class="feedback">
       <div class="rating">
@@ -209,6 +213,12 @@ export default {
         
       }
     },
+    returnToMovie(){
+      this.$router.push({
+        name: 'MovieDetail',
+        params: {movieId: this.$route.params.movieId}
+        })
+    }
 
   },
   created() {

@@ -12,7 +12,7 @@
         </h4>
         <!-- 게시글 정보 (작성자, 작성시간) -->
         <div class="row justify-content-between oneline pb-0">
-          <small class="line-height">posted by <span class="link-hover" @click="goToUserPage"><strong>{{ user.username }}</strong></span> on {{ review.created_at}}</small>
+          <small class="line-height">posted by <span class="link-hover" @click="goToUserPage"><strong>{{ user.username }}</strong></span> on {{review.created_at}} edited at {{review.updated_at}}</small>
           <!-- 드롭다운 (삭제, 수정) -->
           <div v-if="reviewCreator" class="btn-group dropleft">
             <button type="button" class="btn btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
@@ -51,7 +51,7 @@
               </div>
               <!-- 댓글 수정란 -->
               <div v-show="comment.id == currentComment.select" class="input-group mx-1 row">
-                <textarea v-model="currentComment.content" type="content" class="col-xs-8 col-md-11" rows="5"></textarea>
+                <textarea @keyup.enter="updateComment(comment.id, comment.content)" v-model="currentComment.content" type="content" class="col-xs-8 col-md-11" rows="5"></textarea>
                 <button @click="updateComment(comment.id,comment.content)" class="input-group-append btn justify-content-center align-items-center col-xs-4 col-md-1 text-center">제출</button>
               </div>
               <p v-show="comment.id != currentComment.select">{{ comment.content }}</p>
@@ -95,6 +95,7 @@ export default {
       user: [],
       reviewCreator: false,
       movieId: null,
+      did_update: false,
     }
   },
   methods: {
@@ -200,6 +201,7 @@ export default {
           .then((res) => {
             this.currentComment.select = null
             this.getComment()
+            this.did_update = true
             console.log(res.data.success)
             })
           .catch((err) => {

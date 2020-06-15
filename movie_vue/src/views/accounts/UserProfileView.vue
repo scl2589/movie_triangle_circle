@@ -1,15 +1,15 @@
 <template>
   <div>
-    <div class="header">
+    <div class="header mb-0">
       <h1> {{userInfo.username}} </h1>
     </div>
     <!-- 좋아한 영화 -->
-    <div class="d-flex justify-content-center"> 
+    <div class="d-flex justify-content-center line"> 
       <ul class="nav d-flex align-items-end" id="nav-tab" role="tablist">
-        <li class="nav-item" role="presentation" :class="{active: like}">
-          <p class="nav-link" @click="clickLike"><i class="fas fa-heart mr-1"></i>좋아요한 영화</p>
+        <li class="nav-item" role="presentation" :class="{active: isLike}">
+          <p class="nav-link" @click="clickLike"><i class="fas fa-heart mr-1"></i>좋아요 누른 영화</p>
         </li>
-        <li class="nav-item" role="presentation" :class="{active: review}" >
+        <li class="nav-item" role="presentation" :class="{active: isReview}" >
           <p class="nav-link" @click="clickReview"><i class="fas fa-pencil-alt mr-1"></i>작성한 리뷰 </p>
         </li>
       </ul>
@@ -35,8 +35,8 @@ export default {
     return {
       userInfo: [],
       posterPaths: [],
-      like: true,
-      review: false,
+      isLike: true,
+      isReview: false,
       clickedLiked: true,
       clickedReview: false,
     }
@@ -48,34 +48,39 @@ export default {
   // 로그인 했을 때 자기 자신의 정보
   methods: {
     clickLike(){
+      // this.isLike = true;
+      // this.isReview = false;
       this.clickedReview = false;
       this.clickedLiked = true;
-      this.like = true;
-      this.review = false;
     },
     clickReview(){
+      // this.isLike = true;
+      // this.isReview = false;
       this.clickedLiked = false;
       this.clickedReview = true;
-      this.like = true;
-      this.review = false;
+      
     }
   },
   created() {
     axios.get(SERVER.URL + '/accounts/'+this.$route.params.userId + '/info/')
     .then(res => {
       this.userInfo = res.data
-      // console.log(this.userInfo.reviews.movie_rank.length)
-      // if (this.userInfo.reviews.movie_rank.length){
-      //   this.userInfo.reviews.movie_rank = this.userInfo.reviews.movie_rank[0].rank
-      // }
       res.data.like.forEach( movie => {
         movie.poster_path=SERVER.IMAGEPATH.imagepath780 + movie.poster_path
       })
     })
     .catch(err => console.log(err))
   },
-  mounted() {
-  },
+  updated(){
+    if(this.clickedLiked ===true){
+      this.isLike = true
+      this.isReview = false
+    }
+    if(this.clickedReview === true){
+      this.isReview = true
+      this.isLike = false
+    } 
+  }
 }
 </script>
 
@@ -99,7 +104,7 @@ a.nav-link{
 }
 
 .active {
-  color: #f5b893 !important; 
+  border-top: 1px solid #8e8e8e;
 }
 
 .fa-heart {
@@ -112,6 +117,11 @@ a.nav-link{
 
 #nav-tab {
   cursor: pointer;
+}
+
+.line {
+  /* border-bottom-style: solid; */
+  border-top: 1px solid #dbdbdb;
 }
 
 </style>

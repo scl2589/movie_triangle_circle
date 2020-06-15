@@ -3,7 +3,8 @@
     <div v-for="movie in searchData" :key="`movie_${movie.id}`" class="container" >
       <div class="content" @click="goToMovie(movie.id)">
         <div class="content-overlay"></div>
-          <img class="content-image" :src="posterURL + movie.poster_path">
+          <img class="content-image" v-if="movie.poster_path" :src="posterURL + movie.poster_path">
+          <h3 v-else> 검색 결과가 없습니다.</h3>
           <div class="content-details fadeIn-top">
               <h3>{{ movie.title}}</h3>
               <p><i class="fas fa-heart mr-2"></i>{{ movie.like_user }}</p>
@@ -20,11 +21,11 @@ import SERVER from '@/api/index.js'
 export default {
   name: 'Search',
   props: {
-    searchData: Array,
+    searchData: Object,
   },
   data() {
     return {
-      posterURL: SERVER.IMAGEPATH,
+      posterURL: SERVER.IMAGEPATH.imagepath780,
     }
   },
   methods: {
