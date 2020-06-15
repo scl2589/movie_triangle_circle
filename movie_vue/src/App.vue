@@ -1,11 +1,12 @@
 <template>
   <div id="app" class="container">
-    <ul class="nav nav-tabs d-flex align-items-end" id="nav-tab" role="tablist">
+    <ul class="nav nav-tabs d-flex row justify-content-between" id="nav-tab" role="tablist">
+      <div class="align-items-end row"> 
       <li class="nav-item" >
         <img src="./assets/logo.png" alt="세상의 모든 영화 로고" width="150px" title="세상의 모든 영화">
       </li>
       <li class="nav-item" role="presentation">
-        <router-link class="nav-link" :class="{active: isList }" :to="{ name:'MovieList' }">Movies</router-link>
+        <router-link class="nav-link"  :class="{active: isList }" :to="{ name:'MovieList' }">Movies</router-link>
       </li>
       <!-- <li class="nav-item" role="presentation">
         <router-link class="nav-link" :class="{active: isCreate}" v-if="isLoggedIn" :to="{ name:'Create' }">Create Review</router-link>
@@ -17,14 +18,19 @@
         <router-link class="nav-link" :class="{active: isLogin}"  v-if="!isLoggedIn" :to="{ name:'Login' }">Login</router-link>
       </li>
       <li class="nav-item" role="presentation">
-        <router-link class="nav-link" :class="{active: isProfile}"  v-if="isLoggedIn" :to="{ name:'Profile', params: { userId:this.$cookies.get('userId') } }">Profile</router-link>
+        <router-link class="nav-link" :class="{active: isProfile}" v-if="isLoggedIn" :to="{ name:'Profile', params: { userId:this.$cookies.get('userId') } }">Profile</router-link>
       </li>
       <li class="nav-item" role="presentation">
         <router-link class="nav-link" v-if="isLoggedIn" @click.native="logout" to="/accounts/logout/">Logout</router-link>
       </li>
+      </div>
+      <div class="form-inline mx-2">
+        <input v-model="query" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <button @click="search" class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      </div>
     </ul>
-    <div>
-      {{ errorMessages}}
+    <div id="errorMessageHere">
+      <b-alert v-if="errorMessages" show fade dismissible>{{ errorMessages }}</b-alert>
     </div>
     <router-view class="mt-3" @submit-login-data="login" @submit-signup-data="signup" />
   </div>
@@ -45,6 +51,7 @@ export default {
       isSignup: false, 
       isLogin: false,
       isProfile: false,
+      query: null
     }
   },
   methods: {
@@ -56,29 +63,37 @@ export default {
       axios.post(SERVER.URL + SERVER.ROUTES.signup, signupData)
         .then( res => {
           this.setCookie(res.data.key)
+          this.$cookies.set('userId', res.data.user.id)
+          console.log(res.data)
           // this.$router.push({ name: 'MovieList' })
           // userId를 쿠키에 저장
-          axios.get(SERVER.URL +'/accounts/' + signupData.username+ '/')
-            .then( res => 
-            this.$cookies.set('userId',res.data),
-            )
+          // axios.get(SERVER.URL +'/accounts/' + signupData.username+ '/')
+          //   .then( res => {
+          //   this.setCookie(res.data.key)
+          //   this.$cookies.set('userId',res.data)
+          //   })
           this.$router.push({name: 'MovieRecommendation'})
         })
-        .catch( err => console.log(err.response.data) )
+        .catch( err => {
+          console.log(err)
+          this.errorMessages = "회원가입 정보를 다시 확인해주세요."})
     },
     login(loginData) {
       axios.post(SERVER.URL + SERVER.ROUTES.login, loginData)
         .then( res => {
           this.setCookie(res.data.key)
-          console.log(res.data.user)
           this.$cookies.set('userId',res.data.user.id)
           // this.setCookie('userId', res.data.user)
           // axios.get(SERVER.URL +'/accounts/' + loginData.username+ '/')
           //   .then( res => this.$cookies.set('userId',res.data))
           this.$router.push({ name: 'MovieList'})
+          
 
         })
-        .catch( err => console.log(err.response.data))
+        .catch( err => {
+          console.log(err.response.data)
+          this.errorMessages = "로그인 정보를 다시 확인해주세요."
+          })
     },
     logout() {
       const requestHeaders = {
@@ -94,8 +109,23 @@ export default {
           this.$router.push({ name: 'MovieList'})
           
         })
-        .catch( err => console.log(err.response.data))
+        .catch( err => {
+          console.log(err.response.data)
+          this.errorMessages = "로그아웃을 실패하였습니다."
+        })
     },
+    showAlert() {
+      setTimeout(() =>
+        this.errorMessages = "", 2000);
+    },
+    search() {
+      axios.get(SERVER.URL + SERVER.search,this.query)
+        .then( () => {
+          // console.log(res.data)
+        })
+        .catch( err => console.log(err.response.data))
+    }
+    
   },
   mounted() {
     this.isLoggedIn = this.$cookies.isKey('auth-token') ? true : false
@@ -131,8 +161,8 @@ export default {
     } else{
       this.isProfile = false
     }
-
-  }
+  },
+  
 }
 </script>
 
@@ -170,6 +200,18 @@ h3 {
 
 .active {
   color: #f5b893 !important; 
+}
+
+
+.btn {
+  background-color:#6f8dbf;
+  outline: transparent;
+  color: white;
+  border: transparent;
+}
+
+.btn:hover{
+  background-color: #345389;
 }
 
 

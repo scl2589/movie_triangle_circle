@@ -38,3 +38,4 @@ class UserRank(models.Model):
     # Review = apps.get_model('reviews', 'Review')
     # review = models.OneToOneField(Review, on_delete=models.CASCADE)
     rank = models.FloatField(default=5)
+

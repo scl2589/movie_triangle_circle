@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from movies import views as m_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,4 +28,7 @@ urlpatterns = [
     path('rest-auth/signup/', include('rest_auth.registration.urls')),
     path('accounts/', include('accounts.urls')),
     path('reviews/', include('reviews.urls')),
+    # 검색
+    path('search/',m_views.search)
+
 ]

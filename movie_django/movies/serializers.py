@@ -5,7 +5,7 @@ from .models import Movie,Genre, UserRank
 class MovieSerializer(serializers.ModelSerializer):
     class Meta:
         model = Movie
-        fields = ['title','backdrop_path','pk']
+        fields = ['title','backdrop_path','pk',]
 
 class MovieDetailSerializer(serializers.ModelSerializer):
     # d = { x.id:x.name for x in Genre.objects.all()}
@@ -19,3 +19,9 @@ class UserRankSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserRank
         fields = ['rank']
+
+
+# class SearchSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Movie
+#         fields = ['title']

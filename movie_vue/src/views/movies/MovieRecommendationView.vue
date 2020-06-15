@@ -101,4 +101,16 @@ export default {
 .liked {
   opacity: 0.35;
 }
+
+
+.btn {
+  background-color:#6f8dbf;
+  outline: transparent;
+  color: white;
+  border: transparent;
+}
+
+.btn:hover{
+  background-color: #345389;
+}
 </style>

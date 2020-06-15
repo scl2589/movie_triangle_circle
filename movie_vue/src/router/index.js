@@ -16,6 +16,8 @@ import MovieRecommendationView from '@/views/movies/MovieRecommendationView.vue'
 import ReviewCreateView from '@/views/reviews/ReviewCreateView.vue'
 import ReviewDetailView from '../views/reviews/ReviewDetailView.vue'
 
+// Search
+import SearchView from '@/views/accounts/SearchView.vue'
 Vue.use(VueRouter)
 
   const routes = [
@@ -38,6 +40,12 @@ Vue.use(VueRouter)
     path: '/accounts/signup',
     name: 'Signup',
     component: SignupView
+  },
+  {
+    path: '/search',
+    name: 'Search',
+    component: SearchView,
+    props: true
   },
   {
     path: '/movies/:movieId',

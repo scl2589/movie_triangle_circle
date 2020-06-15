@@ -1,6 +1,8 @@
 <template>
-<div>
-    <div v-for="likedMovie in userInfo.like" :key="`like_${likedMovie.id}`" class="container">
+
+<div v-if="userInfo.like">
+  {{userInfo}}
+    <div v-for="likedMovie in userInfo.like" :key="`like_${likedMovie.id}`" class="container" >
         <div class="content" @click="goToMovie(likedMovie.id)">
             <div class="content-overlay"></div>
             <img class="content-image" :src="likedMovie.poster_path">
@@ -11,13 +13,16 @@
         </div>
   </div>
 </div>
+<div v-else class="mt-5">
+    <h3>마음에 드는 영화에 좋아요를 눌러주세요</h3>
+</div>
 </template>
 
 <script>
 export default {
   name: 'UserProfileLikedView',
   props: {
-    'userInfo': Object, 
+    'userInfo': Array, 
   },
   data() {
     return {
@@ -105,7 +110,7 @@ export default {
 
 .content-image{
   width: 100%;
-  height: 480px;
+  height: 474px;
 }
 
 .content-details {

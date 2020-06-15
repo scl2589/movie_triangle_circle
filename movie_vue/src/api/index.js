@@ -13,8 +13,8 @@ export default {
         // createComment: '/reviews/:articleId/comment_create/',
         revieweDetail: '/reviews/:reviewId/',
         // UserInfo: '/rest-auth/user/',
-        userInfo: '/accounts/:userId/info'
-        
+        userInfo: '/accounts/:userId/info',
+        search: '/search/',
     },
     IMAGEPATH: {
         imagepath780: 'https://image.tmdb.org/t/p/w780',

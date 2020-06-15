@@ -4,19 +4,18 @@
       <h1> {{userInfo.username}} </h1>
     </div>
     <!-- 좋아한 영화 -->
-
-
-
-    <ul class="nav nav-tabs d-flex align-items-end" id="nav-tab" role="tablist">
-      <li class="nav-item" role="presentation" :class="{active: like}">
-        <p class="nav-link" @click="clickLike">좋아요 </p>
-      </li>
-      <li class="nav-item" role="presentation" :class="{active: review}" >
-        <p class="nav-link" @click="clickReview">작성한 리뷰 </p>
-      </li>
-    </ul>
+    <div class="d-flex justify-content-center"> 
+      <ul class="nav d-flex align-items-end" id="nav-tab" role="tablist">
+        <li class="nav-item" role="presentation" :class="{active: like}">
+          <p class="nav-link" @click="clickLike"><i class="fas fa-heart mr-1"></i>좋아요한 영화</p>
+        </li>
+        <li class="nav-item" role="presentation" :class="{active: review}" >
+          <p class="nav-link" @click="clickReview"><i class="fas fa-pencil-alt mr-1"></i>작성한 리뷰 </p>
+        </li>
+      </ul>
+    </div>
     <UserProfileLiked :userInfo="userInfo" v-show="clickedLiked" />
-    <UserProfileReview v-show="clickedReview"/>
+    <UserProfileReview :userInfo="userInfo" v-show="clickedReview"/>
 
 
 
@@ -65,6 +64,10 @@ export default {
     axios.get(SERVER.URL + '/accounts/'+this.$route.params.userId + '/info/')
     .then(res => {
       this.userInfo = res.data
+      // console.log(this.userInfo.reviews.movie_rank.length)
+      // if (this.userInfo.reviews.movie_rank.length){
+      //   this.userInfo.reviews.movie_rank = this.userInfo.reviews.movie_rank[0].rank
+      // }
       res.data.like.forEach( movie => {
         movie.poster_path=SERVER.IMAGEPATH.imagepath780 + movie.poster_path
       })
@@ -97,6 +100,14 @@ a.nav-link{
 
 .active {
   color: #f5b893 !important; 
+}
+
+.fa-heart {
+  color: red;
+}
+
+.fa-pencil-alt {
+  color: black;
 }
 
 </style>

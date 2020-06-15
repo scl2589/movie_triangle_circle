@@ -135,3 +135,16 @@ def create_rank(request, movie_pk):
 # def genre_list(request):
 #     movies = Movie.objects.order_by('-popularity').filter()
 #     pass
+
+
+# search
+
+@api_view(['GET'])
+def search(request):
+    q = request.GET.get('query')
+    movie = Movie.objects.filter(title__icontains=q) # 해리 포터
+    if movie:
+        serializer = MovieSerializer(movie, many=True)
+        return Response(serializer.data)
+    else:
+        return Response({'message': '검색결과가 없습니다.'})
