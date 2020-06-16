@@ -4,7 +4,7 @@
       <div class="row justify-content-center mb-3">
         <h2> 
           {{userInfo.username}} 
-          <span><button class="btn btn-sm" >팔로우</button></span>
+          <span v-if="others()"><button class="btn btn-sm" >팔로우</button></span>
         </h2>
       </div>
       <div class="row justify-content-between setWidth mb-3">
@@ -70,7 +70,14 @@ export default {
       // this.isReview = false;
       this.clickedLiked = false;
       this.clickedReview = true;
-      
+    },
+    others() {
+      console.log(this.userInfo.id, this.$cookies.userId)
+      if (this.userInfo.id == this.$cookies.get('userId')){
+        return false
+      } else {
+        return true
+      }
     }
   },
   created() {

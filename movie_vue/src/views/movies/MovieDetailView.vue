@@ -124,6 +124,9 @@ export default {
           this.posterURL = imgURL + this.movie.poster_path
           this.backDropURL = imgURL + this.movie.backdrop_path
           this.liked_users = this.movie.like_users.length
+          // if (this.$cookies.get('userId').review_set){
+            
+          // }
           axios.get(API_URL, {
             params: {
               key: API_KEY,
