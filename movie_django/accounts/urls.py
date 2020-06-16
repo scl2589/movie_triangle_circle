@@ -8,5 +8,4 @@ urlpatterns = [
     path('<int:user_pk>/follow/', views.follow, name='follow'),
     # path('<username>/',views.get_user_id),
     path('<int:user_pk>/info/', views.user_info),
-    
 ]

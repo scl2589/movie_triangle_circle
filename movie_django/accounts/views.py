@@ -46,4 +46,13 @@ def user_info(request, user_pk):
    
     return Response(serializer.data)
 
-
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def follow(request, user_pk):
+    user = get_object_or_404(User, pk=pk)
+    if user != request.user:
+        if user.followers.filter(pk=request.user.pk).exists():
+            user.followers.remove(request.user)
+        else:
+            user.followers.add(request.user)
+    return Resoponse({'success':True})

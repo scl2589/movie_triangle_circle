@@ -1,33 +1,6 @@
 <template>
   <div class="container">
-    <h2>Popular Now</h2>
-    <div class="row scroll-sect">
-      <div class="row-inner">
-          <div class="tile" v-for="movie in movies_popular" :key="`movie_${movie.pk}`">
-              <div class="tile-media" >
-                <img :src="posterURL + movie.backdrop_path" @click="detail(movie.pk)">
-              </div>
-              <div class="text-center">
-                <p @click="detail(movie.pk)">{{ movie.title }}</p> 
-              </div>
-          </div>
-      </div>
-    </div>
-
-    <h2 class="mt-3">Recent Movies</h2>
-    <div class="row scroll-sect recent-movies">
-      <div class="row-inner">
-          <div class="tile" v-for="movie in movies_recent" :key="`movie_${movie.pk}`">
-              <div class="tile-media">
-                <img :src="posterURL + movie.backdrop_path" @click="detail(movie.pk)">
-              </div>
-              <div class="text-center">
-                <p @click="detail(movie.pk)">{{ movie.title }}</p> 
-              </div>
-          </div>
-      </div>
-    </div>
-    <div v-if="this.$cookies.get('auth-token')">
+    <div v-if="this.$cookies.get('auth-token')" class="m-0">
       <h2 class="mt-3">Recommended Movies</h2>
       <div class="row scroll-sect recent-movies">
         <div class="row-inner">
@@ -42,6 +15,35 @@
         </div>
       </div>
     </div>
+
+    <h2>Popular Now</h2>
+    <div class="row scroll-sect recent-movies">
+      <div class="row-inner">
+          <div class="tile" v-for="movie in movies_popular" :key="`movie_${movie.pk}`">
+              <div class="tile-media" >
+                <img :src="posterURL + movie.backdrop_path" @click="detail(movie.pk)">
+              </div>
+              <div class="text-center">
+                <p @click="detail(movie.pk)">{{ movie.title }}</p> 
+              </div>
+          </div>
+      </div>
+    </div>
+
+    <h2>Recent Movies</h2>
+    <div class="row scroll-sect recent-movies">
+      <div class="row-inner">
+          <div class="tile" v-for="movie in movies_recent" :key="`movie_${movie.pk}`">
+              <div class="tile-media">
+                <img :src="posterURL + movie.backdrop_path" @click="detail(movie.pk)">
+              </div>
+              <div class="text-center">
+                <p @click="detail(movie.pk)">{{ movie.title }}</p> 
+              </div>
+          </div>
+      </div>
+    </div>
+    
     
 
   </div>
@@ -123,7 +125,7 @@ img {
 }
 
 .recent-movies {
-  margin-bottom: 60px;
+  margin-bottom: 30px;
 }
 .row-inner:hover
 {

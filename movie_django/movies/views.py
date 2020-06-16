@@ -36,8 +36,16 @@ def index(request):
     movies_recent = Movie.objects.values('title','backdrop_path','pk').order_by('-release_date')[:100]
     movies_recent = random.sample(list(movies_recent),20)
     movies = movies_popular + movies_recent
+    
+    if request.user.username:
+        user = request.user
+        RM = user.recommandmovie_set.order_by('-coef')[:20] #오름차순이다.
+        RMs = [ x.movie for x in RM]
+        random.shuffle(RMs)
+        movies.extend(RMs)
+    
     #queryset = chain(movies_popular,movies_recent)
-    print( request.user) # 만약 유저명이 annoymous일 경우를 생각, 어떻게 인증을 검증할 지?
+    # 만약 유저명이 annoymous일 경우를 생각, 어떻게 인증을 검증할 지?
     serializer = MovieSerializer(movies, many=True)
     return Response(serializer.data)
 
@@ -189,40 +197,48 @@ def colloborative_filter(request):
 # 3. 이 영화를 평가한 유저의 평점을 이용한 collaborative filtering
 # 4. 좋야요한 영화의 평점을 기반으로 한 영화 추천
 # 5. 연령대, 성별 등등
-@api_view(['GET'])
-def get_user_recommand(request,user_id):
+
+
+@api_view(['GET']) # 유저가 처음 회원가입할 때만 동작하고 그 뒤에는 유저의 활동량에 따라 업데이트해줄지를 결정
+def get_user_recommend(request,user_id):
     user = get_object_or_404(User, pk=user_id)
     lmovies = user.like_movies.all() # 좋아요한 영화들
-    genres_dict = { x:0 for x in genres_list } # 좋아요한 영화들의 장르 개수를 구함
     
+    genres_dict = { x:0 for x in genres_list } # 좋아요한 영화들의 장르 개수를 구함 여기서 숫자가 높은 걸 선택해서 그 장르만 돌림
+    print(genres_dict)
     for l in lmovies:
         for g in l.genres.all():
             genres_dict[g.name]+=1
-    movies = Movie.objects.all() # 모든 영화들의 coefficient 구함
+    # movies = Movie.objects.all() # 모든 영화들의 coefficient 구함, 엄~청 오래걸림 O(n*g), n: 영화 개수, g: 장르 개수 2500개,
+    # 장르별 top 30*19
+    movies = Movie.objects.order_by('-popularity')[:500]
+    print(genres_dict)
     for movie in movies:
         up =0
         down = 0
+        
         for x in movie.genres.all():
-            
             if genres_dict.get(x.name,0):
                 up+=genres_dict[x.name]
-                down+=((genres_dict[x.name]+1)**(1/2))
+                down+=((genres_dict[x.name]**(2)))
         if down:    
-            coef = up/down
-            RecommandMovie.objects.create(movie_id=movie.id, user_id=user.id, coef=coef)
+            coef = up/(down**(1/2)+3**(1/2))
+            if coef:
+                RecommandMovie.objects.create(movie_id=movie.id, user_id=user.id, coef=coef) # 일정 점수 이하일 경우 삭제
+    print('success')
     return Response({'success':True})
     
-@api_view(['GET'])
-def get_user_recommand_movie(request,user_id):
-    user = get_object_or_404(User,pk=user_id)
-    RM = user.recommandmovie_set.order_by('coef')[:20]
-    RMs = [ x.movie for x in RM]
-    serializer = MovieSerializer(RMs, many=True)
-    return Response(serializer.data)
+# @api_view(['GET'])
+# def get_user_recommend_movie(request,user_id):
+#     user = get_object_or_404(User,pk=user_id)
+#     RM = user.recommandmovie_set.order_by('-coef')[:20] # 장고 기본 정렬순서는 오름차순이다.
+#     RMs = [ x.movie for x in RM]
+#     serializer = MovieSerializer(RMs, many=True)
+#     return Response(serializer.data)
 
 
 @api_view(['GET'])
-def recommendation(request):
+def recommendation(request): # 회원가입 
     user = request.user
     user_liked = user.like_movies.values('pk')
     list_pk = [liked['pk'] for liked in user_liked]
@@ -252,6 +268,7 @@ def create_rank(request, movie_pk):
 
 @api_view(['GET'])
 def search(request):
+    
     q = request.GET.get('query')
     if q:
         movie = Movie.objects.filter(Q(title__icontains=q) | Q(original_title__icontains=q) | Q(overview__icontains=q)) # 해리 포터

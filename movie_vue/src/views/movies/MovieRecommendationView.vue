@@ -93,7 +93,7 @@ export default {
             console.log('I was closed by the timer')
           }
         })
-      this.$router.push({name: 'Profile', params: {userId: this.$cookies.get('userId') } )
+      this.$router.push({name: 'Profile', params: {userId: this.$cookies.get('userId')} })
 
     },
     no_movie() {
@@ -106,6 +106,7 @@ export default {
             'Authorization': `Token ${this.$cookies.get('auth-token')}`
           }
         }
+      
       axios.get(SERVER.URL + "/movies/" + movieId +"/like/", config)
         .then( res => {
           if (res.data.liked === false) {
@@ -119,7 +120,9 @@ export default {
         })
         .catch( err => console.log("NONO", err))
     
+      }
     },
+  },
   created(){
     this.fetchMovies()
   },
@@ -127,7 +130,7 @@ export default {
     truncate: function (text, length, suffix) {
       return text.substring(0, length) + suffix;
     },
-  },
+  }
 }
 </script>
 
