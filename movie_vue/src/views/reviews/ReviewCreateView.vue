@@ -160,7 +160,7 @@ export default {
           console.log(err.response.data)
           if (this.reviewData.title === "" ){
             this.errorMessages = "제목을 입력해야 합니다."
-          }else if (this.reviewData.content === ""){
+          } else if (this.reviewData.content === ""){
             this.errorMessages = "내용을 입력해야 합니다."
           }
           console.log(this.errorMessages)
@@ -180,13 +180,13 @@ export default {
       }
       // 리뷰 생성 
       else {
-        const movieId = this.$route.params.movieId
+        // const movieId = this.$route.params.movieId
         // this.reviewData.rank = this.rankData.rank
         axios.post(SERVER.URL + "/movies/"+ this.$route.params.movieId + SERVER.ROUTES.createReview, this.reviewData, config)
           .then((res)=> {
           this.$router.push({ name: 'ReviewDetail', params: { "reviewId":res.data.id}})
-          axios.post(SERVER.URL + "/movies/" + movieId +"/rank/",this.reviewData.rank,config)
-            .catch( err => console.log(err.response.data ))
+          // axios.post(SERVER.URL + "/movies/" + movieId +"/rank/",this.reviewData.rank,config)
+          //   .catch( err => console.log(err.response.data ))
           })
         .catch(err => {
           console.log(err.response.data)

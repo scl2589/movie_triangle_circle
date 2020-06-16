@@ -34,8 +34,8 @@ def update_review(request, review_pk):
     review = get_object_or_404(Review, pk=review_pk)
     if review.user == request.user:
         userrank = review.user.userrank_set.filter(user=review.user, movie=review.movie)[0]
-        userrank.rank =request.data.rank
-        userRank.save()
+        userrank.rank =request.data['rank']
+        userrank.save()
         serializer = ReviewSerializer(data=request.data, instance=review)
         if serializer.is_valid(raise_exception=True):
             serializer.save()

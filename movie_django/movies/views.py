@@ -118,6 +118,8 @@ def review_create(request, movie_pk):
         return Response(content, status=status.HTTP_400_BAD_REQUEST)
     movie = get_object_or_404(Movie, pk=movie_pk)
     serializer = ReviewSerializer(data=request.data)
+    
+    UserRank.objects.create(user=request.user, movie=movie,rank =request.data['rank'])
     if serializer.is_valid(raise_exception=True):
         serializer.save(user=request.user, movie=movie)
         return Response(serializer.data)
