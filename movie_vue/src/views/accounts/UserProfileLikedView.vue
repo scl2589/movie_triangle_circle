@@ -17,7 +17,7 @@
     <button :disabled="pageNum >= pageCount - 1" @click="nextPage" class="page-btn">다음</button>
   </div>
   <div v-else class="mt-5 text-center">
-    <h3>마음에 드는 영화를 먼저 선택해주세요.</h3>
+    <h3>좋아요를 누른 영화가 없습니다.</h3>
   </div>
 </div>
 
@@ -235,6 +235,11 @@ button {
 
 button:hover{
   background-color: #345389;
+}
+
+.page-btn:hover {
+  background-color: #345389;
+  cursor: pointer;
 }
 
 </style>

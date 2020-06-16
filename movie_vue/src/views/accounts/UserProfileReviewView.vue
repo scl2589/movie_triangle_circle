@@ -3,9 +3,9 @@
     <table class="table" v-if="userInfo.reviews[0]">
       <thead>
         <tr>
-          <th scope="col">Movie Title</th>
-          <th scope="col">Review Title</th>
-          <th scope="col">User Rank</th>
+          <th scope="col" >Movie Title</th>
+          <th scope="col" >Review Title</th>
+          <th scope="col" >User Rank</th>
         </tr>
       </thead>
       <tbody>
@@ -26,7 +26,7 @@
       <button :disabled="pageNum >= pageCount - 1" @click="nextPage" class="page-btn">다음</button>
     </div>
     <div v-else class="mt-5 text-center">
-      <h3> 영화 리뷰를 작성해주세요. </h3>
+      <h3> 작성한 영화 리뷰가 없습니다. </h3>
     </div>
   </div>
   
@@ -101,7 +101,8 @@ export default {
 
 <style scoped>
 table {
-  border: 1px solid #ccc;
+  /* border: 1px solid #ccc; */
+  border-style: none;
   border-collapse: collapse;
   margin: 0;
   padding: 0;
@@ -116,7 +117,7 @@ table caption {
 
 table tr {
   background-color: #f8f8f8;
-  border: 1px solid #ddd;
+  /* border: 1px solid #ddd; */
   padding: .35em;
 }
 
@@ -209,6 +210,20 @@ button:hover{
 }
 
 th, td {
-  font-family: 'Noto Sans KR'
+  font-family: 'Noto Sans KR';
+  background-color: white;
+}
+
+table{
+  border-style: none;
+}
+
+.table thead th {
+  border-top-style: none;
+}
+
+.page-btn:hover {
+  background-color: #345389;
+  cursor: pointer;
 }
 </style>

@@ -16,6 +16,8 @@ import MovieRecommendationView from '@/views/movies/MovieRecommendationView.vue'
 import ReviewCreateView from '@/views/reviews/ReviewCreateView.vue'
 import ReviewDetailView from '../views/reviews/ReviewDetailView.vue'
 
+import DiscussionView from '@/views/accounts/DiscussionView.vue'
+
 // Search
 import SearchView from '@/views/accounts/SearchView.vue'
 Vue.use(VueRouter)
@@ -73,6 +75,11 @@ Vue.use(VueRouter)
     path: '/accounts/:userId/likedMovies',
     name: 'UserProfileLiked',
     component: UserProfileLikedView,
+  },
+  {
+    path: '/discussions',
+    name: 'Discussions',
+    component: DiscussionView
   }
 
 ]
@@ -84,7 +91,7 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const publicPages = ['Login', 'Signup', 'MovieList', 'MovieDetail', 'ReviewDetail', 'Search']
+  const publicPages = ['Login', 'Signup', 'MovieList', 'MovieDetail', 'ReviewDetail', 'Search', 'Discussions']
   const authPages = ['Login', 'Signup', 'ReviewCreate', 'MovieRecommendation', 'UserProfile']
   const authRequired = !publicPages.includes(to.name)
   const unauthRequired = authPages.includes(to.name) // 로그인 해서는 안됨

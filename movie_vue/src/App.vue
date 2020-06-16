@@ -12,23 +12,28 @@
           <router-link class="nav-link" :class="{active: isCreate}" v-if="isLoggedIn" :to="{ name:'Create' }">Create Review</router-link>
         </li> -->
         <li class="nav-item" role="presentation">
+          <router-link class="nav-link" :class="{active: isDiscussions}" :to="{ name : 'Discussions' }">Discussions</router-link>
+        </li>
+        <li class="nav-item" role="presentation">
           <router-link class="nav-link" :class="{active: isSignup}" v-if="!isLoggedIn" :to="{ name:'Signup' }">Signup</router-link>
         </li>
         <li class="nav-item" role="presentation">
           <router-link class="nav-link" :class="{active: isLogin}"  v-if="!isLoggedIn" :to="{ name:'Login' }">Login</router-link>
         </li>
         <li class="nav-item" role="presentation">
-          <router-link class="nav-link" :class="{active: isProfile}" v-if="isLoggedIn" :to="{ name:'Profile', params: { userId:this.$cookies.get('userId') } }">Profile</router-link>
+          <!-- <router-link class="nav-link" :class="{active: isProfile}" v-if="isLoggedIn" :to="{ name:'Profile', params: { userId:this.$cookies.get('userId') } }">Profile</router-link> -->
+          <button @click="clickedProfile" class="nav-link profile-button"  :class="{active: isProfile}" v-if="isLoggedIn"  type="submit">Profile</button>
         </li>
         <li class="nav-item" role="presentation">
           <router-link class="nav-link" v-if="isLoggedIn" @click.native="logout" to="/accounts/logout/">Logout</router-link>
         </li>
-        <div class="form-inline">
+        
+      </div>
+      <div class="form-inline">
           <input @keyup.enter="search"  v-model="query" class="form-control mr-sm-2" placeholder="영화를 검색해주세요." aria-label="Search">
           <!-- <router-link :to="{name:'Search', params:{ query: query}}" @click.native="search" class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</router-link> -->
           <button @click="search" class="btn my-2 my-sm-0" type="submit">Search</button>
         </div>
-      </div>
     </ul>
     
     <router-view class="mt-3 mb-5 container" @submit-login-data="login" @submit-signup-data="signup" :searchData="searchData" />
@@ -54,6 +59,7 @@ export default {
       isSignup: false, 
       isLogin: false,
       isProfile: false,
+      isDiscussions: false,
       query: null,
       searchData: [],
     }
@@ -223,6 +229,9 @@ export default {
       }
       
     },
+    clickedProfile() {
+      this.$router.push({ name:'Profile', params: { userId:this.$cookies.get('userId') } })
+    }
   },
   mounted() {
     this.isLoggedIn = this.$cookies.isKey('auth-token') ? true : false
@@ -234,6 +243,8 @@ export default {
       this.isLogin = true
     } else if (this.$route.name == 'Profile'){
       this.isProfile = true
+    } else if (this.$route.name == 'Discussions'){
+      this.isDiscussions = true
     }
 
   },
@@ -257,6 +268,11 @@ export default {
       this.isProfile = true
     } else{
       this.isProfile = false
+    }
+    if(this.$route.name == 'Discussions'){
+      this.isDiscussions = true
+    } else{
+      this.isDiscussions = false
     }
   },
   
@@ -306,6 +322,7 @@ export default {
 
 .btn:hover{
   background-color: #345389;
+  color: white;
 }
 
 .footer{
@@ -345,5 +362,13 @@ export default {
   clear: both;
   height: 20px;
 }
+
+.profile-button {
+  background-color: white;
+}
+.nav-item {
+  border-bottom: #345389;
+}
+
 </style>
 

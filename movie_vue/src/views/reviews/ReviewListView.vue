@@ -80,7 +80,7 @@ export default {
 <style scoped>
 
 table {
-  border: 1px solid #ccc;
+  /* border: 1px solid #ccc; */
   border-collapse: collapse;
   margin: 0;
   padding: 0;
@@ -95,7 +95,7 @@ table caption {
 
 table tr {
   background-color: #f8f8f8;
-  border: 1px solid #ddd;
+  /* border: 1px solid #ddd; */
   padding: .35em;
 }
 
@@ -174,6 +174,11 @@ table th {
   padding: 0 1rem;
 }
 
+.page-btn:hover {
+  background-color: #345389;
+  cursor: pointer;
+}
+
 button {
   background-color:#6f8dbf;
   outline: transparent;
@@ -184,6 +189,20 @@ button {
 
 button:hover{
   background-color: #345389;
+}
+
+th, td {
+  font-family: 'Noto Sans KR';
+  background-color: white;
+}
+
+table{
+  border-style: none;
+}
+
+.table thead th {
+  border-top-style: none;
+  
 }
 
 </style>

@@ -1,12 +1,12 @@
 <template>
   <div class="container">
     <div v-if="this.$cookies.get('auth-token') && movies_recommend.length" class="m-0">
-      <h2 class="mt-3"><span tooltip="이 알고리즘은 장르 기반입니다." flow="right"> Recommended Movies</span></h2>
+      <h2 class="mt-3"><span tooltip="좋아요를 기반으로 추천되었습니다." flow="right"> Recommended Movies</span></h2>
       <div class="row scroll-sect recent-movies">
         <div class="row-inner">
             <div class="tile" v-for="movie in movies_recommend" :key="`movie_${movie.pk}`">
                 <div class="tile-media">
-                  <img :src="posterURL + movie.backdrop_path" @click="detail(movie.pk)">
+                  <img :src="posterURL + movie.backdrop_path" alt="영화 포스터" @click="detail(movie.pk)">
                 </div>
                 <div class="text-center">
                   <h5 @click="detail(movie.pk)">{{ movie.title }}</h5> 
@@ -16,7 +16,7 @@
       </div>
     </div>
 
-    <h2>Popular Now</h2>
+    <h2><span tooltip="인기있는 영화" flow="right">Popular Now</span></h2>
     <div class="row scroll-sect recent-movies">
       <div class="row-inner">
           <div class="tile" v-for="movie in movies_popular" :key="`movie_${movie.pk}`">
@@ -30,12 +30,12 @@
       </div>
     </div>
 
-    <h2>Recent Movies</h2>
+    <h2><span tooltip="최신 영화" flow="right">Recent Movies</span></h2>
     <div class="row scroll-sect recent-movies">
       <div class="row-inner">
           <div class="tile" v-for="movie in movies_recent" :key="`movie_${movie.pk}`">
               <div class="tile-media">
-                <img :src="posterURL + movie.backdrop_path" @click="detail(movie.pk)">
+                <img :src="posterURL + movie.backdrop_path" alt="영화 포스터" @click="detail(movie.pk)">
               </div>
               <div class="text-center">
                 <h5 @click="detail(movie.pk)">{{ movie.title }}</h5> 
@@ -320,5 +320,18 @@ main span {
 
 h2 {
   font-family: 'Gugi';
+}
+th, td {
+  font-family: 'Noto Sans KR';
+  background-color: white;
+}
+
+table{
+  border-style: none;
+}
+
+.table thead th {
+  border-top-style: none;
+  
 }
 </style>

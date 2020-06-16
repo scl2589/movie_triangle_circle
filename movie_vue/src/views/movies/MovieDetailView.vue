@@ -9,7 +9,7 @@
           <div class="col-md-8 p-4 justify-content-between" >
             <h2><strong>{{ movie.title }}</strong><span class="dimcolor" :title="`${movie.release_date}`">({{date}})</span></h2>
             <!-- 장르 -->
-            <p><span v-for="genre in movie.genres" :key="`genre_${genre}`"><a href="#" class="badge mr-2 p-1">{{ get_genre(genre)}}</a></span></p>
+            <h5><span v-for="genre in movie.genres" :key="`genre_${genre}`"><a href="#" class="badge mr-2 p-1 mb-1">{{ get_genre(genre)}}</a></span></h5>
             <div>
               <div class="c100 small" :class="computedClass" title="평점" data-toggle="tooltip" data-placement="top" >
                 <span><strong>{{movie.vote_average*10}}</strong></span>
@@ -218,8 +218,18 @@ export default {
     if (this.movie.rank_users.filter( rankobj =>
         rankobj == this.$cookies.get('userId')  // 이게 왜 false야, 참조
         ).length){
-        console.log('no')
-        // 두번째일 경우 모달 
+          const swal = Swal.mixin({
+            position: 'center',
+            showConfirmButton: true,
+            // title: this.errorMessages,
+            
+            
+          })
+          swal.fire({
+            icon: 'error',
+            title: "이미 작성한 리뷰가 존재합니다.",
+            confirmButtonText: '확인',
+          })
       }
     else {
       this.$router.push({ name: 'ReviewCreate'})
@@ -338,6 +348,7 @@ export default {
   text-align: center;
   white-space: nowrap;
 }
+
 
 
 /* .swal-wide{
