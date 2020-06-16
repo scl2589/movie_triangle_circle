@@ -8,7 +8,7 @@
           <img class="content-image" :src="posterURL + movie.poster_path">
           <div class="content-details fadeIn-top">
               <h3>{{ movie.title}}</h3>
-              <p><i class="fas fa-heart mr-2"></i>{{ movie.like_user }}</p>
+              <h5><i class="fas fa-heart mr-2"></i>{{ movie.like_user }}</h5>
           </div>
       </div>
     </div>
@@ -241,6 +241,11 @@ button {
 
 button:hover{
   background-color: #345389;
+}
+
+h5{
+  color: white;
+  
 }
 
 </style>

@@ -173,9 +173,10 @@ p{
   color: #f5b893;
 }
 
-a.nav-link{
+p.nav-link{
   color: #345389;
   text-align:end;
+  font-family: 'Do Hyeon' !important;
 }
 
 .active {

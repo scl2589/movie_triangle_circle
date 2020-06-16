@@ -207,4 +207,8 @@ button {
 button:hover{
   background-color: #345389;
 }
+
+th, td {
+  font-family: 'Noto Sans KR'
+}
 </style>

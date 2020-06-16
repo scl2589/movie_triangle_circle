@@ -155,7 +155,7 @@ def colloborative_filter(user_id):
                     recomv = RecommandMovie.objects.filter(movie_id=movie.id, user_id=user_id)[0]
                     recomv.coef = result+recomv.coef
                     recomv.save()
-                    
+    # 장르의 가중치를 구해놓음                
                 # Recommand.objects.create(movie1_id=m[i].id,movie2_id=m[j].id,result=result)
     #             serializer = RecommandSerializer(Recommand,data=result)
     #             if serializer.is_valid():

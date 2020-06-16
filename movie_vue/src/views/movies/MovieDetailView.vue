@@ -51,9 +51,11 @@
             <div class="overview">
               <p >{{ movie.overview }}</p>
             </div>
-            <!--감독 및 출연 배우 -->
-            <p>{{ movie.director ? "감독: " + movie.director.replace(/,/gi,' ') : "" }}</p>
-            <p>{{ movie.actor ? "배우: " + movie.actor.replace(/,/gi,' ') : "" }}</p>
+            <div> 
+              <!--감독 및 출연 배우 -->
+              <p>{{ movie.director ? "감독: " + movie.director.replace(/,/gi,' ') : "" }}</p>
+              <p>{{ movie.actor ? "배우: " + movie.actor.replace(/,/gi,' ') : "" }}</p>
+            </div>
           </div>
         </div>
      </div>
@@ -315,6 +317,7 @@ export default {
 .overview {
   overflow: hidden;
   text-overflow: ellipsis;
+  font-family: 'Noto Sans KR'
 }
 
 .heart{
