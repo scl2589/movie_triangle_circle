@@ -16,12 +16,12 @@ class ReviewListSerializer(serializers.ModelSerializer):
     created_at = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S")
     updated_at = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S")
     comment_set = CommentSerializer(required=False, many=True)
-    rank = serializers.SerializerMethodField()
+    ranks = serializers.SerializerMethodField()
     class Meta:
         model = Review
-        fields = ('id', 'title', 'user','created_at', 'content','comment_set','updated_at','rank')
-     def get_rank(self, obj):  # "get_" + field name
-        return obj.movie.title
+        fields = ('id', 'title', 'user','created_at', 'content','comment_set','updated_at','ranks')
+    def get_ranks(self, obj):
+        return obj.movie
 class ReviewSerializer(serializers.ModelSerializer):
     user = UserSerializer(required=False)
     created_at = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False)

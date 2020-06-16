@@ -95,11 +95,11 @@ export default {
             'Authorization': `Token ${this.$cookies.get('auth-token')}`
           }
         }
-        
+        this.followingState = !this.followingState
         axios.get(SERVER.URL + '/accounts/' + this.$route.params.userId + '/follow/', config)
           .then( res => {
             console.log("RES",res)
-            this.followingState != this.followingState
+            
             this.followers = res.data
             // this.followings =this.userInfo.followings.length
             })
