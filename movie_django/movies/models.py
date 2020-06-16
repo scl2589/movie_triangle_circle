@@ -26,6 +26,7 @@ class Movie(models.Model):
     genres = models.ManyToManyField(Genre,related_name='genre_movies')
     like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_movies')
     rank_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='user_rank', through='UserRank')
+    user = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='recommand_movie', through='RecommandMovie' )
     # new column    
     # bookmark = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
@@ -39,8 +40,8 @@ class UserRank(models.Model):
     # review = models.OneToOneField(Review, on_delete=models.CASCADE)
     rank = models.FloatField(default=0)
 
-# class Recommand(models.Model):
-#     movie1 = models.ForeignKey(Movie, on_delete=models.CASCADE)
-#     movie2 = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-#     result = models.CharField(max_length=100)
+class RecommandMovie(models.Model):
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    coef = models.FloatField(default=0)
      

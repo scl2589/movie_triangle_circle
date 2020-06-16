@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <div class="header mb-0">
       <h1> {{userInfo.username}} </h1>
     </div>

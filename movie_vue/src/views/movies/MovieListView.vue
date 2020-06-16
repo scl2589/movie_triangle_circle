@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <h2>Popular Now</h2>
     <div class="row scroll-sect">
       <div class="row-inner">

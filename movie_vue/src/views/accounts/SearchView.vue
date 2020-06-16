@@ -1,6 +1,7 @@
 <template>
+<div class="d-flex justify-content-center">
   <div>
-    <div v-for="movie in searchData" :key="`movie_${movie.id}`" class="container" >
+    <div v-for="movie in searchData" :key="`movie_${movie.id}`"  class="container">
       <div class="content" @click="goToMovie(movie.id)">
         <div class="content-overlay"></div>
           <img class="content-image" v-if="movie.poster_path" :src="posterURL + movie.poster_path">
@@ -11,8 +12,9 @@
           </div>
       </div>
     </div>
-
   </div>
+</div>
+
 </template>
 
 <script>
@@ -169,5 +171,8 @@ export default {
 .fa-heart{
   color: red;
 }
+/* .row{
+  width: 100%;
+} */
 
 </style>

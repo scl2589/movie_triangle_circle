@@ -1,6 +1,6 @@
 <template>
   <div id="app" >
-    <ul class="nav nav-tabs d-flex row justify-content-between container" id="nav-tab" role="tablist">
+    <ul class="nav nav-tabs d-flex justify-content-between container" id="nav-tab" role="tablist">
       <div class="align-items-end row"> 
         <li class="nav-item" >
           <img src="./assets/logo.png" alt="세상의 모든 영화 로고" width="150px" title="세상의 모든 영화">
@@ -30,7 +30,8 @@
       </div>
     </ul>
     
-    <router-view class="mt-3 container" @submit-login-data="login" @submit-signup-data="signup" :searchData="searchData" />
+    <router-view class="mt-3" @submit-login-data="login" @submit-signup-data="signup" :searchData="searchData" />
+    
     <div class="footer">
       <p class="footer-p">© 2020 Copyright: <i class="fab fa-github"></i> <a href="https://github.com/scl2589" target="_blank">chaelinshin96</a> | <i class="fab fa-github"></i><a href="https://github.com/ehtlfk" target="_blank"> ehtlfk</a></p>
     </div>
@@ -199,7 +200,10 @@ export default {
         .then( (res) => {
           this.searchData = res.data
         })
-        .catch( err => console.log(err.response.data))
+        .catch(err => {
+          console.log(err.response.data)
+          console.log("THIS IS SOMEHOW AN ERROR")
+          })
     },
   },
   mounted() {
@@ -272,16 +276,12 @@ export default {
   color: #f5b893;
 }
 
-h3 {
-  text-align: center;
-}
-
 .nav-link{
   color: #345389;
   text-align:end;
 }
 
-.active {
+.nav-item > .active {
   color: #f5b893 !important; 
 }
 

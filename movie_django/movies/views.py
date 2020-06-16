@@ -26,6 +26,9 @@ import re
 # module path
 from reviews.serializers import ReviewListSerializer, ReviewSerializer
 
+User = get_user_model()
+genres_list = list(Genre.objects.values_list('name',flat=True))
+
 @api_view(['GET'])
 def index(request):
     movies_popular = Movie.objects.values('title','backdrop_path','pk').order_by('-popularity')[:100]
@@ -66,7 +69,6 @@ def like(request, movie_pk):
 @api_view(['GET'])
 # @permission_classes([IsAuthenticated]) # token을 보내서 request.user하면 된당
 def like_state(request, movie_pk, user_pk):
-    User = get_user_model()
     user = get_object_or_404(User, pk=user_pk)
     state = user.like_movies.filter(pk=movie_pk).exists()
  
@@ -148,7 +150,6 @@ def colloborative_filter(request):
     #     total+=sum(arr[i])
     # print(total)
     # return Response({'success': True})
-    User = get_user_model()
     movie_data = Movie.objects.all()
     user_data = User.objects.all()
     ur = UserRank.objects.all()
@@ -180,10 +181,34 @@ def colloborative_filter(request):
     #             if serializer.is_valid():
     #                 serializer.save(movie1_id=m[i].id,movie2_id=m[j].id)
     return Response({"message":"success"})
+    # return data 피어슨 계수
+
+
+# 1. 처음 회원가입시 받은 유저의 좋아요 개수를 이요해서 장르에 w를 부여하고 모든 영화에 대한 coefficient를 구해서 이 수치가 높은 영화들을 추천 20~30
+# 2. 선택한 영화와 유사한 장르의 영화를 선호했던 영화의 데이터를 이용해서 추천
+# 3. 이 영화를 평가한 유저의 평점을 이용한 collaborative filtering
+# 4. 좋야요한 영화의 평점을 기반으로 한 영화 추천
+# 5. 연령대, 성별 등등
+@api_view(['GET'])
+def get_user_recommand(request,user_id):
+    user = get_object_or_404(User, pk=user_id)
+    lmovies = user.like_movies.all() # 좋아요한 영화들
+    genres_dict = { x:0 for x in genres_list } # 좋아요한 영화들의 장르 개수를 구함
+    for l in lmovies:
+        for g in l.genres.all():
+            genres_dict[g.name]+=1
+    movies = Movie.objects.all() # 모든 영화들의 coefficient 구함
+    for movie in movies:
+        up =0
+        down = 0
+        for x in movie.genres.all():
+            if genres.get('x.name',0):
+                up+=genres
+    return Response(SearchSerializer.data)
     
 
-    # return data 피어슨 계수
- 
+
+
 
 
 @api_view(['GET'])

@@ -1,12 +1,12 @@
 <template>
-<div>
+<div class="container">
     <div class="header entire setbackground" v-bind:style="{'background-image': 'linear-gradient(to right, rgba(23, 37, 61, 1.00) 150px,rgba(52, 83, 137, 0.84) 100%), url(' + backDropURL + ')' }">
       <div class="inner-header p-3 d-flex float-this">
         <div class="row">
           <div class="col-md-4">
             <img :src="posterURL" class="setwidth justify-content-center" alt="영화포스터" >
           </div>
-          <div class="col-md-8 p-4 justify-content-between" >
+          <div class="col-md-8 p-4 justify-content-between" ></div>
             <h2><strong>{{ movie.title }}</strong><span class="dimcolor" :title="`${movie.release_date}`">({{date}})</span></h2>
             <!-- 장르 -->
             <p><span v-for="genre in movie.genres" :key="`genre_${genre}`"><a href="#" class="badge mr-2 p-1">{{ get_genre(genre)}}</a></span></p>
@@ -61,7 +61,7 @@
       <h3 class="vertical-align m-0">Reviews</h3>
       <button @click="GoToReviewClick" class="btn btn-sm ">리뷰 쓰러가기</button>
     </div>
-    <div v-if="reviews.length" class="mt-3">
+    <div v-if="reviews.length" class="mt-3"></div>
       <ReviewList :reviews="reviews"/>
     </div>
     <div v-else>
