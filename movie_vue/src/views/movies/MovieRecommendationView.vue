@@ -15,10 +15,10 @@
     </div>
     <div class="row mt-3">
       <div class="col-3 d-flex justify-content-start mb-5">
-        <button @click="no_movie" class="btn btn-danger" :to="{ name:'MovieRecommendation' }">다른 영화도 보고싶어요</button>
+        <button @click="no_movie" class="btn" :to="{ name:'MovieRecommendation' }">다른 영화도 보고싶어요</button>
       </div>
       <div class="offset-6 col-3 d-flex justify-content-end mb-5">
-        <button @click="done" class="btn btn-danger">다 선택했어요</button>
+        <button @click="done" class="btn">다 선택했어요</button>
       </div>
     </div>
   </div>

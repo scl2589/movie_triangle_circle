@@ -26,7 +26,7 @@
         <div class="form-inline">
           <input @keyup.enter="search"  v-model="query" class="form-control mr-sm-2" placeholder="Search" aria-label="Search">
           <!-- <router-link :to="{name:'Search', params:{ query: query}}" @click.native="search" class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</router-link> -->
-          <button @click="search" class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+          <button @click="search" class="btn my-2 my-sm-0" type="submit">Search</button>
         </div>
       </div>
     </ul>

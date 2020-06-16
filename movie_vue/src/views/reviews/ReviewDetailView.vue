@@ -12,7 +12,7 @@
         </h4>
         <!-- 게시글 정보 (작성자, 작성시간) -->
         <div class="row justify-content-between oneline pb-0">
-          <small class="line-height">posted by <span class="link-hover" @click="goToUserPage"><strong>{{ user.username }}</strong></span> on {{review.created_at}} edited at {{review.updated_at}}</small>
+          <small class="line-height">posted by <span class="link-hover" @click="goToUserPage(user.id)"><strong>{{ user.username }}</strong></span> on {{review.created_at}} <span style="font-weight:700">edited at</span> {{review.updated_at}}</small>
           <!-- 드롭다운 (삭제, 수정) -->
           <div v-if="reviewCreator" class="btn-group dropleft">
             <button type="button" class="btn btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
@@ -38,7 +38,7 @@
             <div v-for="comment in comments" :key="`comment_${comment.id}`">
               <div class="comments row justify-content-between">
                 <!-- 댓글 작성자 -->
-                <strong @click="goToUserPage">{{ comment.user.username}}</strong>
+                <strong @click="goToUserPage(comment.user.id)">{{ comment.user.username}}</strong>
                 <!-- 댓글 수정/삭제 드롭다운 -->
                 <div v-if="commentCreator(comment.user.id)" class="btn-group dropleft comment-padding">
                   <button type="button" class="btn btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
@@ -249,8 +249,8 @@ export default {
         this.currentComment.select = comment_id
       }
     },
-    goToUserPage() {
-      this.$router.push({ name:'Profile', params:{ userId: this.review.user.id}})
+    goToUserPage(user_id) {
+      this.$router.push({ name:'Profile', params:{ userId: user_id}})
     },
     goToMovieDetail() {
       this.$router.push({ name:'MovieDetail', params:{ movieId: this.movieId}})
@@ -325,7 +325,7 @@ export default {
 }
 
 .comments {
-  padding-left: 20px;
+  padding-left: 15px;
 }
 
 
