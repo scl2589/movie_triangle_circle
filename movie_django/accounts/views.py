@@ -45,8 +45,10 @@ def follow(request, user_pk):
             user.followers.remove(request.user) # 팔로우 제거
         else:
             user.followers.add(request.user) # 팔로우 추가
+    number = user.followers.count() 
     
-    return Response({'success':True})
+    # return Response({'success':True})
+    return Response(number)
 
 
 @api_view(['GET'])

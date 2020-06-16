@@ -30,11 +30,12 @@ def review_detail_delete(request, review_pk):
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
 def update_review(request, review_pk):
-   
+    
     review = get_object_or_404(Review, pk=review_pk)
     if review.user == request.user:
-        UserRank.objects.filter(user_id=review.user.id, movie_id=review.movie)[0].rank =request.data.rank
-        UserRank.save()
+        userrank = review.user.userrank_set.filter(user=review.user, movie=review.movie)[0]
+        userrank.rank =request.data.rank
+        userRank.save()
         serializer = ReviewSerializer(data=request.data, instance=review)
         if serializer.is_valid(raise_exception=True):
             serializer.save()

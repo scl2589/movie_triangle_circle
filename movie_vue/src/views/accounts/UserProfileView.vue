@@ -13,8 +13,8 @@
       <div class="row justify-content-between setWidth mb-3">
         <!-- <p> -->
           <span>리뷰 수 {{userInfo.reviews.length }}</span>
-          <span>팔로워 {{userInfo.followers.length }}</span>
-          <span>팔로우 {{userInfo.followings.length}}</span>
+          <span>팔로워 {{this.followers}}</span>
+          <span>팔로우 {{this.followings}}</span>
         <!-- </p> -->
       </div>
     </div>
@@ -56,7 +56,11 @@ export default {
       clickedLiked: true,
       clickedReview: false,
       followingState: false,
+      followers: 0,
+      followings: 0,
     }
+    // followers: this.userInfo.followers.length,
+    // followings: this.userInfo.followings.length
   },
   components: {
     UserProfileLiked,
@@ -91,11 +95,13 @@ export default {
             'Authorization': `Token ${this.$cookies.get('auth-token')}`
           }
         }
-        this.followingState != this.followingState
+        
         axios.get(SERVER.URL + '/accounts/' + this.$route.params.userId + '/follow/', config)
           .then( res => {
-            console.log(res)
-            
+            console.log("RES",res)
+            this.followingState != this.followingState
+            this.followers = res.data
+            // this.followings =this.userInfo.followings.length
             })
           .catch( err => {
             console.log(err)
@@ -131,6 +137,8 @@ export default {
     axios.get(SERVER.URL + '/accounts/'+this.$route.params.userId + '/info/')
     .then(res => {
       this.userInfo = res.data
+      this.followers = this.userInfo.followers.length
+      this.followings =this.userInfo.followings.length
       res.data.like.forEach( movie => {
         movie.poster_path=SERVER.IMAGEPATH.imagepath780 + movie.poster_path
       })
