@@ -15,7 +15,7 @@
     <paginate
       class="pagination"
       v-model="page"
-      :page-count="20"
+      :page-count="totalData" 
       :page-range="5"
       :margin-pages="2"
       :click-handler="clickCallback"
@@ -25,7 +25,7 @@
       :page-class="'page-item'">
     </paginate>
 
-    <nav aria-label="Page navigation example">
+    <!-- <nav aria-label="Page navigation example">
   <ul class="pagination">
     <li class="page-item">
       <a class="page-link" href="#" aria-label="Previous">
@@ -40,8 +40,8 @@
         <span aria-hidden="true">&raquo;</span>
       </a>
     </li>
-  </ul>
-</nav>
+  </ul> 
+</nav>-->
   </div>
   
 </div>
@@ -51,6 +51,8 @@
 </template>
 
 <script>
+// import Paginate from 'vuejs-paginate'
+
 export default {
   name: 'UserProfileLikedView',
   props: {
@@ -58,6 +60,7 @@ export default {
   },
   data() {
     return {
+      page: 1,
     }
   },
   methods: {
@@ -67,7 +70,13 @@ export default {
         params: {movieId: movie_pk},
       })
     }
-  }
+  },
+  computed: {
+    totalData() { 
+      let length = this.userInfo.like.length 
+      return Math.floor(length/9) + 1
+    }
+ }
 }
 </script>
 
@@ -124,7 +133,6 @@ export default {
 .content .content-overlay {
   background: rgba(0,0,0,0.7);
   position: absolute;
-  height: 99%;
   width: 100%;
   left: 0;
   top: 0;
