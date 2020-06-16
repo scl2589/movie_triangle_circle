@@ -203,19 +203,19 @@ export default {
           icon: 'warning',
           title: "로그인이 필요합니다."
         })
-
       }
-      
     },
     GoToReviewClick() {
-      if (this.movie.rank_users.filter( rankobj =>
-        rankobj.id === this.$cookies.get('userId')).length){
+   //rank_user ====id
+    if (this.movie.rank_users.filter( rankobj =>
+        rankobj == this.$cookies.get('userId')  // 이게 왜 false야, 참조
+        ).length){
         console.log('no')
-          // 두번째일 경우 모달 
-        }
-      else {
-        this.$router.push({ name: 'ReviewCreate'})
+        // 두번째일 경우 모달 
       }
+    else {
+      this.$router.push({ name: 'ReviewCreate'})
+    }
     },
     get_genre(genre_id) {
       const genre_dict = {12: '모험',

@@ -115,6 +115,9 @@ export default {
     },
     checkFollow() {
       // 여기 저녁먹고 다녀와서 작업하기 
+      if (this.$cookies.get('auth-token')){
+        axios.get(SERVER.URL + '/accounts/'+this.$route.params.userId +'/')
+      }
     }
   },
   created() {
