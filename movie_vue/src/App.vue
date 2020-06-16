@@ -24,8 +24,9 @@
           <router-link class="nav-link" v-if="isLoggedIn" @click.native="logout" to="/accounts/logout/">Logout</router-link>
         </li>
         <div class="form-inline">
-          <input @keyup.enter="search()" v-model="query" class="form-control mr-sm-2"  placeholder="Search" aria-label="Search">
-          <router-link :to="{name:'Search', params:{ query: query}}" @click.native="search" class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</router-link>
+          <input @keyup.enter="search"  v-model="query" class="form-control mr-sm-2" placeholder="Search" aria-label="Search">
+          <!-- <router-link :to="{name:'Search', params:{ query: query}}" @click.native="search" class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</router-link> -->
+          <button @click="search" class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </div>
       </div>
     </ul>
@@ -192,6 +193,8 @@ export default {
     },
     search() {
       if (this.query){
+        this.$router.push( {name: 'Search', params:{ query: this.query}})
+        // :to="{name:'Search', params:{ query: query}}"
         const config = {
           params : {
             'query': this.query
@@ -200,6 +203,7 @@ export default {
         axios.get(SERVER.URL + SERVER.ROUTES.search, config)
           .then( (res) => {
             this.searchData = res.data
+            this.query=""
           })
           .catch(err => {
             console.log(err.response.data)
@@ -345,6 +349,4 @@ export default {
   height: 20px;
 }
 </style>
-
-
 

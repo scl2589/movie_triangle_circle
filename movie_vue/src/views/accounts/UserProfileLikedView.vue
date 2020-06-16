@@ -1,7 +1,7 @@
 <template>
 
 <div v-if="userInfo.like" class="mb-5">
-  <div v-for="likedMovie in userInfo.like" :key="`like_${likedMovie.id}`" class="container" >
+  <div v-for="likedMovie in paginatedData" :key="`like_${likedMovie.id}`" class="container" >
       <div class="content" @click="goToMovie(likedMovie.id)">
           <div class="content-overlay"></div>
           <img class="content-image" :src="likedMovie.poster_path">
@@ -11,43 +11,16 @@
           </div>
       </div>
   </div>
-  <div>
-    <paginate
-      class="pagination"
-      v-model="page"
-      :page-count="totalData" 
-      :page-range="5"
-      :margin-pages="2"
-      :click-handler="clickCallback"
-      :prev-text="'Prev'"
-      :next-text="'Next'"
-      :container-class="'pagination'"
-      :page-class="'page-item'">
-    </paginate>
-
-    <!-- <nav aria-label="Page navigation example">
-  <ul class="pagination">
-    <li class="page-item">
-      <a class="page-link" href="#" aria-label="Previous">
-        <span aria-hidden="true">&laquo;</span>
-      </a>
-    </li>
-    <li class="page-item"><a class="page-link" href="#">1</a></li>
-    <li class="page-item"><a class="page-link" href="#">2</a></li>
-    <li class="page-item"><a class="page-link" href="#">3</a></li>
-    <li class="page-item">
-      <a class="page-link" href="#" aria-label="Next">
-        <span aria-hidden="true">&raquo;</span>
-      </a>
-    </li>
-  </ul> 
-</nav>-->
+  <div class="btn-cover" v-if="paginatedData">
+    <button :disabled="pageNum===0" @click="prevPage" class="page-btn">이전</button>
+    <span class="page-count">{{ pageNum + 1}} / {{ pageCount }} 페이지</span>
+    <button :disabled="pageNum >= pageCount - 1" @click="nextPage" class="page-btn">다음</button>
   </div>
-  
+  <div v-else class="mt-5 text-center">
+    <h3>마음에 드는 영화를 먼저 선택해주세요.</h3>
+  </div>
 </div>
-<div v-else class="mt-5">
-    <h3>마음에 드는 영화에 좋아요를 눌러주세요</h3>
-</div>
+
 </template>
 
 <script>
@@ -56,11 +29,15 @@
 export default {
   name: 'UserProfileLikedView',
   props: {
-    'userInfo': Array, 
+    'userInfo': {
+      type: Array,
+      required: true
+    }
   },
   data() {
     return {
-      page: 1,
+      pageNum: 0,
+      pageSize: 6,
     }
   },
   methods: {
@@ -69,12 +46,36 @@ export default {
         name: 'MovieDetail',
         params: {movieId: movie_pk},
       })
+    },
+    nextPage() {
+      this.pageNum += 1;
+    },
+    prevPage() {
+      this.pageNum -= 1;
     }
   },
   computed: {
     totalData() { 
       let length = this.userInfo.like.length 
       return Math.floor(length/9) + 1
+    },
+    pageCount() {
+      let listLeng = this.userInfo.like.length,
+      listSize = this.pageSize,
+      page = Math.floor(listLeng/listSize);
+
+      if (listLeng % listSize > 0) page += 1;
+      return page;
+    },
+    paginatedData() {
+      if (this.userInfo.like.length >= 1){
+        const start = this.pageNum * this.pageSize,
+        end = start + this.pageSize;
+        return this.userInfo.like.slice(start, end);
+      } else {
+        return 0
+      }
+      
     }
  }
 }
@@ -209,11 +210,31 @@ export default {
   color: red;
 }
 
-.pagination {
+
+.btn-cover {
+  margin-top: 1.5rem;
+  text-align: center;
   clear: both;
-  display: flex;
-  justify-content: center;
-  /* outline: black !important; */
+}
+.btn-cover .page-btn {
+  width: 5rem;
+  height: 2rem;
+  letter-spacing: 0.5px;
+}
+.btn-cover .page-count {
+  padding: 0 1rem;
+}
+
+button {
+  background-color:#6f8dbf;
+  outline: transparent;
+  color: white;
+  border: transparent;
+  border-radius: 5px;
+}
+
+button:hover{
+  background-color: #345389;
 }
 
 </style>

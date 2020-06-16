@@ -15,6 +15,7 @@ export default {
         // UserInfo: '/rest-auth/user/',
         userInfo: '/accounts/:userId/info',
         search: '/search/',
+        recommendation: '/movies/getrecommend/',
     },
     IMAGEPATH: {
         imagepath780: 'https://image.tmdb.org/t/p/w780',

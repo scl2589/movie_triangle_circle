@@ -9,7 +9,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="review in userInfo.reviews" :key="`review_${review}`" >
+        <tr v-for="review in paginatedData" :key="`review_${review}`" >
           <th data-label="Movie Title" scope="row" @click="getReviewDetail(review.review_id)">{{ review.movie_title }}</th>
           <td data-label="Review Title" @click="getReviewDetail(review.review_id)"> {{ review.review_title }}</td>
           <td data-label="User Rank" @click="getReviewDetail(review.review_id)" id="star-rating">
@@ -20,7 +20,12 @@
         </tr>
       </tbody>
     </table>
-    <div v-else class="mt-5">
+    <div class="btn-cover" v-if="paginatedData">
+      <button :disabled="pageNum === 0" @click="prevPage" class="page-btn">이전</button>
+      <span class="page-count">{{ pageNum + 1 }} / {{ pageCount }} 페이지</span>
+      <button :disabled="pageNum >= pageCount - 1" @click="nextPage" class="page-btn">다음</button>
+    </div>
+    <div v-else class="mt-5 text-center">
       <h3> 영화 리뷰를 작성해주세요. </h3>
     </div>
   </div>
@@ -32,7 +37,16 @@
 export default {
   name: 'UserProfileReviewView',
   props: {
-    'userInfo': Array,
+    'userInfo': {
+      type: Array,
+      required: true
+    }
+  },
+  data() {
+    return {
+      pageNum: 0,
+      pageSize: 10,
+    }
   },
   methods: {
     getReviewDetail(reviewId) {
@@ -56,7 +70,32 @@ export default {
         outer.appendChild(empty_cln);
       }
     },
+    nextPage() {
+      this.pageNum += 1;
+    },
+    prevPage() {
+      this.pageNum -= 1;
+    }
   },
+  computed: {
+    pageCount() {
+      let listLeng = this.userInfo.reviews.length,
+      listSize = this.pageSize,
+      page = Math.floor(listLeng/listSize);
+
+      if (listLeng % listSize > 0) page += 1;
+      return page;
+    },
+    paginatedData() {
+      if (this.userInfo.reviews.length >= 1){
+        const start = this.pageNum * this.pageSize,
+        end = start + this.pageSize;
+        return this.userInfo.reviews.slice(start, end);
+      } else {
+        return 0
+      }
+    }
+  }
 }
 </script>
 
@@ -143,4 +182,29 @@ table th {
 
 }
 
+.btn-cover {
+  margin-top: 1.5rem;
+  text-align: center;
+  clear: both;
+}
+.btn-cover .page-btn {
+  width: 5rem;
+  height: 2rem;
+  letter-spacing: 0.5px;
+}
+.btn-cover .page-count {
+  padding: 0 1rem;
+}
+
+button {
+  background-color:#6f8dbf;
+  outline: transparent;
+  color: white;
+  border: transparent;
+  border-radius: 5px;
+}
+
+button:hover{
+  background-color: #345389;
+}
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <table class="table mb-5">
+    <table class="table mb-5" v-if="reviews">
       <thead>
         <tr>
           <!-- <th scope="col">#</th> -->
@@ -10,7 +10,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="review in reviews" :key="`review_${review.id}`" @click="reviewDetail(review.id)" >
+        <tr v-for="review in paginatedData" :key="`review_${review.id}`" @click="reviewDetail(review.id)" >
           <!-- <th data-label="ID" scope="row">{{ review.id }}</th> -->
           <td data-label="Title"> {{ review.title }}</td>
           <td data-label="Username">{{ review.user.username }}</td>
@@ -18,6 +18,14 @@
         </tr>
       </tbody>
     </table>
+    <div class="btn-cover" v-if="paginatedData">
+      <button :disabled="pageNum === 0" @click="prevPage" class="page-btn">이전</button>
+      <span class="page-count">{{ pageNum + 1 }} / {{ pageCount }} 페이지</span>
+      <button :disabled="pageNum >= pageCount - 1" @click="nextPage" class="page-btn">다음</button>
+    </div>
+    <div v-else class="mt-5 text-center">
+      <h3> 리뷰를 작성해주세요! </h3>
+    </div>
   </div>
 </template>
 
@@ -25,11 +33,45 @@
 export default {
   name: 'ReviewList',
   props: {
-    reviews: Array,
+    reviews: {
+      type: Array,
+      required: true
+    }
+  },
+  data() {
+    return {
+      pageNum: 0,
+      pageSize: 10,
+    }
   },
   methods: {
     reviewDetail(reviewId) {
       this.$router.push({ name: 'ReviewDetail', params: { reviewId:reviewId }})
+    },
+    nextPage() {
+      this.pageNum += 1;
+    },
+    prevPage() {
+      this.pageNum -= 1;
+    }
+  },
+  computed: {
+    pageCount() {
+      let listLeng = this.reviews.length,
+      listSize = this.pageSize,
+      page = Math.floor(listLeng/listSize);
+
+      if (listLeng % listSize > 0) page += 1;
+      return page;
+    },
+    paginatedData() {
+      if (this.reviews.length >= 1){
+        const start = this.pageNum * this.pageSize,
+        end = start + this.pageSize;
+        return this.reviews.slice(start, end);
+      } else {
+        return 0
+      }
     }
   }
 }
@@ -116,6 +158,32 @@ table th {
   table td:last-child {
     border-bottom: 0;
   }
+}
+
+.btn-cover {
+  margin-top: 1.5rem;
+  text-align: center;
+  clear: both;
+}
+.btn-cover .page-btn {
+  width: 5rem;
+  height: 2rem;
+  letter-spacing: 0.5px;
+}
+.btn-cover .page-count {
+  padding: 0 1rem;
+}
+
+button {
+  background-color:#6f8dbf;
+  outline: transparent;
+  color: white;
+  border: transparent;
+  border-radius: 5px;
+}
+
+button:hover{
+  background-color: #345389;
 }
 
 </style>

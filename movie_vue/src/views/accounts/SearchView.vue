@@ -2,17 +2,24 @@
 <div class="container center mb-5 mt-3">
   <h3 class="d-flex justify-content-center" v-if="searchData.length != null">검색 결과: {{ searchData.length }} 건 </h3>
   <div>
-    <div v-for="movie in searchData" :key="`movie_${movie.id}`" class="container2">
+    <div v-for="movie in paginatedData" :key="`movie_${movie.id}`" class="container2">
       <div class="content" @click="goToMovie(movie.id)">
         <div class="content-overlay"></div>
-          <img class="content-image" v-if="movie.poster_path" :src="posterURL + movie.poster_path">
-          <h3 v-else> 검색 결과가 없습니다.</h3>
+          <img class="content-image" :src="posterURL + movie.poster_path">
           <div class="content-details fadeIn-top">
               <h3>{{ movie.title}}</h3>
               <p><i class="fas fa-heart mr-2"></i>{{ movie.like_user }}</p>
           </div>
       </div>
     </div>
+  </div>
+  <div class="btn-cover" v-if="paginatedData">
+    <button :disabled="pageNum===0" @click="prevPage" class="page-btn">이전</button>
+    <span class="page-count">{{ pageNum + 1}} / {{ pageCount }} 페이지</span>
+    <button :disabled="pageNum >= pageCount - 1" @click="nextPage" class="page-btn">다음</button>
+  </div>
+  <div v-else class="text-center">
+    <h2 >검색 결과가 없습니다.</h2>
   </div>
 </div>
 
@@ -24,11 +31,16 @@ import SERVER from '@/api/index.js'
 export default {
   name: 'Search',
   props: {
-    searchData: Object,
+    searchData: { 
+      type: Object,
+      required: true 
+    }
   },
   data() {
     return {
       posterURL: SERVER.IMAGEPATH.imagepath780,
+      pageNum: 0,
+      pageSize: 6,
     }
   },
   methods: {
@@ -38,8 +50,32 @@ export default {
         params: {movieId: movie_pk},
       })
     },
+    nextPage() {
+      this.pageNum += 1;
+    },
+    prevPage() {
+      this.pageNum -= 1;
+    }
   },
-  
+  computed: {
+    pageCount() {
+      let listLeng = this.searchData.length,
+      listSize = this.pageSize,
+      page = Math.floor(listLeng/listSize);
+
+      if (listLeng % listSize > 0) page += 1;
+      return page;
+    },
+    paginatedData() {
+      if (this.searchData.length >= 1) {
+        const start = this.pageNum * this.pageSize,
+        end = start + this.pageSize;
+        return this.searchData.slice(start, end);
+      } else {
+        return 0
+      }
+    }
+ }
 }
 </script>
  
@@ -178,6 +214,33 @@ export default {
 
 .center {
   margin: auto;
+}
+
+
+.btn-cover {
+  margin-top: 1.5rem;
+  text-align: center;
+  clear: both;
+}
+.btn-cover .page-btn {
+  width: 5rem;
+  height: 2rem;
+  letter-spacing: 0.5px;
+}
+.btn-cover .page-count {
+  padding: 0 1rem;
+}
+
+button {
+  background-color:#6f8dbf;
+  outline: transparent;
+  color: white;
+  border: transparent;
+  border-radius: 5px;
+}
+
+button:hover{
+  background-color: #345389;
 }
 
 </style>

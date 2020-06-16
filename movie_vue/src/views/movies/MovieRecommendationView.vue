@@ -28,6 +28,7 @@
 import axios from 'axios'
 import SERVER from '@/api/index.js'
 import Card from '@/views/movies/Card.vue'
+import Swal from 'sweetalert2'
 export default {
   name: 'MovieRecommendation',
   data() {
@@ -54,8 +55,46 @@ export default {
         })
         .catch(err => console.error(err))
     },
-    done() {
-      this.$router.push({name: 'MovieList'})
+    done() {  // 유저가 좋아하는 영화를 다 선택했을 경우 
+      const config = {
+        headers: {
+          Authorization: `Token ${this.$cookies.get('auth-token')}`
+        }
+      }
+      axios.get(SERVER.URL + SERVER.ROUTES.recommendation+ this.$cookies.get('userId')+"/", config)
+        .then(() => {
+          this.$router.push({name: 'MovieList'})
+        })
+      let timerInterval
+      Swal.fire({
+        title: '추천 영화를 생성중입니다.',
+        html: '조금만 기다려주세요',
+        timer: 5000,
+        timerProgressBar: true,
+        onBeforeOpen: () => {
+          Swal.showLoading()
+          timerInterval = setInterval(() => {
+            const content = Swal.getContent()
+            if (content) {
+              const b = content.querySelector('b')
+              if (b) {
+                b.textContent = Swal.getTimerLeft()
+              }
+            }
+          }, 100)
+        },
+        onClose: () => {
+          clearInterval(timerInterval)
+        }
+      })
+        .then((result) => {
+          /* Read more about handling dismissals below */
+          if (result.dismiss === Swal.DismissReason.timer) {
+            console.log('I was closed by the timer')
+          }
+        })
+      this.$router.push({name: 'Profile', params: {userId: this.$cookies.get('userId') } )
+
     },
     no_movie() {
       this.fetchMovies()
@@ -79,17 +118,16 @@ export default {
           console.log(res.data)
         })
         .catch( err => console.log("NONO", err))
-      }
+    
     },
-  },
   created(){
     this.fetchMovies()
   },
   filters: {
     truncate: function (text, length, suffix) {
-            return text.substring(0, length) + suffix;
-        },
-  }
+      return text.substring(0, length) + suffix;
+    },
+  },
 }
 </script>
 
