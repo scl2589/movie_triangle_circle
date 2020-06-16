@@ -52,6 +52,8 @@
               <p >{{ movie.overview }}</p>
             </div>
             <!--감독 및 출연 배우 -->
+            <p>{{ movie.director ? "감독: " + movie.director.replace(/,/gi,' ') : "" }}</p>
+            <p>{{ movie.actor ? "배우: " + movie.actor.replace(/,/gi,' ') : "" }}</p>
           </div>
         </div>
      </div>
@@ -144,6 +146,8 @@ export default {
               showConfirmButton: true,
               timer: 3000,
               timerProgressBar: false,
+              // customClass: 'title-class',
+              width: '500px',
               })
               this.toast = Toast
             })
@@ -154,7 +158,8 @@ export default {
       if (this.must_show === true){
         this.toast.fire({
         icon: 'warning',
-        title: "현재 예고편이 검색되지 않습니다."
+        title: "현재 예고편이 검색되지 않습니다.",
+        
       })
       }
       
@@ -198,6 +203,7 @@ export default {
               showConfirmButton: true,
               timer: 3000,
               timerProgressBar: false,
+              
               })
         error.fire({
           icon: 'warning',
@@ -329,36 +335,15 @@ export default {
   text-align: center;
   white-space: nowrap;
 }
-/* .heart:after {
-  position: absolute;
-  top: 0.08em;
-  left: 0.08em;
-  display: block;
-  content: " ";
-  border-radius: 50%;
-  background-color: black;
-  width: 0.84em;
-  height: 0.84em;
-  -webkit-transition-property: all;
-  -moz-transition-property: all;
-  -o-transition-property: all;
-  transition-property: all;
-  -webkit-transition-duration: 0.2s;
-  -moz-transition-duration: 0.2s;
-  -o-transition-duration: 0.2s;
-  transition-duration: 0.2s;
-  -webkit-transition-timing-function: ease-in;
-  -moz-transition-timing-function: ease-in;
-  -o-transition-timing-function: ease-in;
-  transition-timing-function: ease-in;
-} */
 
-/* .span {
-  vertical-align: top;
-  display: inline-block;
-  line-height: 1.6em;
-} */
 
+/* .swal-wide{
+  width:500px !important;
+}
+
+.swal2-title{
+  font-size: 20px !important;
+} */
 
 .rect-auto,
 .c100.p51 .slice,

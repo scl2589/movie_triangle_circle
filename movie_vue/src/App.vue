@@ -24,7 +24,7 @@
           <router-link class="nav-link" v-if="isLoggedIn" @click.native="logout" to="/accounts/logout/">Logout</router-link>
         </li>
         <div class="form-inline">
-          <input @keyup.enter="search"  v-model="query" class="form-control mr-sm-2" placeholder="Search" aria-label="Search">
+          <input @keyup.enter="search"  v-model="query" class="form-control mr-sm-2" placeholder="영화를 검색해주세요." aria-label="Search">
           <!-- <router-link :to="{name:'Search', params:{ query: query}}" @click.native="search" class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</router-link> -->
           <button @click="search" class="btn my-2 my-sm-0" type="submit">Search</button>
         </div>
@@ -274,7 +274,7 @@ export default {
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Jua', Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: left;
@@ -285,24 +285,17 @@ export default {
   padding: 30px;
 }
 
-#nav a {
-  font-weight: bold;
-  color: #345389;
-}
-
-#nav a.router-link-exact-active {
-  color: #f5b893;
-}
 
 .nav-link{
   color: #345389;
   text-align:end;
+  font-family: 'Gugi', cursive !important;
 }
 
 .nav-item > .active {
-  color: #f5b893 !important; 
+  /* color: #f5b893 !important;  */
+  color: pink !important;
 }
-
 
 .btn {
   background-color:#6f8dbf;
@@ -314,6 +307,7 @@ export default {
 .btn:hover{
   background-color: #345389;
 }
+
 .footer{
   position: fixed;
   bottom: 0;
@@ -328,6 +322,7 @@ export default {
 .footer-p{
   line-height: 40px;
   margin: 0;
+  font-family: 'Gugi';
 }
 
 .footer-p > a:link{
@@ -335,15 +330,17 @@ export default {
   text-decoration: none;
 }
 
-.footer-p > a:hover{
+
+.footer-p  a:visited{
+  text-decoration: none;
+  color: white;
+}
+
+.footer-p a:hover {
   text-decoration: none;
   color: pink;
 }
 
-.footer-p > a:visited{
-  text-decoration: none;
-  color: white;
-}
 .m-5{
   clear: both;
   height: 20px;

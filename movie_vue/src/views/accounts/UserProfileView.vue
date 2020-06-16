@@ -190,10 +190,6 @@ a.nav-link{
   color: black;
 }
 
-#nav-tab {
-  cursor: pointer;
-}
-
 .line {
   /* border-bottom-style: solid; */
   border-top: 1px solid #dbdbdb;
@@ -207,4 +203,9 @@ a.nav-link{
 .btn:hover {
   color: white;
 }
+
+.nav-link:hover{
+  cursor: pointer;
+}
+
 </style>

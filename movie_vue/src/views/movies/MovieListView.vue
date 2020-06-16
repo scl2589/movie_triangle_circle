@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div v-if="this.$cookies.get('auth-token')" class="m-0">
+    <div v-if="this.$cookies.get('auth-token') && movies_recommend.length" class="m-0">
       <h2 class="mt-3"><span tooltip="이 알고리즘은 장르 기반입니다." flow="right"> Recommended Movies</span></h2>
       <div class="row scroll-sect recent-movies">
         <div class="row-inner">
@@ -9,7 +9,7 @@
                   <img :src="posterURL + movie.backdrop_path" @click="detail(movie.pk)">
                 </div>
                 <div class="text-center">
-                  <p @click="detail(movie.pk)">{{ movie.title }}</p> 
+                  <h5 @click="detail(movie.pk)">{{ movie.title }}</h5> 
                 </div>
             </div>
         </div>
@@ -24,7 +24,7 @@
                 <img :src="posterURL + movie.backdrop_path" @click="detail(movie.pk)">
               </div>
               <div class="text-center">
-                <p @click="detail(movie.pk)">{{ movie.title }}</p> 
+                <h5 @click="detail(movie.pk)">{{ movie.title }}</h5> 
               </div>
           </div>
       </div>
@@ -38,7 +38,7 @@
                 <img :src="posterURL + movie.backdrop_path" @click="detail(movie.pk)">
               </div>
               <div class="text-center">
-                <p @click="detail(movie.pk)">{{ movie.title }}</p> 
+                <h5 @click="detail(movie.pk)">{{ movie.title }}</h5> 
               </div>
           </div>
       </div>
@@ -214,7 +214,7 @@ img {
   content: attr(tooltip); /* magic! */
   
   /* most of the rest of this is opinion */
-  font-family: Helvetica, sans-serif;
+  font-family:  'Noto Sans KR', Helvetica, sans-serif;
   text-align: center;
   
   /* 
@@ -314,7 +314,11 @@ main span {
   background: #dedede;
 }
 
+.text-center {
+  font-family: 'Do Hyeon', sans-serif;
+}
 
-
-
+h2 {
+  font-family: 'Gugi';
+}
 </style>
