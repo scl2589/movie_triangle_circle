@@ -15,7 +15,7 @@
     </div>
 
     <h2 class="mt-3">Recent Movies</h2>
-    <div class="row scroll-sect">
+    <div class="row scroll-sect recent-movies">
       <div class="row-inner">
           <div class="tile" v-for="movie in movies_recent" :key="`movie_${movie.pk}`">
               <div class="tile-media">
@@ -96,6 +96,10 @@ img {
   height:150px;
   object-fit:cover;
   
+}
+
+.recent-movies {
+  margin-bottom: 60px;
 }
 .row-inner:hover
 {

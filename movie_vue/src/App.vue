@@ -1,6 +1,6 @@
 <template>
-  <div id="app" class="container">
-    <ul class="nav nav-tabs d-flex row justify-content-between" id="nav-tab" role="tablist">
+  <div id="app" >
+    <ul class="nav nav-tabs d-flex row justify-content-between container" id="nav-tab" role="tablist">
       <div class="align-items-end row"> 
         <li class="nav-item" >
           <img src="./assets/logo.png" alt="세상의 모든 영화 로고" width="150px" title="세상의 모든 영화">
@@ -30,7 +30,10 @@
       </div>
     </ul>
     
-    <router-view class="mt-3" @submit-login-data="login" @submit-signup-data="signup" :searchData="searchData" />
+    <router-view class="mt-3 container" @submit-login-data="login" @submit-signup-data="signup" :searchData="searchData" />
+    <div class="footer">
+      <p class="footer-p">© 2020 Copyright: <i class="fab fa-github"></i> <a href="https://github.com/scl2589" target="_blank">chaelinshin96</a> | <i class="fab fa-github"></i><a href="https://github.com/ehtlfk" target="_blank"> ehtlfk</a></p>
+    </div>
   </div>
 </template>
 
@@ -293,8 +296,36 @@ h3 {
 .btn:hover{
   background-color: #345389;
 }
+.footer{
+  position: fixed;
+  bottom: 0;
+  background-color: #345389;
+  color: white;  
+  width: 100%;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+}
 
+.footer-p{
+  line-height: 40px;
+  margin: 0;
+}
 
+.footer-p > a:link{
+  color: white;
+  text-decoration: none;
+}
+
+.footer-p > a:hover{
+  text-decoration: none;
+  color: pink;
+}
+
+.footer-p > a:visited{
+  text-decoration: none;
+  color: white;
+}
 </style>
 
 
