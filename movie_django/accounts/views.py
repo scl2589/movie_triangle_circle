@@ -24,16 +24,7 @@ def profile(request, user_pk):
 # def get_user_id(request, username):
 #     return Response(User.objects.filter(username=username)[0].id)
 
-@login_required
-def follow(request, pk):
-    User = get_user_model()
-    user = get_object_or_404(User, pk=pk)
-    if user != request.user:
-        if user.followers.filter(pk=request.user.pk).exists():
-            user.followers.remove(request.user)
-        else:
-            user.followers.add(request.user)
-    return redirect('accounts:detail', user.pk)
+
 
 
 @api_view(['GET']) 
@@ -43,16 +34,17 @@ def user_info(request, user_pk):
     # list_pk = [liked.pk for liked in user.like_movies.all()]
     # movies = Movie.objects.filter(pk__in=list_pk)
     serializer = UserProfileSerializer(user)
-   
     return Response(serializer.data)
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def follow(request, user_pk):
     user = get_object_or_404(User, pk=pk)
-    if user != request.user:
+    if user != request.user: # 본인 여부
         if user.followers.filter(pk=request.user.pk).exists():
-            user.followers.remove(request.user)
+            user.followers.remove(request.user) # 팔로우 제거
         else:
-            user.followers.add(request.user)
-    return Resoponse({'success':True})
+            user.followers.add(request.user) # 팔로우 추가
+    
+    return Response({'success':True})
+

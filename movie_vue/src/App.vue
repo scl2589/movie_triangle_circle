@@ -31,7 +31,7 @@
       </div>
     </ul>
     
-    <router-view class="mt-5 mb-5 container" @submit-login-data="login" @submit-signup-data="signup" :searchData="searchData" />
+    <router-view class="mt-3 mb-5 container" @submit-login-data="login" @submit-signup-data="signup" :searchData="searchData" />
     <div class="m-5"></div>
     <div class="footer mt-5">
       <p class="footer-p">© 2020 Copyright: <i class="fab fa-github"></i> <a href="https://github.com/scl2589" target="_blank">chaelinshin96</a> | <i class="fab fa-github"></i><a href="https://github.com/ehtlfk" target="_blank"> ehtlfk</a></p>

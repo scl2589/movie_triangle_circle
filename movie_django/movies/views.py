@@ -216,7 +216,6 @@ def get_user_recommend(request,user_id):
     for movie in movies:
         up =0
         down = 0
-        
         for x in movie.genres.all():
             if genres_dict.get(x.name,0):
                 up+=genres_dict[x.name]
@@ -272,7 +271,6 @@ def search(request):
     q = request.GET.get('query')
     if q:
         movie = Movie.objects.filter(Q(title__icontains=q) | Q(original_title__icontains=q) | Q(overview__icontains=q)) # 해리 포터
-        
         if movie:
             serializer = SearchSerializer(movie, many=True)
             return Response(serializer.data)

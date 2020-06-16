@@ -1,7 +1,19 @@
 <template>
   <div class="container">
-    <div class="header mb-0">
-      <h1> {{userInfo.username}} </h1>
+    <div class="header mb-0 ">
+      <div class="row justify-content-center mb-3">
+        <h2> 
+          {{userInfo.username}} 
+          <span><button class="btn btn-sm" >팔로우</button></span>
+        </h2>
+      </div>
+      <div class="row justify-content-between setWidth mb-3">
+        <!-- <p> -->
+          <span>리뷰 수 {{userInfo.reviews.length }}</span>
+          <span>팔로워 {{userInfo.followers.length }}</span>
+          <span>팔로우 {{userInfo.followings.length}}</span>
+        <!-- </p> -->
+      </div>
     </div>
     <!-- 좋아한 영화 -->
     <div class="d-flex justify-content-center line"> 
@@ -124,4 +136,12 @@ a.nav-link{
   border-top: 1px solid #dbdbdb;
 }
 
+.setWidth{
+  width: 30%;
+  margin: auto;
+}
+
+.btn:hover {
+  color: white;
+}
 </style>

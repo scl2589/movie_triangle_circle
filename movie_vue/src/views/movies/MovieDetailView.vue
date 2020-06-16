@@ -103,7 +103,9 @@ export default {
       date: "",
       must_show: false,
       toast: "",
-      liked_users :""
+      liked_users :"",
+      review_state: true, 
+      //리뷰는 하나만
     }
   },
   computed: {
@@ -121,7 +123,7 @@ export default {
           this.date = this.movie.release_date.slice(0,4)
           this.posterURL = imgURL + this.movie.poster_path
           this.backDropURL = imgURL + this.movie.backdrop_path
-          
+          this.liked_users = this.movie.like_users.length
           axios.get(API_URL, {
             params: {
               key: API_KEY,
@@ -207,7 +209,12 @@ export default {
       
     },
     GoToReviewClick() {
-      this.$router.push({ name: 'ReviewCreate'})
+      if (this.review_state){
+        this.$router.push({ name: 'ReviewCreate'})
+      }
+      else{
+        // 두번째일 경우 모달 
+      }
     },
     get_genre(genre_id) {
       const genre_dict = {12: '모험',

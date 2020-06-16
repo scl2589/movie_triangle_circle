@@ -28,7 +28,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
     # poster = serializers.SerializerMethodField()
     class Meta:
         model = User
-        fields= ('id','like','reviews','username') 
+        fields= ('id','like','reviews','username','followers','followings') 
     def get_like(self, obj):  # "get_" + field name
         # print(User.objects.prefetch_related('comment_set'))
         
