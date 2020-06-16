@@ -16,15 +16,15 @@
    <div class="row justify-content-center">
     <div class="feedback">
       <div class="rating">
-        <input type="radio" name="rating" id="rating-5" value=5 v-model="rankData.rank">
+        <input type="radio" name="rating" id="rating-5" value=5 v-model="reviewData.rank">
         <label for="rating-5"></label>
-        <input type="radio" name="rating" id="rating-4" value=4 v-model="rankData.rank">
+        <input type="radio" name="rating" id="rating-4" value=4 v-model="reviewData.rank">
         <label for="rating-4"></label>
-        <input type="radio" name="rating" id="rating-3" value=3 v-model="rankData.rank">
+        <input type="radio" name="rating" id="rating-3" value=3 v-model="reviewData.rank">
         <label for="rating-3"></label>
-        <input type="radio" name="rating" id="rating-2" value=2 v-model="rankData.rank">
+        <input type="radio" name="rating" id="rating-2" value=2 v-model="reviewData.rank">
         <label for="rating-2"></label>
-        <input type="radio" name="rating" id="rating-1" value=1 v-model="rankData.rank">
+        <input type="radio" name="rating" id="rating-1" value=1 v-model="reviewData.rank">
         <label for="rating-1"></label>
         <div class="emoji-wrapper">
           <div class="emoji">
@@ -151,7 +151,7 @@ export default {
       }
       // 리뷰 수정
       if (this.$route.params.reviewId) {
-        this.reviewData.rank = this.rankData.rank
+        // this.reviewData.rank = this.rankData.rank
         axios.put(SERVER.URL + "/reviews/"+ this.$route.params.reviewId + "/update_review/", this.reviewData, config)
         .then(()=> {
           this.$router.push({ name: 'ReviewDetail', params: { "reviewId":this.$route.params.reviewId }})
@@ -181,11 +181,11 @@ export default {
       // 리뷰 생성 
       else {
         const movieId = this.$route.params.movieId
-        this.reviewData.rank = this.rankData.rank
+        // this.reviewData.rank = this.rankData.rank
         axios.post(SERVER.URL + "/movies/"+ this.$route.params.movieId + SERVER.ROUTES.createReview, this.reviewData, config)
           .then((res)=> {
           this.$router.push({ name: 'ReviewDetail', params: { "reviewId":res.data.id}})
-          axios.post(SERVER.URL + "/movies/" + movieId +"/rank/",this.rankData,config)
+          axios.post(SERVER.URL + "/movies/" + movieId +"/rank/",this.reviewData.rank,config)
             .catch( err => console.log(err.response.data ))
           })
         .catch(err => {
@@ -224,6 +224,7 @@ export default {
   created() {
     if (this.$route.params.reviewData){
       this.reviewData = this.$route.params.reviewData
+      // this.rankData.rank =this.reviewData.rank
     }
   }
 

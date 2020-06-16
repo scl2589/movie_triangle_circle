@@ -5,8 +5,8 @@
         <h2> 
           {{userInfo.username}} 
           <span v-if="others()">
-            <button class="btn btn-sm" v-show="follow" @click="changeFollow"><i class="fas fa-user-plus"></i> 팔로우</button>
-            <button class="btn btn-sm" v-show="!follow" @click="changeFollow"><i class="fas fa-user-check"></i> 팔로잉</button>
+            <button class="btn btn-sm" v-show="followingState" @click="changeFollow"><i class="fas fa-user-check"></i> 팔로잉</button>
+            <button class="btn btn-sm" v-show="!followingState" @click="changeFollow"><i class="fas fa-user-plus"></i> 팔로우</button>
           </span>
         </h2>
       </div>
@@ -55,7 +55,7 @@ export default {
       isReview: false,
       clickedLiked: true,
       clickedReview: false,
-      follow: false,
+      followingState: false,
     }
   },
   components: {
@@ -91,7 +91,7 @@ export default {
             'Authorization': `Token ${this.$cookies.get('auth-token')}`
           }
         }
-        this.follow = !this.follow
+        this.followingState != this.followingState
         axios.get(SERVER.URL + '/accounts/' + this.$route.params.userId + '/follow/', config)
           .then( res => {
             console.log(res)
@@ -116,7 +116,14 @@ export default {
     checkFollow() {
       // 여기 저녁먹고 다녀와서 작업하기 
       if (this.$cookies.get('auth-token')){
-        axios.get(SERVER.URL + '/accounts/'+this.$route.params.userId +'/')
+        axios.get(SERVER.URL + '/accounts/'+this.$route.params.userId +'/follow/'+this.$cookies.get('userId')+'/')
+          .then(res =>{
+            this.followingState = res.data
+            console.log("checked Follow",res.data)
+          })
+          .catch(err => {
+            console.log(err)
+          })
       }
     }
   },

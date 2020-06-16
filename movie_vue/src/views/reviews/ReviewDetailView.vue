@@ -181,7 +181,8 @@ export default {
         if( String(this.user.id) === this.$cookies.get('userId')){ // 숫자와 문자열 같게
           this.reviewData = {
           title: this.review.title,
-          content: this.review.content
+          content: this.review.content,
+          rank: this.review.rank
         }
         this.$router.push({ name: 'ReviewCreate', params: {movieId:this.review.movie, reviewData:this.reviewData,reviewId: this.$route.params.reviewId}})
         }

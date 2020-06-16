@@ -48,3 +48,9 @@ def follow(request, user_pk):
     
     return Response({'success':True})
 
+
+@api_view(['GET'])
+def checkFollow(request, user_pk, authenticated_pk):
+    user = get_object_or_404(User, pk=user_pk)
+    state = user.followers.filter(pk=authenticated_pk).exists()
+    return Response(state)
