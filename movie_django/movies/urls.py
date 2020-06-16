@@ -27,5 +27,7 @@ urlpatterns = [
     path('<int:movie_pk>/rank/', views.create_rank),
     
     # array
-    path('getUsergraph/', views.colloborative_filter)
+    path('getUsergraph/', views.colloborative_filter),
+    path('getUserRecommand/<int:user_id>/', views.get_user_recommand),
+    path('recommandmovie/<int:user_id>/', views.get_user_recommand_movie)
 ]

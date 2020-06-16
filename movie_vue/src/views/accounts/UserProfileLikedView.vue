@@ -16,7 +16,7 @@
       class="pagination"
       v-model="page"
       :page-count="20"
-      :page-range="3"
+      :page-range="5"
       :margin-pages="2"
       :click-handler="clickCallback"
       :prev-text="'Prev'"
@@ -207,6 +207,5 @@ export default {
   justify-content: center;
   /* outline: black !important; */
 }
-
 
 </style>

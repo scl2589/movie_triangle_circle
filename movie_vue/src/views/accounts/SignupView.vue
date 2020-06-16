@@ -47,6 +47,10 @@ export default {
 </script>
 
 <style scoped>
+.container {
+  width: 60%
+}
+
 .inputs {
   border: none;
   border-radius: 0;

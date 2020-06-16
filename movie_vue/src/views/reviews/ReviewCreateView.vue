@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <div>
       <i class="fas fa-backspace fa-2x" @click="returnToMovie"></i>
     </div>
@@ -116,7 +116,7 @@
       </div>
     </div>
 </div>
-  <div class="row justify-content-center">
+  <div class="row justify-content-center mb-5">
       <button class="btn" @click="createReview">제출하기</button>
     </div>
   </div>

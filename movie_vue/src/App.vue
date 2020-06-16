@@ -24,15 +24,15 @@
           <router-link class="nav-link" v-if="isLoggedIn" @click.native="logout" to="/accounts/logout/">Logout</router-link>
         </li>
         <div class="form-inline">
-          <input @keyup.enter="search()" v-model="query" class="form-control mr-sm-2"  placeholder="Search" aria-label="Search">
+          <input @keyup.native="search()" v-model="query" class="form-control mr-sm-2"  placeholder="Search" aria-label="Search">
           <router-link :to="{name:'Search', params:{ query: query}}" @click.native="search" class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</router-link>
         </div>
       </div>
     </ul>
     
-    <router-view class="mt-3" @submit-login-data="login" @submit-signup-data="signup" :searchData="searchData" />
-    
-    <div class="footer">
+    <router-view class="mb-5 mb-5 container" @submit-login-data="login" @submit-signup-data="signup" :searchData="searchData" />
+    <div class="m-5"></div>
+    <div class="footer mt-5">
       <p class="footer-p">© 2020 Copyright: <i class="fab fa-github"></i> <a href="https://github.com/scl2589" target="_blank">chaelinshin96</a> | <i class="fab fa-github"></i><a href="https://github.com/ehtlfk" target="_blank"> ehtlfk</a></p>
     </div>
   </div>

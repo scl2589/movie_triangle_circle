@@ -11,8 +11,8 @@ from rest_framework.permissions import IsAuthenticated,IsAdminUser
 from rest_framework import status
 
 # created Model, Serializers
-from .models import Movie, Genre, UserRank
-from .serializers import MovieSerializer, MovieDetailSerializer, UserRankSerializer, SearchSerializer
+from .models import Movie, Genre, UserRank, RecommandMovie
+from .serializers import MovieSerializer, MovieDetailSerializer, UserRankSerializer, SearchSerializer, RecommandMovieSerializer
 
 
 # python tool
@@ -194,6 +194,7 @@ def get_user_recommand(request,user_id):
     user = get_object_or_404(User, pk=user_id)
     lmovies = user.like_movies.all() # 좋아요한 영화들
     genres_dict = { x:0 for x in genres_list } # 좋아요한 영화들의 장르 개수를 구함
+    
     for l in lmovies:
         for g in l.genres.all():
             genres_dict[g.name]+=1
@@ -202,13 +203,22 @@ def get_user_recommand(request,user_id):
         up =0
         down = 0
         for x in movie.genres.all():
-            if genres.get('x.name',0):
-                up+=genres
-    return Response(SearchSerializer.data)
+            
+            if genres_dict.get(x.name,0):
+                up+=genres_dict[x.name]
+                down+=((genres_dict[x.name]+1)**(1/2))
+        if down:    
+            coef = up/down
+            RecommandMovie.objects.create(movie_id=movie.id, user_id=user.id, coef=coef)
+    return Response({'success':True})
     
-
-
-
+@api_view(['GET'])
+def get_user_recommand_movie(request,user_id):
+    user = get_object_or_404(User,pk=user_id)
+    RM = user.recommandmovie_set.order_by('coef')[:20]
+    RMs = [ x.movie for x in RM]
+    serializer = MovieSerializer(RMs, many=True)
+    return Response(serializer.data)
 
 
 @api_view(['GET'])
@@ -245,7 +255,7 @@ def search(request):
     q = request.GET.get('query')
     if q:
         movie = Movie.objects.filter(Q(title__icontains=q) | Q(original_title__icontains=q) | Q(overview__icontains=q)) # 해리 포터
-        print(movie)
+        
         if movie:
             serializer = SearchSerializer(movie, many=True)
             return Response(serializer.data)

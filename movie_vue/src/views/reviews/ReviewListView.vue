@@ -1,6 +1,6 @@
 <template>
   <div>
-    <table class="table">
+    <table class="table mb-5">
       <thead>
         <tr>
           <!-- <th scope="col">#</th> -->

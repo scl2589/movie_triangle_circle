@@ -1,6 +1,6 @@
 <template>
-  <div v-if="userInfo.reviews" class="mt-3">
-    <table class="table">
+  <div class="mt-3">
+    <table class="table" v-if="userInfo.reviews[0]">
       <thead>
         <tr>
           <th scope="col">Movie Title</th>
@@ -20,10 +20,11 @@
         </tr>
       </tbody>
     </table>
+    <div v-else class="mt-5">
+      <h3> 영화 리뷰를 작성해주세요. </h3>
+    </div>
   </div>
-  <div v-else class="mt-5">
-    <h3> 영화 리뷰를 작성해주세요. </h3>
-  </div>
+  
 </template>
 
 <script>

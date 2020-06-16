@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <div class="card mb-3">
       <div class="card-header">
         <!-- 영화 제목 -->

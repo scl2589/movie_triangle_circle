@@ -1,7 +1,8 @@
 <template>
-<div class="d-flex justify-content-center">
+<div class="container center mb-5">
+  <h4 class="d-flex justify-content-center">검색 결과: {{searchData.length}} 건 </h4>
   <div>
-    <div v-for="movie in searchData" :key="`movie_${movie.id}`"  class="container">
+    <div v-for="movie in searchData" :key="`movie_${movie.id}`" class="container2">
       <div class="content" @click="goToMovie(movie.id)">
         <div class="content-overlay"></div>
           <img class="content-image" v-if="movie.poster_path" :src="posterURL + movie.poster_path">
@@ -60,25 +61,25 @@ export default {
   padding: 0.7em 0;
 }
 
-.container{
+.container2{
   padding: 1em 0;
   float: left;
   width: 50%;
 }
 @media screen and (max-width: 640px){
-  .container{
+  .container2{
     display: block;
     width: 100%;
   }
 }
 
 @media screen and (min-width: 900px){
-  .container{
+  .container2{
     width: 33.33333%;
   }
 }
 
-.container .title{
+.container2 .title{
   color: #1a1a1a;
   text-align: center;
   margin-bottom: 10px;
@@ -174,5 +175,9 @@ export default {
 /* .row{
   width: 100%;
 } */
+
+.center {
+  margin: auto;
+}
 
 </style>

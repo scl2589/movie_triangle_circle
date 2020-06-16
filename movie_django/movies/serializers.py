@@ -1,6 +1,6 @@
 from rest_framework import serializers
 # from accounts.serializers import UserSerializer
-from .models import Movie,Genre, UserRank
+from .models import Movie,Genre, UserRank, RecommandMovie
 
 class MovieSerializer(serializers.ModelSerializer):
     class Meta:
@@ -28,3 +28,12 @@ class SearchSerializer(serializers.ModelSerializer):
         fields = ['title', 'backdrop_path', 'id', 'poster_path','like_user']
     def get_like_user(self, obj):
         return obj.like_users.count()
+
+class RecommandMovieSerializer(serializers.ModelSerializer):
+    # movies = serializers.SerializerMethodField()
+    class Meta:
+        model = Movie
+        fields = ['movies']
+    # def get_movies(self,obj):
+    #     print(obj.movie)
+    #     return obj.movie
