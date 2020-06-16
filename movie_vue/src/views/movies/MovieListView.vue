@@ -197,7 +197,7 @@ img {
 [tooltip]::before,
 [tooltip]::after {
   text-transform: none; /* opinion 2 */
-  font-size: .9em; /* opinion 3 */
+  font-size: .5em; /* opinion 3 */
   line-height: 1;
   user-select: none;
   pointer-events: none;
