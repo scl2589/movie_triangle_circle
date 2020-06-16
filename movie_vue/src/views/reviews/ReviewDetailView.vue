@@ -72,7 +72,7 @@
 <script>
 import axios from 'axios'
 import SERVER from '@/api/index.js'
-
+import Swal from 'sweetalert2'
 
 export default {
   name: 'ReviewDetail',
@@ -205,6 +205,19 @@ export default {
             })
           .catch((err) => {
             console.log(err.response.data)
+                      // 모달 띄우기 
+            const swal = Swal.mixin({
+              position: 'center',
+              showConfirmButton: true,
+              // title: this.errorMessages,
+              
+            })
+            swal.fire({
+              icon: 'error',
+              title: "댓글을 작성해주세요.",
+              confirmButtonText: '확인'
+            })
+
           })
       }
     },
