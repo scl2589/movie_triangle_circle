@@ -1,5 +1,3 @@
-from django.db import models
-
 # Create your models here.
 from django.db import models
 
@@ -9,7 +7,7 @@ from django.apps import apps
 # Create your models here.
 class Genre(models.Model):
     name = models.CharField(max_length=100)
-    
+    # id = models.IntegerField(primary_key=True)
 
 class Movie(models.Model):
     title = models.CharField(max_length=100)
@@ -23,10 +21,13 @@ class Movie(models.Model):
     original_language = models.CharField(max_length=100)
     poster_path = models.CharField(max_length=200)
     backdrop_path = models.CharField(max_length=200)
-    genres = models.ManyToManyField(Genre,related_name='genre_movies')
+    # genres = models.ManyToManyField(Genre,related_name='genre_movies')
     like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_movies')
     rank_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='user_rank', through='UserRank')
     user = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='recommand_movie', through='RecommandMovie' )
+    director = models.CharField(max_length=100, null=True)
+    actor = models.CharField(max_length=100, null=True)
+    # id = models.IntegerField(primary_key=True)
     # new column    
     # bookmark = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
