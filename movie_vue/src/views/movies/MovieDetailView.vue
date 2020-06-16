@@ -188,8 +188,23 @@ export default {
             console.log(res)
             this.liked_users = res.data.count
             })
-          .catch( err => console.log(err))
+          .catch( err => {
+            console.log(err)
+          })
+      } else {
+        const error = Swal.mixin({
+              position: 'center',
+              showConfirmButton: true,
+              timer: 3000,
+              timerProgressBar: false,
+              })
+        error.fire({
+          icon: 'warning',
+          title: "로그인이 필요합니다."
+        })
+
       }
+      
     },
     GoToReviewClick() {
       this.$router.push({ name: 'ReviewCreate'})

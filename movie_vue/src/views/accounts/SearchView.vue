@@ -1,6 +1,6 @@
 <template>
 <div class="container center mb-5 mt-3">
-  <h3 class="d-flex justify-content-center">검색 결과: {{searchData.length}} 건 </h3>
+  <h3 class="d-flex justify-content-center" v-if="searchData.length != null">검색 결과: {{ searchData.length }} 건 </h3>
   <div>
     <div v-for="movie in searchData" :key="`movie_${movie.id}`" class="container2">
       <div class="content" @click="goToMovie(movie.id)">

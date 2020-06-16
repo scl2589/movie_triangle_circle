@@ -27,6 +27,23 @@
           </div>
       </div>
     </div>
+    <div v-if="this.$cookies.get('auth-token')">
+      <h2 class="mt-3">Recommended Movies</h2>
+      <div class="row scroll-sect recent-movies">
+        <div class="row-inner">
+            <div class="tile" v-for="movie in movies_recommend" :key="`movie_${movie.pk}`">
+                <div class="tile-media">
+                  <img :src="posterURL + movie.backdrop_path" @click="detail(movie.pk)">
+                </div>
+                <div class="text-center">
+                  <p @click="detail(movie.pk)">{{ movie.title }}</p> 
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+    
+
   </div>
   
 </template>
@@ -41,7 +58,8 @@ export default {
     return {
       posterURL: 'https://image.tmdb.org/t/p/w780/',
       movies_recent: [],
-      movies_popular: []
+      movies_popular: [],
+      movies_recommend: [],
     }
   },
   methods: {
@@ -52,15 +70,21 @@ export default {
       })
     },
     fetchMovies() {
-      // const config = {
-      //     headers: {
-      //       'Authorization': `Token ${this.$cookies.get('auth-token')}`
-      //     }
-      // }
-      axios.get(SERVER.URL + SERVER.ROUTES.movieList)
+      let config = null
+      if (this.$cookies.get('auth-token')) {
+        config = {
+          headers: {
+            'Authorization': `Token ${this.$cookies.get('auth-token')}`
+          }    
+        }
+      }
+      axios.get(SERVER.URL + SERVER.ROUTES.movieList, config)
         .then(res => {
-          this.movies_recent= res.data.slice(0, 20)
-          this.movies_popular= res.data.slice(20, 40)
+          this.movies_recent= res.data.slice(20, 40)
+          this.movies_popular= res.data.slice(0, 20)
+          if (res.data.length>40){
+            this.movies_recommend = res.data.slice(40,60)
+          }
         })
         .catch(err => console.error(err))
     }

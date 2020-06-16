@@ -24,13 +24,13 @@
           <router-link class="nav-link" v-if="isLoggedIn" @click.native="logout" to="/accounts/logout/">Logout</router-link>
         </li>
         <div class="form-inline">
-          <input @keyup.native="search()" v-model="query" class="form-control mr-sm-2"  placeholder="Search" aria-label="Search">
+          <input @keyup.enter="search()" v-model="query" class="form-control mr-sm-2"  placeholder="Search" aria-label="Search">
           <router-link :to="{name:'Search', params:{ query: query}}" @click.native="search" class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</router-link>
         </div>
       </div>
     </ul>
     
-    <router-view class="mb-5 mb-5 container" @submit-login-data="login" @submit-signup-data="signup" :searchData="searchData" />
+    <router-view class="mt-5 mb-5 container" @submit-login-data="login" @submit-signup-data="signup" :searchData="searchData" />
     <div class="m-5"></div>
     <div class="footer mt-5">
       <p class="footer-p">© 2020 Copyright: <i class="fab fa-github"></i> <a href="https://github.com/scl2589" target="_blank">chaelinshin96</a> | <i class="fab fa-github"></i><a href="https://github.com/ehtlfk" target="_blank"> ehtlfk</a></p>
@@ -191,19 +191,33 @@ export default {
         })
     },
     search() {
-      const config = {
+      if (this.query){
+        const config = {
           params : {
             'query': this.query
           },
         }
-      axios.get(SERVER.URL + SERVER.ROUTES.search, config)
-        .then( (res) => {
-          this.searchData = res.data
-        })
-        .catch(err => {
-          console.log(err.response.data)
-          console.log("THIS IS SOMEHOW AN ERROR")
+        axios.get(SERVER.URL + SERVER.ROUTES.search, config)
+          .then( (res) => {
+            this.searchData = res.data
           })
+          .catch(err => {
+            console.log(err.response.data)
+            console.log("THIS IS SOMEHOW AN ERROR")
+            })
+      } else {
+        const error = Swal.mixin({
+              position: 'center',
+              showConfirmButton: true,
+              timer: 3000,
+              timerProgressBar: false,
+              })
+        error.fire({
+          icon: 'warning',
+          title: "값을 입력해야 합니다."
+        })
+      }
+      
     },
   },
   mounted() {
@@ -325,6 +339,10 @@ export default {
 .footer-p > a:visited{
   text-decoration: none;
   color: white;
+}
+.m-5{
+  clear: both;
+  height: 20px;
 }
 </style>
 
