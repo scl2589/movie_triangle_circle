@@ -4,7 +4,10 @@
       <div class="row justify-content-center mb-3">
         <h2> 
           {{userInfo.username}} 
-          <span v-if="others()"><button class="btn btn-sm" >팔로우</button></span>
+          <span v-if="others()">
+            <button class="btn btn-sm" v-show="follow" @click="changeFollow"><i class="fas fa-user-plus"></i> 팔로우</button>
+            <button class="btn btn-sm" v-show="!follow" @click="changeFollow"><i class="fas fa-user-check"></i> 팔로잉</button>
+          </span>
         </h2>
       </div>
       <div class="row justify-content-between setWidth mb-3">
@@ -40,6 +43,7 @@ import axios from 'axios'
 import SERVER from '@/api/index.js'
 import UserProfileLiked from '@/views/accounts/UserProfileLikedView.vue'
 import UserProfileReview from '@/views/accounts/UserProfileReviewView.vue'
+import Swal from 'sweetalert2'
 
 export default {
   name: 'UserProfile',
@@ -51,6 +55,7 @@ export default {
       isReview: false,
       clickedLiked: true,
       clickedReview: false,
+      follow: false,
     }
   },
   components: {
@@ -78,6 +83,38 @@ export default {
       } else {
         return true
       }
+    },
+    changeFollow() {
+      if (this.$cookies.get('auth-token')){
+        const config = {
+          headers: {
+            'Authorization': `Token ${this.$cookies.get('auth-token')}`
+          }
+        }
+        this.follow = !this.follow
+        axios.get(SERVER.URL + '/accounts/' + this.$route.params.userId + '/follow/', config)
+          .then( res => {
+            console.log(res)
+            
+            })
+          .catch( err => {
+            console.log(err)
+          })
+      }else {
+        const error = Swal.mixin({
+              position: 'center',
+              showConfirmButton: true,
+              timer: 3000,
+              timerProgressBar: false,
+              })
+        error.fire({
+          icon: 'warning',
+          title: "로그인이 필요합니다."
+        })
+      }
+    },
+    checkFollow() {
+      // 여기 저녁먹고 다녀와서 작업하기 
     }
   },
   created() {
@@ -89,6 +126,7 @@ export default {
       })
     })
     .catch(err => console.log(err))
+    this.checkFollow()
   },
   updated(){
     if(this.clickedLiked ===true){

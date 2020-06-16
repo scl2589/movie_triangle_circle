@@ -39,7 +39,7 @@ def user_info(request, user_pk):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def follow(request, user_pk):
-    user = get_object_or_404(User, pk=pk)
+    user = get_object_or_404(User, pk=user_pk)
     if user != request.user: # 본인 여부
         if user.followers.filter(pk=request.user.pk).exists():
             user.followers.remove(request.user) # 팔로우 제거

@@ -103,8 +103,7 @@ export default {
       date: "",
       must_show: false,
       toast: "",
-      liked_users :"",
-      review_state: true, 
+      liked_users :"", 
       //리뷰는 하나만
     }
   },
@@ -124,9 +123,6 @@ export default {
           this.posterURL = imgURL + this.movie.poster_path
           this.backDropURL = imgURL + this.movie.backdrop_path
           this.liked_users = this.movie.like_users.length
-          // if (this.$cookies.get('userId').review_set){
-            
-          // }
           axios.get(API_URL, {
             params: {
               key: API_KEY,
@@ -212,11 +208,13 @@ export default {
       
     },
     GoToReviewClick() {
-      if (this.review_state){
+      if (this.movie.rank_users.filter( rankobj =>
+        rankobj.id === this.$cookies.get('userId')).length){
+        console.log('no')
+          // 두번째일 경우 모달 
+        }
+      else {
         this.$router.push({ name: 'ReviewCreate'})
-      }
-      else{
-        // 두번째일 경우 모달 
       }
     },
     get_genre(genre_id) {
