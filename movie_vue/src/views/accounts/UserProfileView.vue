@@ -3,7 +3,7 @@
     <div class="header mb-0 ">
       <div class="row justify-content-center mb-3">
         <h2> 
-          {{userInfo.username}} 
+          {{ userInfo.username }} 
           <span v-if="others()">
             <button class="btn btn-sm" v-show="followingState" @click="changeFollow"><i class="fas fa-user-check"></i> 팔로잉</button>
             <button class="btn btn-sm" v-show="!followingState" @click="changeFollow"><i class="fas fa-user-plus"></i> 팔로우</button>
@@ -12,9 +12,9 @@
       </div>
       <div class="row justify-content-between setWidth mb-3">
         <!-- <p> -->
-          <span>리뷰 수 {{userInfo.reviews.length }}</span>
-          <span>팔로워 {{this.followers}}</span>
-          <span>팔로우 {{this.followings}}</span>
+          <span>리뷰 수 {{ userInfo.reviews.length }}</span>
+          <span data-toggle="modal" data-target="#exampleModal" class="make-hover">팔로워 {{ this.followers}}</span>
+          <span data-toggle="modal" data-target="#followings" class="make-hover">팔로우 {{ this.followings}}</span>
         <!-- </p> -->
       </div>
     </div>
@@ -31,10 +31,78 @@
     </div>
     <UserProfileLiked :userInfo="userInfo" v-show="clickedLiked" />
     <UserProfileReview :userInfo="userInfo" v-show="clickedReview"/>
+   
+  
+  <!--follower Modal body 팔로워 모달 -->
+  <div class="modal" tabindex="-1" role="dialog" id="exampleModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">follower</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <h5>{{ userInfo.username }} 님을 팔로우하는 모든 사람이 여기에 표시됩니다.</h5>
+          <hr>
+          <div v-for="follower in userInfo.followers" :key="follower.id">
+            <div class="row">
+              <div class="pl-3 col-9">
+                <span class=" pl-3 col-9 make-hover" @click="goToUserPage(follower.id)">{{ follower.username}}</span>
+              </div>
+              <div class="col-3 pr-3">
+                <button class="btn btn-sm " v-show="checkFollow2(follower).then(res => {return res.data})" @click="changeFollow"><i class="fas fa-user-check"></i> 팔로잉</button>
+                <!-- check 그림이 팔로우가 되었다는 뜻 -->
+                <button class=" btn btn-sm" v-show="!checkFollow2(follower)" @click="changeFollow"><i class="fas fa-user-plus"></i> 팔로우</button>
+              </div>
+              <hr>
+            </div>
+            
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
+  <!-- following modal body 팔로잉/팔로우 모달-->
+  <div class="modal" tabindex="-1" role="dialog" id="followings">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">following</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <h5>{{ userInfo.username }}님이 팔로잉하는 모든 사람이 여기에 표시됩니다.</h5>
+          <hr>
+          <div v-for="following in userInfo.followings" :key="following.id">
+            <div class="row">
+              <div class="pl-3 col-9">
+                <span class=" pl-3 col-9 make-hover" @click="goToUserPage(following.id)">{{ following.username }}</span> 
+              </div>
+              <div class="col-3 pr-3">
+                <button class="btn btn-sm " v-show="checkFollow2(following)" @click="changeFollow"><i class="fas fa-user-check"></i> 팔로잉</button>
+                <button class=" btn btn-sm" v-show="!checkFollow2(following)" @click="changeFollow"><i class="fas fa-user-plus"></i> 팔로우</button>
+              </div>
+              <hr>
+            </div>
+            
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-
-    <!--userInfo = id, username, like_movies, comment_set, review_set -->
+  <!--userInfo = id, username, like_movies, comment_set, review_set -->
   </div>
 </template>
 
@@ -85,7 +153,7 @@ export default {
       this.clickedReview = true;
     },
     others() {
-      console.log(this.userInfo.id, this.$cookies.userId)
+      // console.log(this.userInfo.id, this.$cookies.userId)
       if (this.userInfo.id == this.$cookies.get('userId')){
         return false
       } else {
@@ -102,7 +170,7 @@ export default {
         this.followingState = !this.followingState
         axios.get(SERVER.URL + '/accounts/' + this.$route.params.userId + '/follow/', config)
           .then( res => {
-            console.log("RES",res)
+            console.log("changed Follow",res)
             
             this.followers = res.data
             // this.followings =this.userInfo.followings.length
@@ -126,7 +194,7 @@ export default {
     checkFollow() {
       // 여기 저녁먹고 다녀와서 작업하기 
       if (this.$cookies.get('auth-token')){
-        axios.get(SERVER.URL + '/accounts/'+this.$route.params.userId +'/follow/'+this.$cookies.get('userId')+'/')
+        return axios.get(SERVER.URL + '/accounts/'+this.$route.params.userId +'/follow/'+this.$cookies.get('userId')+'/')
           .then(res =>{
             this.followingState = res.data
             // console.log("checked Follow",res.data)
@@ -135,6 +203,28 @@ export default {
             console.log(err)
           })
       }
+    },
+   
+    checkFollow2(user) {
+
+      if (this.$cookies.get('auth-token')){
+        console.log(axios.get(SERVER.URL + '/accounts/'+ user.id +'/follow/' +   this.$cookies.get('userId') +'/'))
+        return axios.get(SERVER.URL + '/accounts/'+ user.id +'/follow/' +   this.$cookies.get('userId') +'/')
+          
+            
+            // console.log("user.id", user.id, user.username, "this_id", this.$cookies.get('userId'), "res.data", res.data)
+            // console.log(user.username)
+            // console.log(res.data)
+         
+          // .catch(err => {
+          //   console.log(err)
+          // })
+          
+      }
+      
+    },
+    goToUserPage(user_id) {
+      this.$router.push({ name:'Profile', params:{ userId: user_id}})
     },
     getUserInfo(userId) {
       axios.get(SERVER.URL + '/accounts/'+ userId + '/info/')
@@ -145,7 +235,7 @@ export default {
       res.data.like.forEach( movie => {
         movie.poster_path=SERVER.IMAGEPATH.imagepath780 + movie.poster_path
       })
-      console.log("SUCCESSFUL getUserInfo")
+      // console.log("SUCCESSFUL getUserInfo")
     })
     .catch(err => console.log( err))
     },
@@ -172,7 +262,7 @@ export default {
     } 
   },
   beforeRouteUpdate (to, from, next) {
-    console.log("Reusing this component")
+    // console.log("Reusing this component")
     this.getUserInfo(to.params.userId)
     next();
   }
@@ -226,6 +316,10 @@ p.nav-link{
 }
 
 .nav-link:hover{
+  cursor: pointer;
+}
+
+.make-hover{
   cursor: pointer;
 }
 

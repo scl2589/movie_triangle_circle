@@ -4,7 +4,7 @@ from rest_auth.models import TokenModel
 from django.db import models
 from movies.models import Movie, UserRank
 # from reviews.serializers import ReviewListSerializer
-
+from django.core.serializers.json import DjangoJSONEncoder 
 
 
 User = get_user_model()
@@ -25,14 +25,14 @@ class TokenSerializer(serializers.ModelSerializer):
 class UserProfileSerializer(serializers.ModelSerializer):
     like = serializers.SerializerMethodField()
     reviews = serializers.SerializerMethodField()
+    followers = serializers.SerializerMethodField()
+    followings = serializers.SerializerMethodField()
     # poster = serializers.SerializerMethodField()
     class Meta:
         model = User
-        fields= ('id','like','reviews','username','followers','followings') 
+        fields= ('id','like','reviews','username','followers','followings',) 
     def get_like(self, obj):  # "get_" + field name
         # print(User.objects.prefetch_related('comment_set'))
-        
-     
         # print(movies.annotate(like_count=models.Count('like_users')))
         # a = movies.annotate(like_count=models.models.Count(Subquery(obj.like_movies)..values('id', 'title', 'poster_path','like_count')
         # print(models.Subquery(obj.like_movies).annotate(cnt=models.Count('like_users')).values('cnt'))
@@ -46,22 +46,14 @@ class UserProfileSerializer(serializers.ModelSerializer):
         # return movies.values('id', 'title', 'poster_path')
         return [{'title':x.title,'id': x.id,'like':x.like_users.count(),'poster_path': x.poster_path}  for x in obj.like_movies.all()]
     def get_reviews(self,obj):
-        # print([x.movie for x in obj.review_set.all()])
-        # for x in obj.review_set.all():
-            
-        #     try: 
-        #         print(x.movie.title)
-            
-        #     except:
-        #         print(x.id)
-        # return obj.review_set.values_list('title',flat=True)
-        # return obj.review_set.values('title')
-        # 리뷰의 영화의 좋아요를 받은 개수, 리뷰
-        review = obj.review_set.all()
-        # print(User.objects.prefetch_related('comment_set'))
-        # print(User.objects.first().comment_set.all())
-        # return [{'review_title':x.title,'movie_title': x.movie.title,'movie_like':x.movie.like_users.count(),'movie_rank':UserRank.objects.filter(movie_id=x.movie.id,user_id=obj.id).values('rank'), 'review_id':x.id}  for x in review] # 나중에 고침
-        return  [{'review_title':x.title,'movie_title': x.movie.title,'movie_like':x.movie.like_users.count(),'movie_rank':x.movie.userrank_set.filter(user_id=obj.id)[0].rank, 'review_id':x.id}  for x in review]
-    # def reviewposter(self, obj):
         
-    #     return [x.movie.poster_path for x in obj.review_set.all()] 
+        review = obj.review_set.all()
+        return  [{'review_title':x.title,'movie_title': x.movie.title,'movie_like':x.movie.like_users.count(),'movie_rank':x.movie.userrank_set.filter(user_id=obj.id)[0].rank, 'review_id':x.id}  for x in review]
+
+    def get_followers(self, obj):
+        serializer = UserSerializer(obj.followers.all(), many=True)
+        return serializer.data
+
+    def get_followings(self, obj):
+        serializer = UserSerializer(obj.followings.all(), many=True)
+        return serializer.data

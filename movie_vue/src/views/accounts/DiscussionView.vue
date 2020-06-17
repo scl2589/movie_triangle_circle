@@ -41,6 +41,7 @@ export default {
   },
   created() {
     this.getGenre()
+    // this.$router.push({ name: 'Genre', params: { genre: 'SF', genreData:this.genres[0], pageNum:0 }})
   },
   // computed: {
   //   pageCount() {

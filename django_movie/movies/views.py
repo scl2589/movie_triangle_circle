@@ -29,8 +29,8 @@ from datetime import datetime
 from reviews.serializers import ReviewListSerializer, ReviewSerializer
 
 
-
 User = get_user_model()
+
 
 @api_view(['GET'])
 def index(request):
