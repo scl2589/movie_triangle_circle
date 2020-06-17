@@ -61,9 +61,10 @@ export default {
       followingState: false,
       followers: 0,
       followings: 0,
+      error: null,
+      post: null,
     }
-    // followers: this.userInfo.followers.length,
-    // followings: this.userInfo.followings.length
+
   },
   components: {
     UserProfileLiked,
@@ -128,16 +129,15 @@ export default {
         axios.get(SERVER.URL + '/accounts/'+this.$route.params.userId +'/follow/'+this.$cookies.get('userId')+'/')
           .then(res =>{
             this.followingState = res.data
-            console.log("checked Follow",res.data)
+            // console.log("checked Follow",res.data)
           })
           .catch(err => {
             console.log(err)
           })
       }
-    }
-  },
-  created() {
-    axios.get(SERVER.URL + '/accounts/'+this.$route.params.userId + '/info/')
+    },
+    getUserInfo(userId) {
+      axios.get(SERVER.URL + '/accounts/'+ userId + '/info/')
     .then(res => {
       this.userInfo = res.data
       this.followers = this.userInfo.followers.length
@@ -145,11 +145,23 @@ export default {
       res.data.like.forEach( movie => {
         movie.poster_path=SERVER.IMAGEPATH.imagepath780 + movie.poster_path
       })
+      console.log("SUCCESSFUL getUserInfo")
     })
-    .catch(err => console.log(err))
+    .catch(err => console.log( err))
+    },
+    // getUser(err, post){
+    //   if (err) {
+    //     this.error = err.toString()
+    //   } else {
+    //     this.post = post
+    //   }
+    // }
+  },
+  created() {
+    this.getUserInfo(this.$route.params.userId)
     this.checkFollow()
   },
-  updated(){
+  beforeUpdate(){
     if(this.clickedLiked ===true){
       this.isLike = true
       this.isReview = false
@@ -159,15 +171,10 @@ export default {
       this.isLike = false
     } 
   },
-  beforeRouteLeave(to, from, next) {
-    console.log('Leaving User Profile')
-    next(false)
-   
-  },
-  beforeRouteUdpate (to, from, next) {
+  beforeRouteUpdate (to, from, next) {
     console.log("Reusing this component")
-    this.userId = to.params.userId
-    next(0)
+    this.getUserInfo(to.params.userId)
+    next();
   }
 }
 </script>

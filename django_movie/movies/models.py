@@ -51,9 +51,9 @@ class RecommandMovie(models.Model):
     coef = models.FloatField(default=0)
 
 class GenreReview(models.Model):
-    title = models.CharField(max_length=200)
+    username = models.CharField(max_length=200)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    Genre = models.ForeignKey(Movie, on_delete=models.CASCADE)
-   
+    genre = models.ForeignKey(Genre, on_delete=models.CASCADE,null=True)
+    

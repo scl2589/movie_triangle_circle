@@ -9,7 +9,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="review in paginatedData" :key="`review_${review}`" >
+        <tr v-for="review in paginatedData" :key="`review_${review.review_id}`" >
           <th data-label="Movie Title" scope="row" @click="getReviewDetail(review.review_id)">{{ review.movie_title }}</th>
           <td data-label="Review Title" @click="getReviewDetail(review.review_id)"> {{ review.review_title }}</td>
           <td data-label="User Rank" @click="getReviewDetail(review.review_id)" id="star-rating">

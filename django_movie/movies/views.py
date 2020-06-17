@@ -12,7 +12,7 @@ from rest_framework import status
 
 # created Model, Serializers
 from .models import Movie, Genre, UserRank, RecommandMovie
-from .serializers import MovieSerializer, MovieDetailSerializer, UserRankSerializer, SearchSerializer, RecommandMovieSerializer, GenreSerializer
+from .serializers import MovieSerializer, MovieDetailSerializer, UserRankSerializer, SearchSerializer, RecommandMovieSerializer, GenreSerializer, GenreReviewSerializer
 
 
 # python tool
@@ -255,6 +255,20 @@ def search(request):
 @api_view(['GET'])
 def get_genre(request):
     g = Genre.objects.all()
-    print(g)
+    
     serializer = GenreSerializer(g, many=True)
     return Response(serializer.data)
+@api_view(['GET','POST'])
+def getGreview_createGreview(request, genre_pk):
+    genre = get_object_or_404(Genre, pk=genre_pk)
+    if request.method == 'POST':
+        request.data['username'] = "pikachu"
+        serializer = GenreReviewSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save(genre=genre)
+        return Response(serializer.data)
+    else:
+        reviews = genre.genrereview_set.all()
+        print(reviews)
+        serializer = GenreReviewSerializer(reviews, many=True)
+        return Response(serializer.data)

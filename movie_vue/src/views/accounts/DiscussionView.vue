@@ -2,7 +2,7 @@
   <div>
     <!-- <h1>{{ genre }} 게시판</h1> -->
     <div v-for=" genre in genres" :key="genre.key">
-      <router-link  :to="{ name: 'Genre', params: { 'genre': genre.name},}">{{ genre.name }}</router-link>
+      <router-link  :to="{ name: 'Genre', params: { 'genre': genre.name,'genreData': genre}}">{{ genre.name }}</router-link>
       
     </div>
     <router-view />

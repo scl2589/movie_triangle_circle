@@ -1,6 +1,6 @@
 from rest_framework import serializers
 # from accounts.serializers import UserSerializer
-from .models import Movie, Genre, UserRank, RecommandMovie
+from .models import Movie, Genre, UserRank, RecommandMovie, GenreReview
 
 class MovieSerializer(serializers.ModelSerializer):
     class Meta:
@@ -41,4 +41,9 @@ class RecommandMovieSerializer(serializers.ModelSerializer):
 class GenreSerializer(serializers.ModelSerializer):
     class Meta:
         model = Genre
-        fields = ['id', 'name']
+        fields = ['id', 'name', 'genrereview_set']
+
+class GenreReviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = GenreReview
+        fields = '__all__'
