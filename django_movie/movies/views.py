@@ -31,7 +31,6 @@ from reviews.serializers import ReviewListSerializer, ReviewSerializer
 
 
 User = get_user_model()
-genres_list = list(Genre.objects.values_list('name',flat=True))
 
 @api_view(['GET'])
 def index(request):
@@ -180,6 +179,7 @@ def get_user_recommend(request,user_id):
     user = get_object_or_404(User, pk=user_id)
     lmovies = user.like_movies.all() # 좋아요한 영화들
     
+    genres_list = list(Genre.objects.values_list('name',flat=True))
     genres_dict = { x:0 for x in genres_list } # 좋아요한 영화들의 장르 개수를 구함 여기서 숫자가 높은 걸 선택해서 그 장르만 돌림
     print(genres_dict)
     for l in lmovies:

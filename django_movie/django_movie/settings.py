@@ -25,7 +25,7 @@ SECRET_KEY = '@pi)gk+u0$x%7p#vsu*xz_l1d_zzgboyyjr%10rmh4s!ar@8tz'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -61,6 +61,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    # 'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -153,3 +154,26 @@ CORS_ORIGIN_ALLOW_ALL = True
 REST_AUTH_SERIALIZERS = {
     'TOKEN_SERIALIZER': 'accounts.serializers.TokenSerializer',
 }
+
+
+
+### 배포 
+
+# import dj_database_url
+# db_from_env = dj_database_url.config(conn_max_age=500)
+# DATABASES['default'].update(db_from_env)
+
+
+# # Static files (CSS, JavaScript, Images)
+# # https://docs.djangoproject.com/en/2.0/howto/static-files/
+
+# # The absolute path to the directory where collectstatic will collect static files for deployment.
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# # The URL to use when referring to static files (where they will be served from)
+# STATIC_URL = '/static/'
+
+
+# # Simplified static file serving.
+# # https://warehouse.python.org/project/whitenoise/
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
