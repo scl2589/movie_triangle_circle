@@ -37,3 +37,8 @@ class RecommandMovieSerializer(serializers.ModelSerializer):
     # def get_movies(self,obj):
     #     print(obj.movie)
     #     return obj.movie
+
+class GenreSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Genre
+        fields = ['id', 'name']

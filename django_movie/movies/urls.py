@@ -12,6 +12,9 @@ urlpatterns = [
     # 영화 관련 
     path('', views.index, name='movie_list'),
     path('<int:movie_pk>/', views.movie_detail, name='movie_detail'),
+    
+    # 영화 장르
+    path('genres/', views.get_genre),
 
     # 영화 좋아요
     path('<int:movie_pk>/like/', views.like ),

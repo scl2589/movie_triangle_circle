@@ -16,10 +16,13 @@ import MovieRecommendationView from '@/views/movies/MovieRecommendationView.vue'
 import ReviewCreateView from '@/views/reviews/ReviewCreateView.vue'
 import ReviewDetailView from '../views/reviews/ReviewDetailView.vue'
 
+// Discussion
 import DiscussionView from '@/views/accounts/DiscussionView.vue'
+import Genre from '@/views/accounts/GenreView.vue'
 
 // Search
 import SearchView from '@/views/accounts/SearchView.vue'
+
 Vue.use(VueRouter)
 
   const routes = [
@@ -36,7 +39,8 @@ Vue.use(VueRouter)
   {
     path: '/accounts/:userId',
     name: 'Profile',
-    component: UserProfileView
+    component: UserProfileView,
+    
   },
   {
     path: '/accounts/signup',
@@ -78,9 +82,18 @@ Vue.use(VueRouter)
   },
   {
     path: '/discussions',
+    children:[
+        {
+            path: 'discussions/:genre',
+            name: 'Genre',
+            component: Genre,
+            props: true
+        }
+    ],
     name: 'Discussions',
     component: DiscussionView
-  }
+  },
+
 
 ]
 
@@ -104,5 +117,7 @@ router.beforeEach((to, from, next) => {
   authRequired && !isLoggedIn ? next({ name: 'Login'}) : next()
   
 })
+
+
 
 export default router

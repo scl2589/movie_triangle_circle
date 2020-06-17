@@ -29,6 +29,8 @@ class Movie(models.Model):
     director = models.CharField(max_length=100, null=True)
     actor = models.CharField(max_length=100, null=True)
     id = models.IntegerField(primary_key=True)
+
+
 #     # new column    
 #     # bookmark = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
@@ -42,8 +44,16 @@ class UserRank(models.Model):
     # review = models.OneToOneField(Review, on_delete=models.CASCADE)
     rank = models.FloatField(default=0)
 
+
 class RecommandMovie(models.Model):
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     coef = models.FloatField(default=0)
-     
+
+class GenreReview(models.Model):
+    title = models.CharField(max_length=200)
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    Genre = models.ForeignKey(Movie, on_delete=models.CASCADE)
+   

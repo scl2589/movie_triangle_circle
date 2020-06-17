@@ -21,8 +21,8 @@
           <router-link class="nav-link" :class="{active: isLogin}"  v-if="!isLoggedIn" :to="{ name:'Login' }">Login</router-link>
         </li>
         <li class="nav-item" role="presentation">
-          <!-- <router-link class="nav-link" :class="{active: isProfile}" v-if="isLoggedIn" :to="{ name:'Profile', params: { userId:this.$cookies.get('userId') } }">Profile</router-link> -->
-          <button @click="clickedProfile" class="nav-link profile-button"  :class="{active: isProfile}" v-if="isLoggedIn"  type="submit">Profile</button>
+          <router-link class="nav-link" :class="{active: isProfile}" :key="$route.fullPath" v-if="isLoggedIn" :to="{ name:'Profile', params: { userId:this.$cookies.get('userId') } }">Profile</router-link>
+          <!-- <button @click="clickedProfile" class="nav-link profile-button"  :class="{active: isProfile}" v-if="isLoggedIn"  type="submit">Profile</button> -->
         </li>
         <li class="nav-item" role="presentation">
           <router-link class="nav-link" v-if="isLoggedIn" @click.native="logout" to="/accounts/logout/">Logout</router-link>
@@ -217,11 +217,11 @@ export default {
             })
       } else {
         const error = Swal.mixin({
-              position: 'center',
-              showConfirmButton: true,
-              timer: 3000,
-              timerProgressBar: false,
-              })
+          position: 'center',
+          showConfirmButton: true,
+          timer: 3000,
+          timerProgressBar: false,
+         })
         error.fire({
           icon: 'warning',
           title: "값을 입력해야 합니다."
@@ -231,6 +231,7 @@ export default {
     },
     clickedProfile() {
       this.$router.push({ name:'Profile', params: { userId:this.$cookies.get('userId') } })
+      // this.$router.go()
     }
   },
   mounted() {

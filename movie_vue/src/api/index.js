@@ -16,6 +16,7 @@ export default {
         userInfo: '/accounts/:userId/info',
         search: '/search/',
         recommendation: '/movies/getrecommend/',
+        genres: '/movies/genres/',
     },
     IMAGEPATH: {
         imagepath780: 'https://image.tmdb.org/t/p/w780',

@@ -45,8 +45,11 @@ import UserProfileLiked from '@/views/accounts/UserProfileLikedView.vue'
 import UserProfileReview from '@/views/accounts/UserProfileReviewView.vue'
 import Swal from 'sweetalert2'
 
+
+
 export default {
   name: 'UserProfile',
+  
   data () {
     return {
       userInfo: [],
@@ -155,6 +158,16 @@ export default {
       this.isReview = true
       this.isLike = false
     } 
+  },
+  beforeRouteLeave(to, from, next) {
+    console.log('Leaving User Profile')
+    next(false)
+   
+  },
+  beforeRouteUdpate (to, from, next) {
+    console.log("Reusing this component")
+    this.userId = to.params.userId
+    next(0)
   }
 }
 </script>

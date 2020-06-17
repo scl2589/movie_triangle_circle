@@ -12,7 +12,7 @@ from rest_framework import status
 
 # created Model, Serializers
 from .models import Movie, Genre, UserRank, RecommandMovie
-from .serializers import MovieSerializer, MovieDetailSerializer, UserRankSerializer, SearchSerializer, RecommandMovieSerializer
+from .serializers import MovieSerializer, MovieDetailSerializer, UserRankSerializer, SearchSerializer, RecommandMovieSerializer, GenreSerializer
 
 
 # python tool
@@ -209,12 +209,11 @@ def get_user_recommend(request,user_id):
 
 
 @api_view(['GET'])
-def recommendation(request): # 회원가입 
+def recommendation(request): # 회원가입 시 보여주는 영화
     user = request.user
     user_liked = user.like_movies.values('pk')
     list_pk = [liked['pk'] for liked in user_liked]
     movies = Movie.objects.order_by('-popularity').filter(~Q(pk__in=list_pk))
-    print(movies)
     movies = random.sample(list(movies)[:100], 20)
    
     serializer = MovieDetailSerializer(movies, many=True)
@@ -251,3 +250,11 @@ def search(request):
 
 
 # tag 만들어야지, original title
+
+
+@api_view(['GET'])
+def get_genre(request):
+    g = Genre.objects.all()
+    print(g)
+    serializer = GenreSerializer(g, many=True)
+    return Response(serializer.data)
