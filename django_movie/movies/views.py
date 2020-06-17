@@ -11,7 +11,7 @@ from rest_framework.permissions import IsAuthenticated,IsAdminUser
 from rest_framework import status
 
 # created Model, Serializers
-from .models import Movie, Genre, UserRank, RecommandMovie
+from .models import Movie, Genre, UserRank, RecommandMovie, PM
 from .serializers import MovieSerializer, MovieDetailSerializer, UserRankSerializer, SearchSerializer, RecommandMovieSerializer, GenreSerializer, GenreReviewSerializer
 
 
@@ -23,6 +23,7 @@ from decouple import config
 import requests
 import re
 import json
+from datetime import datetime
 
 # module path
 from reviews.serializers import ReviewListSerializer, ReviewSerializer
@@ -216,8 +217,8 @@ def recommendation(request): # 회원가입 시 보여주는 영화
     user = request.user
     user_liked = user.like_movies.values('pk')
     list_pk = [liked['pk'] for liked in user_liked]
-    movies = Movie.objects.order_by('-popularity').filter(~Q(pk__in=list_pk))
-    movies = random.sample(list(movies)[:100], 20)
+    movies = Movie.objects.order_by('-popularity').filter(~Q(pk__in=list_pk), release_date__gt=datetime.strptime('2005-01-01','%Y-%m-%d'))
+    movies = random.sample(list(movies)[:400], 20)
    
     serializer = MovieDetailSerializer(movies, many=True)
     return Response(serializer.data)
@@ -248,11 +249,11 @@ def search(request):
         if movie:
             serializer = SearchSerializer(movie, many=True)
             return Response(serializer.data)
-    
+
     return Response({'message': '검색결과가 없습니다.'})
 
 
-# tag 만들어야지, original title
+# tag 만들어야지, original title, Ah....
 
 
 @api_view(['GET'])
@@ -269,14 +270,16 @@ def get_genre(request):
 @api_view(['GET','POST'])
 def getGreview_createGreview(request, genre_pk):
     genre = get_object_or_404(Genre, pk=genre_pk)
+    pm = list(PM.objects.values_list('name',flat=True))
+
     if request.method == 'POST':
-        request.data['username'] = "pikachu"
+        request.data['username'] = random.sample(pm,1)[0]
         serializer = GenreReviewSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save(genre=genre)
         return Response(serializer.data)
     else:
         reviews = genre.genrereview_set.values()
-        print(reviews)
+        
         serializer = GenreReviewSerializer(reviews, many=True)
         return Response(serializer.data)

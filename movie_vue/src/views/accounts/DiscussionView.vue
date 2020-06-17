@@ -1,10 +1,10 @@
 <template>
   <div>
-    <!-- <h1>{{ genre }} 게시판</h1> -->
+   
     <div class="row">
-      <div class="col-2"> 
-        <div class="list-group" v-for=" genre in genres" :key="genre.key">
-          <router-link class="links list-group-item" :to="{ name: 'Genre', params: { 'genre': genre.name,'genreData': genre}}">{{ genre.name }}</router-link>
+      <div class="col-2 list-group"> 
+        <div class="list-group-itm" v-for=" genre in genres" :key="genre.key">
+          <router-link class="links list-group-item" :to="{ name: 'Genre', params: { genre: genre.name, genreData:genre,pageNum:0 }}">{{ genre.name }}</router-link>
         </div>
       </div>
       <router-view class="col-10" />

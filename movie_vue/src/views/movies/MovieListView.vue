@@ -2,7 +2,7 @@
   <div class="container">
     <div v-if="this.$cookies.get('auth-token') && movies_recommend.length" class="m-0">
       <h2 class="mt-3"><span tooltip="좋아요를 기반으로 추천되었습니다." flow="right"> Recommended Movies</span></h2>
-      <div class="row scroll-sect recent-movies">
+      <div class="row scroll-sect recent-movies" @mousewheel="move">
         <div class="row-inner">
             <div class="tile" v-for="movie in movies_recommend" :key="`movie_${movie.pk}`">
                 <div class="tile-media">
@@ -94,6 +94,9 @@ export default {
   created() {
     this.fetchMovies()
   },
+  move(){
+    console.log(1)
+  }
 }
 </script>
 

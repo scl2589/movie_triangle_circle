@@ -17,15 +17,15 @@
       </tbody>
     </table>
 
-    <div class="btn-cover" v-if="paginatedData">
+    <div class="btn-cover mb-5" v-if="paginatedData">
       <button :disabled="pageNum === 0" @click="prevPage" class="page-btn">이전</button>
       <span class="page-count">{{ pageNum + 1 }} / {{ pageCount }} 페이지</span>
       <button :disabled="pageNum >= pageCount - 1" @click="nextPage" class="page-btn">다음</button>
     </div>
+
     <div v-else >
       <h5>글을 작성해주세요.</h5>
     </div>
-
     <div class="input-group mx-1 mt-3 row">
       <textarea v-model="g_commentData.content" class="col-xs-8 col-md-11" type="content" placeholder="글을 작성해주세요." rows="5" ></textarea>
       <button class="input-group-append btn justify-content-center align-items-center col-xs-4 col-md-1 text-center" @click="createGcomment(genreData.id)">작성</button>
@@ -47,12 +47,13 @@ export default {
         username: "",
         content: "",
       },
-      pageNum: 0,
+      // pageNum: 0,
       pageSize: 10,
     }
   },
   props: {
     genreData: Object,
+    pageNum: Number,
   },
   methods: {
     createGcomment(genre_id) {

@@ -12,7 +12,7 @@
           <router-link class="nav-link" :class="{active: isCreate}" v-if="isLoggedIn" :to="{ name:'Create' }">Create Review</router-link>
         </li> -->
         <li class="nav-item" role="presentation">
-          <router-link class="nav-link" :class="{active: isDiscussions}" :to="{ name : 'Discussions' }">Discussions</router-link>
+          <router-link class="nav-link" :class="{active: isDiscussions}" :to="{ name : 'Discussions'  }">Discussions</router-link>
         </li>
         <li class="nav-item" role="presentation">
           <router-link class="nav-link" :class="{active: isSignup}" v-if="!isLoggedIn" :to="{ name:'Signup' }">Signup</router-link>
