@@ -39,11 +39,14 @@ class RecommandMovieSerializer(serializers.ModelSerializer):
     #     return obj.movie
 
 class GenreSerializer(serializers.ModelSerializer):
+    genrereview_set = serializers.SerializerMethodField()
     class Meta:
         model = Genre
         fields = ['id', 'name', 'genrereview_set']
-
+    def get_genrereview_set(self, obj):
+        return [{'id':x.id,'username':x.username,'content':x.content,} for x in obj.genrereview_set.all()][::-1]
 class GenreReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = GenreReview
-        fields = '__all__'
+        fields = ['id','content','username']
+    

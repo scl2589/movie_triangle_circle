@@ -257,7 +257,9 @@ def get_genre(request):
     g = Genre.objects.all()
     
     serializer = GenreSerializer(g, many=True)
-    return Response(serializer.data)
+    return Response(sorted(serializer.data, key=lambda x:x['name']))
+    
+
 @api_view(['GET','POST'])
 def getGreview_createGreview(request, genre_pk):
     genre = get_object_or_404(Genre, pk=genre_pk)
@@ -268,7 +270,7 @@ def getGreview_createGreview(request, genre_pk):
             serializer.save(genre=genre)
         return Response(serializer.data)
     else:
-        reviews = genre.genrereview_set.all()
+        reviews = genre.genrereview_set.values()
         print(reviews)
         serializer = GenreReviewSerializer(reviews, many=True)
         return Response(serializer.data)
