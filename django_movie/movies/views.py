@@ -22,9 +22,12 @@ import time
 from decouple import config
 import requests
 import re
+import json
 
 # module path
 from reviews.serializers import ReviewListSerializer, ReviewSerializer
+
+
 
 User = get_user_model()
 genres_list = list(Genre.objects.values_list('name',flat=True))
@@ -259,6 +262,9 @@ def get_genre(request):
     serializer = GenreSerializer(g, many=True)
     return Response(sorted(serializer.data, key=lambda x:x['name']))
     
+
+# 랜덤 
+
 
 @api_view(['GET','POST'])
 def getGreview_createGreview(request, genre_pk):

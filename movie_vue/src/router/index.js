@@ -84,7 +84,7 @@ Vue.use(VueRouter)
     path: '/discussions',
     children:[
         {
-            path: 'discussions/:genre',
+            path: ':genre',
             name: 'Genre',
             component: Genre,
             props: true
@@ -104,7 +104,7 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const publicPages = ['Login', 'Signup', 'MovieList', 'MovieDetail', 'ReviewDetail', 'Search', 'Discussions']
+  const publicPages = ['Login', 'Signup', 'MovieList', 'MovieDetail', 'ReviewDetail', 'Search', 'Discussions', 'Genre']
   const authPages = ['Login', 'Signup', 'ReviewCreate', 'MovieRecommendation', 'UserProfile']
   const authRequired = !publicPages.includes(to.name)
   const unauthRequired = authPages.includes(to.name) // 로그인 해서는 안됨

@@ -57,3 +57,6 @@ class GenreReview(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     genre = models.ForeignKey(Genre, on_delete=models.CASCADE,null=True)
     
+
+class PM(models.Model):
+    name = models.CharField(max_length=100)

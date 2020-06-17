@@ -17,7 +17,7 @@ export default {
         search: '/search/',
         recommendation: '/movies/getrecommend/',
         genres: '/movies/genres/',
-        gcomment: '/movies/gcomment/'
+        gcomment: '/movies/genres/gcomment/'
     },
     IMAGEPATH: {
         imagepath780: 'https://image.tmdb.org/t/p/w780',

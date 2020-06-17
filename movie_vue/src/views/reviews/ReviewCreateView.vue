@@ -7,7 +7,7 @@
       <input v-model="reviewData.title" type="text" id="title" placeholder="제목을 입력해주세요." class="inputs" autofocus>
     </div>
     
-    <div class="form-group row justify-content-center">
+    <div class="form-group row justify-content-center content-box">
       <textarea v-model="reviewData.content" type="content" id="content" 
       placeholder="내용을 입력해주세요." class='txtbox' rows="10">
       </textarea>
@@ -226,8 +226,7 @@ export default {
       this.reviewData = this.$route.params.reviewData
       // this.rankData.rank =this.reviewData.rank
     }
-  }
-
+  },
 }
 </script>
 
@@ -268,62 +267,15 @@ export default {
   display: none;
 }
 
-/* 별점 CSS */
-/* @import url(//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css);
-
-fieldset, label { margin: 0; padding: 0; }
-body{ margin: 20px; }
-h1 { font-size: 1.5em; margin: 10px; } */
-
-/****** Style Star Rating Widget *****/
-/* 
-.rating { 
-  border: none;
-  float: left;
+.content-box {
+  margin-bottom: 0;
 }
 
-.rating > input { display: none; } 
-.rating > label:before { 
-  margin: 5px;
-  font-size: 1.25em;
-  font-family: FontAwesome;
-  display: inline-block;
-  content: "\f005";
-}
-
-.rating > .half:before { 
-  content: "\f089";
-  position: absolute;
-}
-
-.rating > label { 
-  color: #ddd; 
- float: right; 
-}
-
-
-.rating > input:checked ~ label, 
-.rating:not(:checked) > label:hover, 
-.rating:not(:checked) > label:hover ~ label { color: #FFD700;  } 
-
-.rating > input:checked + label:hover,
-.rating > input:checked ~ label:hover,
-.rating > label:hover ~ input:checked ~ label, 
-.rating > input:checked ~ label:hover ~ label { color: #FFED85;  }  */
 </style>
 
 <style scoped lang="scss">
 * { box-sizing: border-box; }
 
-// .container {
-//   background-image: url("https://www.toptal.com/designers/subtlepatterns/patterns/concrete-texture.png");
-//   display: flex;
-//   flex-wrap: wrap;
-//   height: 100vh;
-//   align-items: center;
-//   justify-content: center;
-//   padding: 0 20px;
-// }
 
 .rating {
   display: flex;
@@ -420,7 +372,7 @@ h1 { font-size: 1.5em; margin: 10px; } */
   max-width: 360px;
   background-color: #fff;
   width: 100%;
-  padding: 30px;
+  padding: 10px;
   border-radius: 8px;
   display: flex;
   flex-direction: column;

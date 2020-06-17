@@ -9,7 +9,7 @@
           <div class="col-md-8 p-4 justify-content-between" >
             <h2><strong>{{ movie.title }}</strong><span class="dimcolor" :title="`${movie.release_date}`">({{date}})</span></h2>
             <!-- 장르 -->
-            <h5><span v-for="genre in movie.genres" :key="`genre_${genre}`"><a href="#" class="badge mr-2 p-1 mb-1">{{ get_genre(genre)}}</a></span></h5>
+            <h5><span v-for="genre in movie.genres" :key="`genre_${genre}`"><span href="#" class="badge mr-2 p-1 mb-1">{{ get_genre(genre)}}</span></span></h5>
             <div>
               <div class="c100 small" :class="computedClass" title="평점" data-toggle="tooltip" data-placement="top" >
                 <span><strong>{{movie.vote_average*10}}</strong></span>
@@ -53,8 +53,8 @@
             </div>
             <div> 
               <!--감독 및 출연 배우 -->
-              <p>{{ movie.director ? "감독: " + movie.director.replace(/,/gi,' ') : "" }}</p>
-              <p>{{ movie.actor ? "배우: " + movie.actor.replace(/,/gi,' ') : "" }}</p>
+              <p>{{ movie.director ? "감독: " + movie.director.replace(/,/gi,'') : "" }}</p>
+              <p>{{ movie.actor ? "배우: " + movie.actor.replace(/,/gi,' ∙ ').slice(0,movie.actor.length-1) : "" }}</p>
             </div>
           </div>
         </div>
@@ -327,7 +327,8 @@ export default {
 .overview {
   overflow: hidden;
   text-overflow: ellipsis;
-  font-family: 'Noto Sans KR'
+  font-family: 'Noto Sans KR';
+  font-size: smaller;
 }
 
 .heart{

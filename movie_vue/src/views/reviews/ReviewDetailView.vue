@@ -11,8 +11,8 @@
           </span>
         </h4>
         <!-- 게시글 정보 (작성자, 작성시간) -->
-        <div class="row justify-content-between oneline pb-0">
-          <small class="line-height">posted by <span class="link-hover" @click="goToUserPage(user.id)"><strong>{{ user.username }}</strong></span> on {{review.created_at}} <span style="font-weight:700">edited at</span> {{review.updated_at}}</small>
+        <div class="row justify-content-between oneline pb-0 review-info">
+          <small class="line-height">posted by <span class="link-hover" @click="goToUserPage(user.id)"><strong>{{ user.username }}</strong></span> on {{review.created_at}} & <span style="font-weight:700">edited at</span> {{review.updated_at}}</small>
           <!-- 드롭다운 (삭제, 수정) -->
           <div v-if="reviewCreator" class="btn-group dropleft">
             <button type="button" class="btn btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
@@ -53,8 +53,8 @@
                 <textarea @keyup.enter="updateComment(comment.id, comment.content)" v-model="currentComment.content" type="content" class="col-xs-8 col-md-11" rows="5"></textarea>
                 <button @click="updateComment(comment.id,comment.content)" class="input-group-append btn justify-content-center align-items-center col-xs-4 col-md-1 text-center">제출</button>
               </div>
-              <p v-show="comment.id != currentComment.select">{{ comment.content }}</p>
-              <small>{{ comment.created_at }}</small> 
+              <p class="comment-content" v-show="comment.id != currentComment.select">{{ comment.content }}</p>
+              <small class="comment-info">created {{ comment.created_at }} & updated {{ comment.updated_at }}</small> 
               <hr>
             </div>
           </div>
@@ -146,7 +146,22 @@ export default {
             this.commentData.content = null
             
           })
-          .catch( err => console.log(err) )  
+          
+        }
+        else {
+
+            const swal = Swal.mixin({
+              position: 'center',
+              showConfirmButton: true,
+              // title: this.errorMessages,
+              
+            })
+            swal.fire({
+              icon: 'error',
+              title: "로그인이 필요합니다.",
+              confirmButtonText: '확인'
+            })
+          
         }
       
       },
@@ -256,7 +271,7 @@ export default {
       this.$router.push({ name:'MovieDetail', params:{ movieId: this.movieId}})
     },
     commentCreator(user_id) {
-      console.log("커멘트 아이디", user_id, this.$cookies.get('userId'))
+      // console.log("커멘트 아이디", user_id, this.$cookies.get('userId'))
       if (String(user_id) === this.$cookies.get('userId')){
         return true
       } else {
@@ -307,9 +322,10 @@ export default {
 .card-text{
   white-space: pre-wrap;
   color: #1f3459;
+  font-family: 'Noto Sans KR';
 }
 
-.card-text::first-letter{
+/* .card-text::first-letter{
   color: #903;
   float: left;
   font-family: Georgia;
@@ -318,7 +334,7 @@ export default {
   padding-top: 4px;
   padding-right: 8px;
   padding-left: 3px;
-}
+} */
 
 .comment-padding {
   padding-right: 12px;
@@ -373,7 +389,16 @@ export default {
   display: none;
 }
 
+.review-info{
+  font-family: Noto Sans KR
+}
 
+.comment-info {
+  font-family: Noto Sans KR
+}
 
+.comment-content {
+  font-family: 'Do Hyeon'
+}
 
 </style>

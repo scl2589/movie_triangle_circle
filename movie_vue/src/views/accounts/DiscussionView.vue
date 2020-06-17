@@ -1,13 +1,14 @@
 <template>
   <div>
     <!-- <h1>{{ genre }} 게시판</h1> -->
-    <div v-for=" genre in genres" :key="genre.key">
-      <router-link  :to="{ name: 'Genre', params: { 'genre': genre.name,'genreData': genre}}">{{ genre.name }}</router-link>
-      
-    </div>
-    <router-view />
-  
-    
+    <div class="row">
+      <div class="col-2"> 
+        <div class="list-group" v-for=" genre in genres" :key="genre.key">
+          <router-link class="links list-group-item" :to="{ name: 'Genre', params: { 'genre': genre.name,'genreData': genre}}">{{ genre.name }}</router-link>
+        </div>
+      </div>
+      <router-view class="col-10" />
+     </div>
   </div>
 </template>
 
@@ -25,12 +26,12 @@ export default {
     }
   },
   methods: {
-   getGenre() {
-     axios.get(SERVER.URL + SERVER.ROUTES.genres)
-      .then( res => this.genres = res.data)
-      .catch( err => console.log(err.response.data))
-   },
-  
+    getGenre() {
+      axios.get(SERVER.URL + SERVER.ROUTES.genres)
+        .then( res => this.genres = res.data)
+        .catch( err => console.log(err.response.data))
+    },
+    
     // nextPage() {
     //   this.pageNum += 1;
     // },
@@ -191,4 +192,26 @@ table{
   
 }
 
+.links{
+  color: #345389;
+  padding: 2px;
+  text-align: center;
+}
+
+.links:hover {
+  color: pink;
+  text-decoration: none;
+}
+
+.list-group-item {
+  border-radius: 0;
+}
+
+.list-group {
+  border-radius: 5px;
+}
+
+/* .giveBorder {
+  border: 1px solid rgba(0,0,0,.125);
+} */
 </style>
