@@ -1,8 +1,8 @@
 <template>
-  <div id="app" >
-    <ul class="navbar navbar-expand-lg nav nav-tabs d-lg-flex justify-content-between container d-none d-lg-block" id="nav-tab" role="tablist">
+  <div id="app" v-cloak>
+    <ul class="navbar navbar-expand-lg nav nav-tabs d-lg-flex justify-content-between container d-none d-lg-block p-0" id="nav-tab" role="tablist">
       <div class="align-items-end row"> 
-        <li class="nav-item" >
+        <li class="nav-item" @click="goToMovieList" >
           <img src="./assets/logo.png" alt="세상의 모든 영화 로고" width="150px" title="세상의 모든 영화">
         </li>
         <li class="nav-item" role="presentation">
@@ -84,7 +84,7 @@
 
 
 
-    
+    <hr class="m-1  d-block d-lg-none ">
     <router-view class="mt-3 mb-5 container" @submit-login-data="login" @submit-signup-data="signup" :searchData="searchData" />
     <div class="m-5"></div>
     <div class="footer mt-5">
@@ -117,6 +117,9 @@ export default {
     setCookie(token){
       this.$cookies.set('auth-token', token)
       this.isLoggedIn = true
+    },
+    goToMovieList() {
+      this.$router.push({name:'MovieList'})
     },
     // clickedLogo() {
     //   this.$router.go()
@@ -219,6 +222,7 @@ export default {
           'Authorization': `Token ${this.$cookies.get('auth-token')}`
         }
       }
+      
       axios.post(SERVER.URL + SERVER.ROUTES.logout,null, requestHeaders)
         .then( () => {
           axios.post(SERVER.URL + SERVER.ROUTES.createrecommend + this.$cookies.get('userId') + '/')
@@ -357,7 +361,7 @@ export default {
 .nav-link{
   color: #345389;
   text-align:end;
-  font-family: 'Gugi', cursive !important;
+  font-family: 'Gugi' !important;
 }
 
 .nav-item > .active {
@@ -422,7 +426,7 @@ export default {
   border-bottom: #345389;
 }
 .navbar-brand {
-  max-width: 30%;
+  max-width: 20%;
 }
 
 .mobile-background {
@@ -431,6 +435,10 @@ export default {
 
 .navbar-light .navbar-nav .nav-link {
   color: #345389;
+}
+
+#app[v-cloak]{
+  opacity: 0;
 }
 </style>
 

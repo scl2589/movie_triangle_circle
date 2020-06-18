@@ -6,7 +6,7 @@
           <div class="col-md-4">
             <img :src="posterURL" class="setwidth justify-content-center" alt="영화포스터" >
           </div>
-          <div class="col-md-8 p-4 justify-content-between" >
+          <div class="col-md-8 p-4 justify-content-between">
             <!-- :title="`${movie.release_date}`"  -->
             <h2><strong>{{ movie.title }}</strong><span class="dimcolor" :tooltip="`개봉일: ${movie.release_date}`" flow="right">({{date}})</span></h2>
             <!-- 장르 -->
@@ -83,7 +83,6 @@ import MovieDetailTrailer from '@/views/movies/MovieDetailTrailerView.vue'
 import Swal from 'sweetalert2'
 
 // const API_KEY = process.env.VUE_APP_YOUTUBE_API_KEY;
-// VUE_APP_YOUTUBE_API_KEY="AIzaSyCnCmWpk7t_J-utpA3f7TGDaq3PoON9jFM"
 const API_KEY= process.env.VUE_APP_YOUTUBE_API_KEY;
 const API_URL="https://www.googleapis.com/youtube/v3/search";
 
@@ -464,15 +463,12 @@ export default {
 }
 
 
-
-/* .swal-wide{
-  width:500px !important;
+[v-cloak]::before {
+  content: '로딩중...'
 }
-
-.swal2-title{
-  font-size: 20px !important;
-} */
-
+[v-cloak] > * {
+  display:none !important;
+}
 .rect-auto,
 .c100.p51 .slice,
 .c100.p52 .slice,

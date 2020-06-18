@@ -2,6 +2,7 @@
   <div class="container">
     <div v-if="this.$cookies.get('auth-token') && movies_recommend.length" class="m-0">
       <h2 class="mt-3"><span tooltip="좋아요를 기반으로 추천되었습니다." flow="right"> Recommended Movies</span></h2>
+      <p class="d-xs-block d-md-none">이 글 바로 아래쪽을 한 번 탭해서 스크롤을 움직여주세요.</p>
       
       <div class="row scroll-sect recent-movies" @mousewheel="move">
         <div class="row-inner">
