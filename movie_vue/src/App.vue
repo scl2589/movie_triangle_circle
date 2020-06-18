@@ -1,6 +1,6 @@
 <template>
   <div id="app" >
-    <ul class="navbar navbar-expand-lg nav nav-tabs d-flex justify-content-between container d-none d-lg-block" id="nav-tab" role="tablist">
+    <ul class="navbar navbar-expand-lg nav nav-tabs d-lg-flex justify-content-between container d-none d-lg-block" id="nav-tab" role="tablist">
       <div class="align-items-end row"> 
         <li class="nav-item" >
           <img src="./assets/logo.png" alt="세상의 모든 영화 로고" width="150px" title="세상의 모든 영화">
@@ -33,8 +33,57 @@
           <input @keyup.enter="search"  v-model="query" class="form-control mr-sm-2" placeholder="영화를 검색해주세요." aria-label="Search">
           <!-- <router-link :to="{name:'Search', params:{ query: query}}" @click.native="search" class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</router-link> -->
           <button @click="search" class="btn my-2 my-sm-0" type="submit">Search</button>
-        </div>
+      </div>
     </ul>
+
+
+
+    <!-- 모바일 버전 Navbar -->
+    <nav class="navbar navbar-light bg-light d-block d-lg-none ">
+      <div class="d-flex justify-content-between">
+        <img src="./assets/logo.png" class="navbar-brand" alt="세상의 모든 영화 로고"  title="세상의 모든 영화">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+      </button>
+      </div>
+      
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item mr-auto" role="presentation">
+            <router-link class="nav-link"  :class="{active: isList }" :to="{ name:'MovieList' }">Movies</router-link>
+          </li>
+          <!-- <li class="nav-item" role="presentation">
+            <router-link class="nav-link" :class="{active: isCreate}" v-if="isLoggedIn" :to="{ name:'Create' }">Create Review</router-link>
+          </li> -->
+          <li class="nav-item mr-auto" role="presentation">
+            <router-link class="nav-link" :class="{active: isDiscussions}" :to="{ name : 'Discussions'  }">Discussions</router-link>
+          </li>
+          <li class="nav-item mr-auto"  role="presentation">
+            <router-link class="nav-link" :class="{active: isSignup}" v-if="!isLoggedIn" :to="{ name:'Signup' }">Signup</router-link>
+          </li>
+          <li class="nav-item mr-auto" role="presentation">
+            <router-link class="nav-link" :class="{active: isLogin}"  v-if="!isLoggedIn" :to="{ name:'Login' }">Login</router-link>
+          </li>
+          <li class="nav-item mr-auto" role="presentation">
+            <router-link class="nav-link" :class="{active: isProfile}" :key="$route.fullPath" v-if="isLoggedIn" :to="{ name:'Profile', params: { userId:this.$cookies.get('userId') } }">Profile</router-link>
+            <!-- <button @click="clickedProfile" class="nav-link profile-button"  :class="{active: isProfile}" v-if="isLoggedIn"  type="submit">Profile</button> -->
+          </li>
+          <li class="nav-item mr-auto" role="presentation">
+            <router-link class="nav-link" v-if="isLoggedIn" @click.native="logout" to="/accounts/logout/">Logout</router-link>
+          </li>
+
+        </ul>
+        <div class="form-inline my-2 row p-2">
+            <input @keyup.enter="search"  v-model="query" class="form-control col-8 mr-sm-2" placeholder="영화를 검색해주세요." aria-label="Search">
+            <!-- <router-link :to="{name:'Search', params:{ query: query}}" @click.native="search" class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</router-link> -->
+            <button @click="search" class="btn my-2 my-sm-0 col-4" type="submit">Search</button>
+        </div>
+      </div>
+    </nav>
+
+
+
     
     <router-view class="mt-3 mb-5 container" @submit-login-data="login" @submit-signup-data="signup" :searchData="searchData" />
     <div class="m-5"></div>
@@ -372,6 +421,8 @@ export default {
 .nav-item {
   border-bottom: #345389;
 }
-
+.navbar-brand {
+  max-width: 30%;
+}
 </style>
 

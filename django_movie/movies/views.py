@@ -181,35 +181,44 @@ def create_recommend(request,user_pk): # 유저의 활동 기반 , 유저 기반
     # arr = [[0]*(len(user_data)) for _ in range(len(user_data))]
     user = get_object_or_404(User, pk=user_pk)
     
-    arr = [[0] *N for _ in range(len(user_data)+1)]
-
+    arr = dict()
     for u in user_data:
         if u==user:
             continue
         ms = user.user_rank.all() & u.user_rank.all() # 유저가 평가한 영화를 평가한 모든 사람들과 다른 영화를 평가한 사람들의 교집합 
         temp = []
+
         for m in ms:
             a = user_data[i].userrank_set.filter(movie=m)[0].rank  # 교집합 유저의 현재 영화에 대한 평점
             b = user_data[j].userrank_set.filter(movie=m)[0].rank
             temp.append((a,b))
-            up=0
-            d1=0
-            d2=0
-            for a,b in temp:
-                up+=a*b
-                d1+=a**2
-                d2+=b**2
-        if d1+d2 == 0:
-            continue 
-        else:
-            result = up/(d1**(1/2) + d2**(1/2)) # user와 다른 유저와의 상관계수
-            arr[u.id] =result
-    
+        print(temp)
+        up=0
+        d1=0
+        d2=0
+        for a,b in temp:
+            up+=a*b
+            d1+=a**2
+            d2+=b**2
+            if d1+d2 == 0:
+                continue 
+            else:
+                result = up/(d1**(1/2) + d2**(1/2)) # user와 다른 유저와의 상관계수
+                arr[u.id] = result
 
-                    # recomv = RecommandMovie.objects.filter(movie_id=movie.id, user_id=user_id)[0]
-                    # recomv.coef = result+recomv.coef
-                    # recomv.save()
-
+    # 상관계수가 높은 친구들
+    x = Counter(arr)
+    print(x,arr)
+    cus=x.most_common(3)
+    for us in cus:
+        RMs =us.recommandmovie_set.order_by('-coef')
+        if RMs:
+            for RM in RMs[:20]:
+                if user.recommandmovie_set.filter(movie=RM.movie, user=user).exists():
+                    user.recommandmovie_set.filter(movie=RM.movie, user=user)[0].coef+=arr[us.id]
+                else:
+                    RecommandMovie.objects.create(movie=RM, user=user, coef=arr[us.id])
+    return Response({'success':True})
 
 @api_view(['GET']) # 유저가 처음 회원가입할 때만 동작하고 그 뒤에는 유저의 활동량에 따라 업데이트해줄지를 결정
 def get_user_recommend(request,user_id):
