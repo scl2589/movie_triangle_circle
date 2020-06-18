@@ -13,7 +13,7 @@
       <div class="row justify-content-center mb-3">
         <!-- <p> -->
           <span class="mr-5">리뷰 수 {{ userInfo.reviews.length }}</span>
-          <span data-toggle="modal" data-target="#exampleModal" class="make-hover mr-5">팔로워 {{ this.followers}}</span>
+          <span data-toggle="modal" data-target="#followers" class="make-hover mr-5">팔로워 {{ this.followers}}</span>
           <span data-toggle="modal" data-target="#followings" class="make-hover">팔로우 {{ this.followings}}</span>
         <!-- </p> -->
       </div>
@@ -34,7 +34,7 @@
    
   
   <!--follower Modal body 팔로워 모달 -->
-  <div class="modal" tabindex="-1" role="dialog" id="exampleModal">
+  <div class="modal follower-modal" tabindex="-1" role="dialog" id="followers">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -44,17 +44,17 @@
           </button>
         </div>
         <div class="modal-body">
-          <h5>{{ userInfo.username }} 님을 팔로우하는 모든 사람이 여기에 표시됩니다.</h5>
+          <h6>{{ userInfo.username }} 님을 팔로우하는 모든 사람이 여기에 표시됩니다.</h6>
           <hr>
           <div v-for="follower in userInfo.followersobj" :key="follower.id">
             <div class="row">
               <div class="pl-3 col-9">
                 <span class=" pl-3 col-9 make-hover" @click="goToUserPage(follower.id)">{{ follower.username}}</span>
               </div>
-              <div class="col-3 pr-3">
-                <button class="btn btn-sm " v-show="checkFollow2(follower)" @click="changeFollow"><i class="fas fa-user-check"></i> 팔로잉</button>
+              <div class="col-3 pr-3" v-if=" follower.id != authUserInfo.id">
+                <button class="btn btn-sm " v-show="checkFollow2(follower,true)" @click="changeFollow"><i class="fas fa-user-check"></i> 팔로잉</button>
                 <!-- check 그림이 팔로우가 되었다는 뜻 -->
-                <button class=" btn btn-sm" v-show="!checkFollow2(follower)" @click="changeFollow"><i class="fas fa-user-plus"></i> 팔로우</button>
+                <button class=" btn btn-sm" v-show="!checkFollow2(follower, true)" @click="changeFollow"><i class="fas fa-user-plus"></i> 팔로우</button>
               </div>
               <hr>
             </div>
@@ -79,17 +79,17 @@
           </button>
         </div>
         <div class="modal-body">
-          <h5>{{ userInfo.username }}님이 팔로잉하는 모든 사람이 여기에 표시됩니다.</h5>
+          <h6>{{ userInfo.username }}님이 팔로잉하는 모든 사람이 여기에 표시됩니다.</h6>
           <hr>
           <div v-for="following in userInfo.followingsobj" :key="following.id">
             <div class="row">
               <div class="pl-3 col-9">
                 <span class=" pl-3 col-9 make-hover" @click="goToUserPage(following.id)">{{ following.username }}</span> 
               </div>
-              <!-- <div class="col-3 pr-3">
-                <button class="btn btn-sm " v-show="checkFollow2(following)" @click="changeFollow"><i class="fas fa-user-check"></i> 팔로잉</button>
-                <button class=" btn btn-sm" v-show="!checkFollow2(following)" @click="changeFollow"><i class="fas fa-user-plus"></i> 팔로우</button>
-              </div> -->
+              <div class="col-3 pr-3" v-if=" following.id != authUserInfo.id">
+                <button class="btn btn-sm " v-show="checkFollow2(following, false)" @click="changeFollow"><i class="fas fa-user-check"></i> 팔로잉</button>
+                <button class=" btn btn-sm" v-show="!checkFollow2(following, false)" @click="changeFollow"><i class="fas fa-user-plus"></i> 팔로우</button>
+              </div>
               <hr>
             </div>
             
@@ -112,6 +112,7 @@ import SERVER from '@/api/index.js'
 import UserProfileLiked from '@/views/accounts/UserProfileLikedView.vue'
 import UserProfileReview from '@/views/accounts/UserProfileReviewView.vue'
 import Swal from 'sweetalert2'
+// import $ from 'jquery'
 
 
 export default {
@@ -120,6 +121,7 @@ export default {
   data () {
     return {
       userInfo: [],
+      authUserInfo: [],
       posterPaths: [],
       isLike: true,
       isReview: false,
@@ -131,6 +133,7 @@ export default {
       error: null,
       post: null,
       state: true,
+      check_person: "",
     }
 
   },
@@ -205,33 +208,57 @@ export default {
       }
     },
    
-    checkFollow2(user) {
-      
-      if (this.$cookies.get('auth-token')){
-       return axios.get(SERVER.URL + '/accounts/'+ user.id +'/follow/' +   this.$cookies.get('userId') +'/')
-        .then (res => { 
-          return res.data})
-        .catch( err => console.log(err))
+    checkFollow2(user,flag) {
+      console.log(this.authUserInfo.followingsobj)
+      console.log(this.authUserInfo.followersobj)
+      if (this.$cookies.get('auth-token') && flag){
           
-            
+          if ( this.authUserInfo.followings.includes(user.id)) {
+            return true}
+          else { return false}
+      }
+      else if (this.$cookies.get('auth-token') && !flag) {
+        if ( this.authUserInfo.followings.includes(user.id)) {
+            return true}
+          else { return false}
+      }
+          
             // console.log("user.id", user.id, user.username, "this_id", this.$cookies.get('userId'), "res.data", res.data)
             // console.log(user.username)
             // console.log(res.data)
-         
-          // .catch(err => {
-          //   console.log(err)
-          // })
-          
-      }
       
+
     },
-    cb(res) {
-      return res
+    goToUserPage(user_id) {
+      
+      // 팔로워 모달 끄기 
+      var modal = document.getElementById('followers')
+      modal.classList.remove('show');
+      modal.setAttribute('aria-hidden', 'true')
+      modal.setAttribute('style', 'display:none')
+      
+
+      // 팔로잉 모달 끄기
+      var modal2 = document.getElementById('followings')
+      modal2.classList.remove('show');
+      modal2.setAttribute('aria-hidden', 'true')
+      modal2.setAttribute('style', 'display:none')
+      
+
+      // body에서 클래스 제거 
+      var thisbody = document.body
+      thisbody.classList.remove('modal-open')
+
+      //  백드롭
+      var modalBackdrops = document.getElementsByClassName('modal-backdrop')
+      document.body.removeChild(modalBackdrops[0])
+
+      // 라우터 이동
+      this.$router.push({ name:'Profile', params:{ userId: user_id}})
+      this.checkFollow()
     },
 
-    goToUserPage(user_id) {
-      this.$router.push({ name:'Profile', params:{ userId: user_id}})
-    },
+    
     getUserInfo(userId) {
       axios.get(SERVER.URL + '/accounts/'+ userId + '/info/')
     .then(res => {
@@ -241,6 +268,11 @@ export default {
       res.data.like.forEach( movie => {
         movie.poster_path=SERVER.IMAGEPATH.imagepath780 + movie.poster_path
       })
+      axios.get(SERVER.URL + '/accounts/'+ this.$cookies.get('userId') + '/info/')
+        .then( res => {
+          this.authUserInfo = res.data
+        })
+        .catch( err => err.response.data)
       // console.log("SUCCESSFUL getUserInfo")
     })
     .catch(err => console.log( err))
@@ -271,7 +303,10 @@ export default {
     // console.log("Reusing this component")
     this.getUserInfo(to.params.userId)
     next();
-  }
+  },
+  // beforeRouteLeave(to, from, next) {
+  //   this.checkFollow(check_person)
+  // }
 }
 </script>
 

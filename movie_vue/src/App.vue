@@ -364,6 +364,9 @@ export default {
   font-family: 'Gugi' !important;
 }
 
+.nav-link:hover{
+  color: #345389
+}
 .nav-item > .active {
   /* color: #f5b893 !important;  */
   color: pink !important;

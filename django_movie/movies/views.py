@@ -35,9 +35,9 @@ User = get_user_model()
 
 @api_view(['GET'])
 def index(request):
-    movies_popular = Movie.objects.values('title','backdrop_path','pk').order_by('-popularity')[:100]
+    movies_popular = Movie.objects.values('title','backdrop_path','pk').order_by('-popularity')[:200]
     movies_popular = random.sample(list(movies_popular),20)
-    movies_recent = Movie.objects.values('title','backdrop_path','pk').order_by('-release_date')[:100]
+    movies_recent = Movie.objects.values('title','backdrop_path','pk').order_by('-release_date')[:200]
     movies_recent = random.sample(list(movies_recent),20)
     movies = movies_popular + movies_recent
     
@@ -219,15 +219,44 @@ def create_recommend(request,user_pk): # 유저의 활동 기반 , 유저 기반
             if RMs:
                 for RM in RMs[:20]:
                     if user.recommandmovie_set.filter(movie=RM.movie, user=user).exists(): # 존재하면 값을 추가
+                        # continue
                         user.recommandmovie_set.filter(movie=RM.movie, user=user)[0].coef+=arr[us.id]
+                        user.recommandmovie_set.filter(movie=movie, user=user)[0].save()
                     else:
                         RecommandMovie.objects.create(movie=RM, user=user, coef=arr[us.id])
     else:
         no_user(user_pk)
     return Response({'success':True})
 
-def no_user(user_pk):
-    pass
+def no_user(user_id):
+    user = get_object_or_404(User, pk=user_id)
+    lmovies = user.like_movies.all() # 좋아요한 영화들
+    
+    genres_list = list(Genre.objects.values_list('name',flat=True))
+    genres_dict = { x:0 for x in genres_list } # 좋아요한 영화들의 장르 개수를 구함 여기서 숫자가 높은 걸 선택해서 그 장르만 돌림
+    print(genres_dict)
+    for l in lmovies:
+        for g in l.genres.all():
+            genres_dict[g.name]+=1
+    # movies = Movie.objects.all() # 모든 영화들의 coefficient 구함, 엄~청 오래걸림 O(n*g), n: 영화 개수, g: 장르 개수 2500개,
+    # 장르별 top 30*19
+    movies = Movie.objects.order_by('-popularity')[:1000]
+    print(genres_dict)
+    for movie in movies:
+        up =0
+        down = 0
+        for x in movie.genres.all():
+            if genres_dict.get(x.name,0):
+                up+=genres_dict[x.name]
+                down+=((genres_dict[x.name]**(2)))
+        if down:    
+            coef = up/(down**(1/2)+3**(1/2))
+            if coef:
+                if user.recommandmovie_set.filter(movie=movie, user=user).exists(): # 존재하면 값을 추가
+                    user.recommandmovie_set.filter(movie=movie, user=user)[0].coef+=coef
+                    user.recommandmovie_set.filter(movie=movie, user=user)[0].save()
+                else:
+                    RecommandMovie.objects.create(movie_id=movie.id, user_id=user.id, coef=coef) # 일정 점수 이하일 경우 삭제
 
 
 
@@ -245,7 +274,7 @@ def get_user_recommend(request,user_id):
             genres_dict[g.name]+=1
     # movies = Movie.objects.all() # 모든 영화들의 coefficient 구함, 엄~청 오래걸림 O(n*g), n: 영화 개수, g: 장르 개수 2500개,
     # 장르별 top 30*19
-    movies = Movie.objects.order_by('-popularity')[:500]
+    movies = Movie.objects.order_by('-popularity')[:1000]
     print(genres_dict)
     for movie in movies:
         up =0
