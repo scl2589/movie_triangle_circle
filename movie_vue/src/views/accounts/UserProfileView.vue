@@ -34,7 +34,7 @@
    
   
   <!--follower Modal body 팔로워 모달 -->
-  <div class="modal follower-modal" tabindex="-1" role="dialog" id="followers">
+  <div  class="modal follower-modal" tabindex="-1" role="dialog" id="followers">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -83,10 +83,10 @@
           <hr>
           <div v-for="following in userInfo.followingsobj" :key="following.id">
             <div class="row">
-              <div class="pl-3 col-9">
-                <span class=" pl-3 col-9 make-hover" @click="goToUserPage(following.id)">{{ following.username }}</span> 
+              <div class="pl-3 col-8 col-md-9">
+                <span class=" pl-3 make-hover" @click="goToUserPage(following.id)">{{ following.username }}</span> 
               </div>
-              <div class="col-3 pr-3" v-if=" following.id != authUserInfo.id">
+              <div class="col-4 col-md-3 pr-3" v-if=" following.id != authUserInfo.id">
                 <button class="btn btn-sm " v-show="checkFollow2(following, false)" @click="changeFollow"><i class="fas fa-user-check"></i> 팔로잉</button>
                 <button class=" btn btn-sm" v-show="!checkFollow2(following, false)" @click="changeFollow"><i class="fas fa-user-plus"></i> 팔로우</button>
               </div>

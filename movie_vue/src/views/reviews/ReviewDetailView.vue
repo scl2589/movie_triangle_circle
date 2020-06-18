@@ -7,11 +7,10 @@
         <!-- 제목 -->
         <h4 class="mb-0">{{ review.title }}
           <!-- 평점 -->
-          <span class="rating" id="rating">
-          </span>
+          <span class="rating" id="rating"></span>
         </h4>
         <!-- 게시글 정보 (작성자, 작성시간) -->
-        <div class="row justify-content-between oneline pb-0 review-info">
+        <div class="d-flex justify-content-between pb-0 review-info">
           <small class="line-height">posted by <span class="link-hover" @click="goToUserPage(user.id)"><strong>{{ user.username }}</strong></span> on {{review.created_at}} & <span style="font-weight:700">edited at</span> {{review.updated_at}}</small>
           <!-- 드롭다운 (삭제, 수정) -->
           <div v-if="reviewCreator" class="btn-group dropleft">
@@ -36,7 +35,7 @@
           <hr>
           <div>
             <div v-for="comment in comments" :key="`comment_${comment.id}`">
-              <div class="comments row justify-content-between">
+              <div class="comments d-flex justify-content-between">
                 <!-- 댓글 작성자 -->
                 <strong @click="goToUserPage(comment.user.id)">{{ comment.user.username}}</strong>
                 <!-- 댓글 수정/삭제 드롭다운 -->
@@ -340,9 +339,6 @@ export default {
   padding-right: 12px;
 }
 
-.comments {
-  padding-left: 15px;
-}
 
 
 .give-highlight:hover {
@@ -360,10 +356,6 @@ export default {
 .moviename {
   text-decoration: underline;
   color: rgba(0,0,0,.35);
-}
-
-.oneline{
-  padding: 12px;
 }
 
 .rating{
