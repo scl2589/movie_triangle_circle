@@ -10,10 +10,10 @@
           </span>
         </h2>
       </div>
-      <div class="row justify-content-between setWidth mb-3">
+      <div class="row justify-content-center mb-3">
         <!-- <p> -->
-          <span>리뷰 수 {{ userInfo.reviews.length }}</span>
-          <span data-toggle="modal" data-target="#exampleModal" class="make-hover">팔로워 {{ this.followers}}</span>
+          <span class="mr-5">리뷰 수 {{ userInfo.reviews.length }}</span>
+          <span data-toggle="modal" data-target="#exampleModal" class="make-hover mr-5">팔로워 {{ this.followers}}</span>
           <span data-toggle="modal" data-target="#followings" class="make-hover">팔로우 {{ this.followings}}</span>
         <!-- </p> -->
       </div>
@@ -46,13 +46,13 @@
         <div class="modal-body">
           <h5>{{ userInfo.username }} 님을 팔로우하는 모든 사람이 여기에 표시됩니다.</h5>
           <hr>
-          <div v-for="follower in userInfo.followers" :key="follower.id">
+          <div v-for="follower in userInfo.followersobj" :key="follower.id">
             <div class="row">
               <div class="pl-3 col-9">
                 <span class=" pl-3 col-9 make-hover" @click="goToUserPage(follower.id)">{{ follower.username}}</span>
               </div>
               <div class="col-3 pr-3">
-                <button class="btn btn-sm " v-show="checkFollow2(follower).then(res => {return res.data})" @click="changeFollow"><i class="fas fa-user-check"></i> 팔로잉</button>
+                <button class="btn btn-sm " v-show="checkFollow2(follower)" @click="changeFollow"><i class="fas fa-user-check"></i> 팔로잉</button>
                 <!-- check 그림이 팔로우가 되었다는 뜻 -->
                 <button class=" btn btn-sm" v-show="!checkFollow2(follower)" @click="changeFollow"><i class="fas fa-user-plus"></i> 팔로우</button>
               </div>
@@ -81,15 +81,15 @@
         <div class="modal-body">
           <h5>{{ userInfo.username }}님이 팔로잉하는 모든 사람이 여기에 표시됩니다.</h5>
           <hr>
-          <div v-for="following in userInfo.followings" :key="following.id">
+          <div v-for="following in userInfo.followingsobj" :key="following.id">
             <div class="row">
               <div class="pl-3 col-9">
                 <span class=" pl-3 col-9 make-hover" @click="goToUserPage(following.id)">{{ following.username }}</span> 
               </div>
-              <div class="col-3 pr-3">
+              <!-- <div class="col-3 pr-3">
                 <button class="btn btn-sm " v-show="checkFollow2(following)" @click="changeFollow"><i class="fas fa-user-check"></i> 팔로잉</button>
                 <button class=" btn btn-sm" v-show="!checkFollow2(following)" @click="changeFollow"><i class="fas fa-user-plus"></i> 팔로우</button>
-              </div>
+              </div> -->
               <hr>
             </div>
             
@@ -114,7 +114,6 @@ import UserProfileReview from '@/views/accounts/UserProfileReviewView.vue'
 import Swal from 'sweetalert2'
 
 
-
 export default {
   name: 'UserProfile',
   
@@ -131,6 +130,7 @@ export default {
       followings: 0,
       error: null,
       post: null,
+      state: true,
     }
 
   },
@@ -206,10 +206,12 @@ export default {
     },
    
     checkFollow2(user) {
-
+      
       if (this.$cookies.get('auth-token')){
-        console.log(axios.get(SERVER.URL + '/accounts/'+ user.id +'/follow/' +   this.$cookies.get('userId') +'/'))
-        return axios.get(SERVER.URL + '/accounts/'+ user.id +'/follow/' +   this.$cookies.get('userId') +'/')
+       return axios.get(SERVER.URL + '/accounts/'+ user.id +'/follow/' +   this.$cookies.get('userId') +'/')
+        .then (res => { 
+          return res.data})
+        .catch( err => console.log(err))
           
             
             // console.log("user.id", user.id, user.username, "this_id", this.$cookies.get('userId'), "res.data", res.data)
@@ -223,6 +225,10 @@ export default {
       }
       
     },
+    cb(res) {
+      return res
+    },
+
     goToUserPage(user_id) {
       this.$router.push({ name:'Profile', params:{ userId: user_id}})
     },

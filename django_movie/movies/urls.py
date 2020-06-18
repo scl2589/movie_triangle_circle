@@ -26,6 +26,8 @@ urlpatterns = [
 
     # 영화 회원가입 추천
     path('user/recommendation/', views.recommendation),
+    # 영화 로그아웃 추천
+    path('createrecommend/<int:user_id>/', views.create_recommend),
 
     # 영화 랭크 (평점)
     # path('<int:movie_pk>/rank/', views.create_rank),

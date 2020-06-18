@@ -14,8 +14,8 @@
         <input @keypress.enter="login" v-model="loginData.password" id="password" type="password" class="inputs" placeholder="Password" >
         
       </div>
-      <div class="row mr-1">
-        <button class="btn  offset-10 col-2" @click="login">Login</button>
+      <div class="row mr-1  justify-content-end">
+        <button class="btn" @click="login">Login</button>
       </div>
     
   </div>

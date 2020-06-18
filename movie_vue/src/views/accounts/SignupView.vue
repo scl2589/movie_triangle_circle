@@ -19,8 +19,8 @@
         </svg>
         <input @keypress.enter="signup" v-model="signupData.password2" type="password" id="password2" class="inputs" placeholder="Password Confirmation">
       </div>
-      <div class="row mr-1">
-        <button class="btn offset-10 col-2" @click="signup">Signup</button>
+      <div class="row mr-1 justify-content-end">
+        <button class="btn " @click="signup">Signup</button>
       </div>
       
   </div>

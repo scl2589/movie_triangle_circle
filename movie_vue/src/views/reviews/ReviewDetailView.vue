@@ -17,8 +17,8 @@
           <div v-if="reviewCreator" class="btn-group dropleft">
             <button type="button" class="btn btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
             <div class="dropdown-menu">
+              <p class="review-option give-highlight text-center border-bottom" @click="updateReview" >수정</p>
               <p class="review-option give-highlight text-center" @click="deleteReview" >삭제</p>
-              <p class="review-option give-highlight text-center" @click="updateReview" >수정</p>
             </div>
           </div>
         </div>
@@ -43,8 +43,8 @@
                 <div v-if="commentCreator(comment.user.id)" class="btn-group dropleft comment-padding">
                   <button type="button" class="btn btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
                   <div class="dropdown-menu">
-                    <p class="border-bottom give-highlight text-center" @click="deleteComment(comment.id)" >삭제</p>
-                    <p class="give-highlight text-center" @click="changeUpdateState(comment.id,comment.content)" >수정</p>
+                    <p class="give-highlight text-center border-bottom " @click="changeUpdateState(comment.id,comment.content)" >수정</p>
+                    <p class="give-highlight text-center" @click="deleteComment(comment.id)" >삭제</p>
                   </div>
                 </div>
               </div>
@@ -60,7 +60,7 @@
           </div>
         <!-- 댓글 생성 --> 
         <div class="input-group mx-1 row">
-          <textarea v-model="commentData.content" class="col-xs-8 col-md-11" type="content" placeholder="댓글을 작성해주세요." rows="5" ></textarea>
+          <textarea @keyup.enter.ctrl="createComment" v-model="commentData.content" class="col-xs-8 col-md-11" type="content" placeholder="댓글을 작성해주세요." rows="5" ></textarea>
           <button class="input-group-append btn justify-content-center align-items-center col-xs-4 col-md-1 text-center" @click="createComment">작성</button>
         </div>
       </div>
@@ -390,15 +390,19 @@ export default {
 }
 
 .review-info{
-  font-family: Noto Sans KR
+  font-family: Noto Sans KR;
 }
 
 .comment-info {
-  font-family: Noto Sans KR
+  font-family: Noto Sans KR;
 }
 
 .comment-content {
-  font-family: 'Do Hyeon'
+  font-family: 'Do Hyeon';
+}
+
+.review-option {
+  font-family: 'jua';
 }
 
 </style>

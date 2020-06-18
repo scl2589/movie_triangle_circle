@@ -25,12 +25,12 @@ class TokenSerializer(serializers.ModelSerializer):
 class UserProfileSerializer(serializers.ModelSerializer):
     like = serializers.SerializerMethodField()
     reviews = serializers.SerializerMethodField()
-    followers = serializers.SerializerMethodField()
-    followings = serializers.SerializerMethodField()
+    followersobj = serializers.SerializerMethodField()
+    followingsobj = serializers.SerializerMethodField()
     # poster = serializers.SerializerMethodField()
     class Meta:
         model = User
-        fields= ('id','like','reviews','username','followers','followings',) 
+        fields= ('id','like','reviews','username','followers','followings','followersobj', 'followingsobj') 
     def get_like(self, obj):  # "get_" + field name
         # print(User.objects.prefetch_related('comment_set'))
         # print(movies.annotate(like_count=models.Count('like_users')))
@@ -50,10 +50,10 @@ class UserProfileSerializer(serializers.ModelSerializer):
         review = obj.review_set.all()
         return  [{'review_title':x.title,'movie_title': x.movie.title,'movie_like':x.movie.like_users.count(),'movie_rank':x.movie.userrank_set.filter(user_id=obj.id)[0].rank, 'review_id':x.id}  for x in review]
 
-    def get_followers(self, obj):
+    def get_followersobj(self, obj):
         serializer = UserSerializer(obj.followers.all(), many=True)
         return serializer.data
 
-    def get_followings(self, obj):
+    def get_followingsobj(self, obj):
         serializer = UserSerializer(obj.followings.all(), many=True)
         return serializer.data

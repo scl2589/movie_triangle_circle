@@ -1,14 +1,23 @@
 <template>
   <div>
-   
-    <div class="row">
-      <div class="col-2 list-group"> 
-        <div class="list-group-itm" v-for=" genre in genres" :key="genre.key">
-          <router-link class="links list-group-item" :to="{ name: 'Genre', params: { genre: genre.name, genreData:genre,pageNum:0 }}">{{ genre.name }}</router-link>
+    <div class="row ">
+      <div class="d-none d-lg-block col-lg-2 list-group"> 
+        <div class="list-group-item" v-for=" genre in genres" :key="genre.key">
+          <router-link class="links" :to="{ name: 'Genre', params: { genre: genre.name, genreData:genre,pageNum:0 }}">{{ genre.name }}</router-link>
         </div>
       </div>
-      <router-view class="col-10" />
-     </div>
+      <div class="dropdown d-block d-lg-none col-2">
+        <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          장르
+        </button>
+        <div class="dropdown-menu" aria-labelledby="장르" >
+          <div class="dropdown-item" v-for=" genre in genres" :key="genre.key">
+            <router-link class="links " :to="{ name: 'Genre', params: { genre: genre.name, genreData:genre,pageNum:0 }}">{{ genre.name }}</router-link>
+          </div>
+        </div>
+      </div>
+      <router-view class="col-lg-10 mt-2" />
+    </div>
   </div>
 </template>
 
@@ -215,4 +224,6 @@ table{
 /* .giveBorder {
   border: 1px solid rgba(0,0,0,.125);
 } */
+
+
 </style>

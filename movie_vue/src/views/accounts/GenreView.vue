@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <h3 class="text-center">{{ genreData.name }} 장르 게시판</h3>
+    <h3 class="text-center">{{ genreData.name }} 장르 익명 게시판</h3>
     <table class="table  mb-5" v-if="genreData.genrereview_set.length">
       <thead>
         <tr>
@@ -24,10 +24,10 @@
     </div>
 
     <div v-else >
-      <h5>글을 작성해주세요.</h5>
+      <h5>작성된 게시글이 없습니다.</h5>
     </div>
     <div class="input-group mx-1 mt-3 row">
-      <textarea v-model="g_commentData.content" class="col-xs-8 col-md-11" type="content" placeholder="글을 작성해주세요." rows="5" ></textarea>
+      <textarea @keyup.enter.ctrl="createGcomment(genreData.id)" v-model="g_commentData.content" class="col-xs-8 col-md-11" type="content" placeholder="ctrl+enter를 동시에 누르면 게시글을 바로 작성할 수 있습니다." rows="5" ></textarea>
       <button class="input-group-append btn justify-content-center align-items-center col-xs-4 col-md-1 text-center" @click="createGcomment(genreData.id)">작성</button>
     </div>
     

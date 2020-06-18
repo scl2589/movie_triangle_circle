@@ -1,6 +1,6 @@
 <template>
   <div id="app" >
-    <ul class="nav nav-tabs d-flex justify-content-between container" id="nav-tab" role="tablist">
+    <ul class="navbar navbar-expand-lg nav nav-tabs d-flex justify-content-between container d-none d-lg-block" id="nav-tab" role="tablist">
       <div class="align-items-end row"> 
         <li class="nav-item" >
           <img src="./assets/logo.png" alt="세상의 모든 영화 로고" width="150px" title="세상의 모든 영화">
@@ -172,6 +172,7 @@ export default {
       }
       axios.post(SERVER.URL + SERVER.ROUTES.logout,null, requestHeaders)
         .then( () => {
+          axios.post(SERVER.URL + SERVER.ROUTES.createrecommend + this.$cookies.get('userId') + '/',null,requestHeaders)
           this.$cookies.remove('auth-token')
           this.$cookies.remove('userId')
           this.isLoggedIn = false
@@ -191,6 +192,7 @@ export default {
             icon: 'success',
             title: '로그아웃되었습니다.'
           })
+          
         })
         .catch( err => {
           console.log(err.response.data)

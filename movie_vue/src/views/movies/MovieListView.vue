@@ -2,6 +2,7 @@
   <div class="container">
     <div v-if="this.$cookies.get('auth-token') && movies_recommend.length" class="m-0">
       <h2 class="mt-3"><span tooltip="좋아요를 기반으로 추천되었습니다." flow="right"> Recommended Movies</span></h2>
+      
       <div class="row scroll-sect recent-movies" @mousewheel="move">
         <div class="row-inner">
             <div class="tile" v-for="movie in movies_recommend" :key="`movie_${movie.pk}`">
@@ -17,6 +18,8 @@
     </div>
 
     <h2><span tooltip="인기있는 영화" flow="right">Popular Now</span></h2>
+    <p class="d-xs-block d-md-none">이 글 바로 아래쪽을 한 번 탭해서 스크롤을 움직여주세요.</p>
+      <!-- <h3>안녕하세요.</h3> -->
     <div class="row scroll-sect recent-movies">
       <div class="row-inner">
           <div class="tile" v-for="movie in movies_popular" :key="`movie_${movie.pk}`">
@@ -31,6 +34,7 @@
     </div>
 
     <h2><span tooltip="최신 영화" flow="right">Recent Movies</span></h2>
+    <p class="d-xs-block d-md-none">이 글 바로 아래쪽을 한 번 탭해서 스크롤을 움직여주세요.</p>
     <div class="row scroll-sect recent-movies">
       <div class="row-inner">
           <div class="tile" v-for="movie in movies_recent" :key="`movie_${movie.pk}`">
@@ -335,6 +339,11 @@ table{
 
 .table thead th {
   border-top-style: none;
-  
 }
+/* 
+@media (max-width: 576px){
+  .show-small {
+    width: 90%;
+  }
+} */
 </style>
