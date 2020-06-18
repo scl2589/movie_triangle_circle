@@ -52,7 +52,7 @@
 - 신채린: 프론트엔드 담당 - 화면 설계 및 디자인, Vue Cli 및 Axios를 통한 REST API 활용
   - 🤗Github: [@scl2589 ](https://github.com/scl2589)
 - 조진환: 백엔드 담당 - DB/ Django REST API 설계, Vue Cli 및 Axios 로직 구현 
-  - 😄Github: [@ehtlfk ]
+  - 😄Github: [@ehtlfk ](https://github.com/ehtlfk)
 
 <br>
 
@@ -103,12 +103,6 @@
 ## ⭐️ 핵심 기능
 
 ![capture-2500935](images/README/capture-2500935.png)
-
-<br>
-
-## 🗃 Project Folder
-
-- 
 
 <br>
 
