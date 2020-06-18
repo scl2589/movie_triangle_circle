@@ -39,7 +39,7 @@
 
 
     <!-- 모바일 버전 Navbar -->
-    <nav class="navbar navbar-light bg-light d-block d-lg-none ">
+    <nav class="navbar navbar-light mobile-background d-block d-lg-none ">
       <div class="d-flex justify-content-between">
         <img src="./assets/logo.png" class="navbar-brand" alt="세상의 모든 영화 로고"  title="세상의 모든 영화">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -221,7 +221,7 @@ export default {
       }
       axios.post(SERVER.URL + SERVER.ROUTES.logout,null, requestHeaders)
         .then( () => {
-          axios.post(SERVER.URL + SERVER.ROUTES.createrecommend + this.$cookies.get('userId') + '/',null,requestHeaders)
+          axios.post(SERVER.URL + SERVER.ROUTES.createrecommend + this.$cookies.get('userId') + '/')
           this.$cookies.remove('auth-token')
           this.$cookies.remove('userId')
           this.isLoggedIn = false
@@ -423,6 +423,14 @@ export default {
 }
 .navbar-brand {
   max-width: 30%;
+}
+
+.mobile-background {
+  background-color: white;
+}
+
+.navbar-light .navbar-nav .nav-link {
+  color: #345389;
 }
 </style>
 

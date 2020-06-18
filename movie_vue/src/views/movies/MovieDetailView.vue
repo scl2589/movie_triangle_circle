@@ -54,8 +54,8 @@
             </div>
             <div> 
               <!--감독 및 출연 배우 -->
-              <p>{{ movie.director ? "감독: " + movie.director.replace(/,/gi,'') : "" }}</p>
-              <p>{{ movie.actor ? "배우: " + movie.actor.replace(/,/gi,' ∙ ').slice(0,movie.actor.length-1) : "" }}</p>
+              <p>{{ movie.director ? "감독: " + movie.director.replace(/,/g,'') : "" }}</p>
+              <p>{{ movie.actor ? "배우: " + movie.actor.replace(/,/g,' ∙ ').slice(0,movie.actor.replace(/,/g,' ∙ ').length-2) : "" }}</p>
             </div>
           </div>
         </div>

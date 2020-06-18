@@ -44,6 +44,7 @@ def index(request):
     if request.user.username:
         user = request.user
         RM = user.recommandmovie_set.order_by('-coef')[:20] #오름차순이다.
+        print(RM)
         RMs = [ x.movie for x in RM]
         random.shuffle(RMs)
         movies.extend(RMs)
@@ -182,17 +183,19 @@ def create_recommend(request,user_pk): # 유저의 활동 기반 , 유저 기반
     user = get_object_or_404(User, pk=user_pk)
     
     arr = dict()
+
     for u in user_data:
         if u==user:
             continue
         ms = user.user_rank.all() & u.user_rank.all() # 유저가 평가한 영화를 평가한 모든 사람들과 다른 영화를 평가한 사람들의 교집합 
+        print(u.user_rank.all())    
         temp = []
 
         for m in ms:
             a = user_data[i].userrank_set.filter(movie=m)[0].rank  # 교집합 유저의 현재 영화에 대한 평점
             b = user_data[j].userrank_set.filter(movie=m)[0].rank
             temp.append((a,b))
-        print(temp)
+      
         up=0
         d1=0
         d2=0
@@ -208,7 +211,6 @@ def create_recommend(request,user_pk): # 유저의 활동 기반 , 유저 기반
 
     # 상관계수가 높은 친구들
     x = Counter(arr)
-    print(x,arr)
     cus=x.most_common(3)
     for us in cus:
         RMs =us.recommandmovie_set.order_by('-coef')
