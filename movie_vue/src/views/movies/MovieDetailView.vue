@@ -39,13 +39,11 @@
               <button @click="showAlert()" class="btn button-transparent bg-transparent text-white pb-4 to-trailer" data-toggle="modal" :data-target="'#movie'+movie.movieId" role="dialog">► 예고편 보기 </button>
               
               <div v-if="video" class="modal fade" :id="'movie'+movie.movieId" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <MovieDetailTrailer :video="video"/>
+                <MovieDetailTrailer :video="video" :opened="opened"/>
               </div>
             </div>
 
-
             <!--줄거리 -->
-
             <div class="clear-float mt-3">
               <h4 class="text-left">줄거리</h4>
             </div>
@@ -109,6 +107,7 @@ export default {
       toast: "",
       liked_users :"", 
       //리뷰는 하나만
+      opened: true
     }
   },
   computed: {
@@ -132,15 +131,18 @@ export default {
               key: API_KEY,
               part: "snippet",
               type: "video",
-              q: this.movie.original_title +" official trailer",
+              q: this.movie.title +" 예고편",
               maxResults: 1,
             }
           })
           .then(res => {
             this.video = res.data.items[0]
+            const parser = new DOMParser() 
+            const doc = parser.parseFromString(this.video.snippet.title, 'text/html')
+            this.video.snippet.title = doc.body.innerText
           })
           .catch(err => {
-            console.log(err)
+            console.log("error", err)
             this.must_show = true
             // 유튜브 에러 모달 띄우기
             const Toast = Swal.mixin({

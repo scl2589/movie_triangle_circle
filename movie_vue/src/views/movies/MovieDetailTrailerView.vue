@@ -4,18 +4,15 @@
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title text-dark m-0" id="exampleModalLabel" v-text="video.snippet.title"></h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <h5 class="modal-title m-0" id="exampleModalLabel" v-text="video.snippet.title"></h5>
+          <button type="button" class="btn"  @click="isClosed" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          <div class="embed-responsive embed-responsive-16by9">
-            <iframe class="embed-responsive-item" :src="videoUrl" allowfullscreen></iframe>
+          <div class="embed-responsive embed-responsive-16by9 divScope">
+            <iframe id="ytplayer" v-if="new_one" class="embed-responsive-item yt_player_iframe" :src="videoUrl" frameborder="0" allowfullscreen></iframe>
           </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
         </div>
       </div>
     </div>
@@ -23,15 +20,32 @@
 </template>
 
 <script>
+// import $ from 'jquery'
+
+// $('.stop-video').click(function(){
+//     $('#youtube_player')[0].contentWindow.postMessage('{"event":"command","func":"' + 'stopVideo' + '","args":""}', '*');
+// });
+
+
 export default {
   name: 'MovieDetailTrailer',
+  data() {
+    return {
+      // opened: true, 
+      new_one: true,
+    }
+  },
   props: {
-    video: Object
+    video: Object,
+    opened: Boolean,
   },
   computed: {
     videoUrl() {
-      return `https://www.youtube.com/embed/${this.video.id.videoId}`;
-    }
+      return `https://www.youtube.com/embed/${this.video.id.videoId}?enablejsapi=1&version=3&playerapiid=ytplayer`;
+    },
+    // isClosed() {
+    //   return !this.new_one;
+    // },
   },
   filters: {
     truncate: function (text, length, suffix) {
@@ -41,8 +55,21 @@ export default {
           return text;
       }
     }
+  },
+  methods: {
+    isClosed() {
+      this.new_one = false
+    },
+  },
+  updated() {
+    this.new_one = true
   }
+
 }
+
+
+
+
 </script>
 
 <style scoped>
@@ -51,6 +78,18 @@ p{
 }
 .video-description {
   white-space: pre-wrap;
+}
+
+.modal-title {
+  color: white;
+}
+
+.modal-content {
+  background-color: black;
+}
+
+.close {
+  color: white;
 }
 
 </style>

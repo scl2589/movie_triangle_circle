@@ -185,10 +185,10 @@ def create_recommend(request,user_pk): # 유저의 활동 기반 , 유저 기반
     arr = dict()
 
     for u in user_data:
-        if u==user:
+        if u.id==user.id:
             continue
         ms = user.user_rank.all() & u.user_rank.all() # 유저가 평가한 영화를 평가한 모든 사람들과 다른 영화를 평가한 사람들의 교집합 
-        print(u.user_rank.all())    
+        
         temp = []
 
         for m in ms:
@@ -206,21 +206,31 @@ def create_recommend(request,user_pk): # 유저의 활동 기반 , 유저 기반
             if d1+d2 == 0:
                 continue 
             else:
-                result = up/(d1**(1/2) + d2**(1/2)) # user와 다른 유저와의 상관계수
+                result = up/(d1**(1/2) + d2**(1/2)) # 로그아웃한 user와 다른 유저와의 상관계수
                 arr[u.id] = result
-
+    
+    if arr: # 유저가 없어 ㅠㅠㅠ
     # 상관계수가 높은 친구들
-    x = Counter(arr)
-    cus=x.most_common(3)
-    for us in cus:
-        RMs =us.recommandmovie_set.order_by('-coef')
-        if RMs:
-            for RM in RMs[:20]:
-                if user.recommandmovie_set.filter(movie=RM.movie, user=user).exists():
-                    user.recommandmovie_set.filter(movie=RM.movie, user=user)[0].coef+=arr[us.id]
-                else:
-                    RecommandMovie.objects.create(movie=RM, user=user, coef=arr[us.id])
+        x = Counter(arr)
+        cus=x.most_common(3)
+        for uid in cus:
+            us = User.objects.get(id=uid) # 잘 못 썼었음
+            RMs =us.recommandmovie_set.order_by('-coef')
+            if RMs:
+                for RM in RMs[:20]:
+                    if user.recommandmovie_set.filter(movie=RM.movie, user=user).exists(): # 존재하면 값을 추가
+                        user.recommandmovie_set.filter(movie=RM.movie, user=user)[0].coef+=arr[us.id]
+                    else:
+                        RecommandMovie.objects.create(movie=RM, user=user, coef=arr[us.id])
+    else:
+        no_user(user_pk)
     return Response({'success':True})
+
+def no_user(user_pk):
+    pass
+
+
+
 
 @api_view(['GET']) # 유저가 처음 회원가입할 때만 동작하고 그 뒤에는 유저의 활동량에 따라 업데이트해줄지를 결정
 def get_user_recommend(request,user_id):
@@ -293,8 +303,8 @@ def search(request):
     
     q = request.GET.get('query')
     if q:
-        # movie = Movie.objects.filter(Q(title__icontains=q) | Q(original_title__icontains=q) | Q(overview__icontains=q)) # 해리 포터
-        movie = Movie.objects.filter(title__search=q)
+        movie = Movie.objects.filter(Q(title__icontains=q) | Q(original_title__icontains=q) | Q(overview__icontains=q)) # 해리 포터
+        # movie = Movie.objects.filter(title__search=q)
         if movie:
             serializer = SearchSerializer(movie, many=True)
             return Response(serializer.data)
