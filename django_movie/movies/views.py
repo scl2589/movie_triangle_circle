@@ -293,7 +293,8 @@ def search(request):
     
     q = request.GET.get('query')
     if q:
-        movie = Movie.objects.filter(Q(title__icontains=q) | Q(original_title__icontains=q) | Q(overview__icontains=q)) # 해리 포터
+        # movie = Movie.objects.filter(Q(title__icontains=q) | Q(original_title__icontains=q) | Q(overview__icontains=q)) # 해리 포터
+        movie = Movie.objects.filter(title__search=q)
         if movie:
             serializer = SearchSerializer(movie, many=True)
             return Response(serializer.data)
