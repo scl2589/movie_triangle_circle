@@ -92,7 +92,7 @@
   - Django-rest-auth: 0.9.5
   - python: 3.7.4
 
-
+<br>
 
 ## 📌 DB Modeling
 
